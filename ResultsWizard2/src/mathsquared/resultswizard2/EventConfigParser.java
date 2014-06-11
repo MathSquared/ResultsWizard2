@@ -123,7 +123,7 @@ public class EventConfigParser {
     /**
      * Loads an event file into a {@link Map} from the event's primary name to its {@linkplain Event event object}.
      * 
-     * @param is the {@link InputStream} representing the data file
+     * @param is the {@link InputStream} representing the data file; assumed to represent characters in ISO-8859-1 (ISO-Latin-1)
      * @return a <code>Map</code> from events' primary names to event objects
      * @throws IOException if an I/O error occurs when reading the data file
      * @throws NumberFormatException if a number in the data file does not parse correctly when one was expected
@@ -131,7 +131,23 @@ public class EventConfigParser {
      * @see {@link #load(Reader)}
      */
     public static Map<String, Event> load (InputStream is) throws IOException {
-        Reader read = new InputStreamReader(is, Charset.forName("ISO-8859-1")); // ISO-8859-1 is required to be supported
+        Reader read = new InputStreamReader(is, Charset.forName("ISO-8859-1")); // ISO-8859-1 is required to be supported by the JVM
+        return load(read);
+    }
+
+    /**
+     * Loads an event file into a {@link Map} from the event's primary name to its {@linkplain Event event object}, using the character encoding specified.
+     * 
+     * @param is the {@link InputStream} representing the data file; assumed to represent characters in the given charset
+     * @param cset the {@link Charset} with which to decode the binary values from the <code>InputStream</code>
+     * @return a <code>Map</code> from events' primary names to event objects
+     * @throws IOException if an I/O error occurs when reading the data file
+     * @throws NumberFormatException if a number in the data file does not parse correctly when one was expected
+     * @throws IllegalArgumentException if an invalid value is given for a field; see {@linkplain Event#Event(String, String[], int, int, Map, int[], int[], Map) the <code>Event</code> constructor}
+     * @see {@link #load(Reader)}
+     */
+    public static Map<String, Event> load (InputStream is, Charset cset) throws IOException {
+        Reader read = new InputStreamReader(is, cset);
         return load(read);
     }
 }
