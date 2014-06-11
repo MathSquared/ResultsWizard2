@@ -1,6 +1,4 @@
 /bin
-/.settings
-/.classpath
 /.project
-/LICENSE
-/README.md
+/.classpath
+/.settings
