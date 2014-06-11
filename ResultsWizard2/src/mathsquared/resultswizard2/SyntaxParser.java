@@ -41,12 +41,15 @@ public class SyntaxParser {
         StringBuilder nextAddition = new StringBuilder("");
         for (int i = 0; i < rawChars.length; i++) {
             char x = rawChars[i];
-            char y = rawChars[i + 1];
+            char y = (i + 1 < rawChars.length) ? rawChars[i + 1] : 0; // Conditional to prevent ArrayIndexOutOfBounds
 
             if (inQuotes) {
                 if (x == '"') {
                     // Check next character; if it's another quote, this is an escape sequence
                     if (y == '"') {
+                        // Add in the escaped quote
+                        nextAddition.append('"');
+
                         // Skip over the next quote too
                         i++; // skips one of the two quotes; other skipped by the for loop header
                     } else {
@@ -69,7 +72,7 @@ public class SyntaxParser {
             }
         }
 
-        return (String[]) ret.toArray();
+        return ret.toArray(new String[] {});
     }
 
     /**
