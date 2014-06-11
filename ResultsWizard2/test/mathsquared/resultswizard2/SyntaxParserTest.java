@@ -3,6 +3,7 @@
  */
 package mathsquared.resultswizard2;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
@@ -25,7 +26,8 @@ public class SyntaxParserTest {
     @Test
     public void testParseQuotedSyntax () {
         String[] parsed = SyntaxParser.parseQuotedSyntax("\"a\" \"b\" \"c\"\"d\"");
-        assertTrue("quoted syntax: space-separated with one quote escape", Arrays.equals(parsed, new String[] {"a", "b", "c\"d"}));
+        // assertTrue("quoted syntax: space-separated with one quote escape", Arrays.equals(parsed, new String[] {"a", "b", "c\"d"}));
+        assertArrayEquals("quoted syntax: space-separated with one quote escape", new String[] {"a", "b", "c\"d"}, parsed);
     }
 
     /**
