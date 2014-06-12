@@ -32,7 +32,7 @@ public class Event {
      * </p>
      * 
      * <p>
-     * None of the parameters to this constructor may be null; in addition, none of the array parameters may contain null elements, and none of the Map parameters may contain null keys or values.
+     * None of the parameters to this constructor may be null; in addition, none of the array parameters may contain null elements, and none of the Map parameters may contain null keys or values. To indicate that an event does not award special honors, pass in empty maps to <code>specialHonors</code> and <code>specialSweeps</code>.
      * </p>
      * 
      * @param primaryName the official name of the event; must contain only ASCII printable characters from 0x20 to 0x7E, not including the grave character `
