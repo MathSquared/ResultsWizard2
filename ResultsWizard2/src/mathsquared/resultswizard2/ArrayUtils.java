@@ -38,6 +38,16 @@ public class ArrayUtils {
         return copied;
     }
 
+    /**
+     * Checks that all ties are represented validly.
+     * 
+     * <p>
+     * For every sub-array of a result array (which represents a tie), if the sub-array contains more than one element, places should be skipped in accordance. This corresponds to normal practice; for example, if two people tie for first place, the next place awarded is third place (and the second-place array should be null or empty).
+     * </p>
+     * 
+     * @param results the results array whose integrity to check
+     * @return true if the array correctly skips places for ties; false otherwise
+     */
     public static boolean checkTies (String[][] results) {
         /*
          * Implementation:
