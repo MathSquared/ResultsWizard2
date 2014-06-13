@@ -18,6 +18,7 @@ public class EventResults {
 
     // May be null if there are zero honorees in the corresponding category
     private String[] indivHonorees;
+    private String[] indivSchools;
     private String[] teamHonorees;
     private Map<String, String[]> specialHonorees;
 
@@ -36,6 +37,7 @@ public class EventResults {
         // Set up the data structures based on the event spec
         if (ev.getIndivPlaces() > 0) {
             indivHonorees = new String[ev.getIndivPlaces()];
+            indivSchools = new String[ev.getIndivPlaces()];
         }
         if (ev.getTeamPlaces() > 0) {
             teamHonorees = new String[ev.getTeamPlaces()];
@@ -65,7 +67,7 @@ public class EventResults {
      * @throws NullPointerException if this Event supports a particular result type, and the corresponding parameter was null
      * @throws IllegalArgumentException if a parameter is inconsistent with the Event specification
      */
-    public EventResults (Event evt, String[] indivHonorees, String[] teamHonorees, Map<String, String[]> specialHonorees) {
+    public EventResults (Event evt, String[] indivHonorees, String[] indivSchools, String[] teamHonorees, Map<String, String[]> specialHonorees) {
         this(evt); // Initializes data structures, so we can work with their lengths when deciding whether or not to throw UOE or NPE
 
         // Only call these methods if the event is supported; if not, UOE if the parameter was not null
@@ -123,6 +125,39 @@ public class EventResults {
             throw new IllegalArgumentException("Length of indivHonorees must match specification in Event (here, " + ev.getIndivPlaces() + " for " + ev.getPrimaryName());
         }
         this.indivHonorees = Arrays.copyOf(indivHonorees, indivHonorees.length);
+    }
+
+    /**
+     * Returns an array of the schools of those placing individually, in rank order where index 0 is first place.
+     * 
+     * @return the indivSchools, or null if this {@linkplain Event event} does not award individual results
+     */
+    public String[] getIndivSchools () {
+        if (indivSchools == null) {
+            return null;
+        }
+        return Arrays.copyOf(indivSchools, indivSchools.length);
+    }
+
+    /**
+     * Sets the schools of those placing individually, in rank order where index 0 is first place.
+     * 
+     * @param indivSchools the indivSchools to set
+     * @throws UnsupportedOperationException if this Event does not support individual results (equivalently, if {@link #getIndivHonorees()} returns null)
+     * @throws NullPointerException if the parameter is null
+     * @throws IllegalArgumentException if the length of <code>indivHonorees</code> does not match the {@linkplain Event#getIndivPlaces() amount of individual places} specified by the Event
+     */
+    public void setIndivSchools (String[] indivSchools) {
+        if (this.indivSchools == null) {
+            throw new UnsupportedOperationException("Event " + ev.getPrimaryName() + " does not support individual results");
+        }
+        if (indivSchools == null) {
+            throw new NullPointerException("indivSchools must not be null");
+        }
+        if (indivSchools.length != ev.getIndivPlaces()) {
+            throw new IllegalArgumentException("Length of indivSchools must match specification in Event (here, " + ev.getIndivPlaces() + " for " + ev.getPrimaryName());
+        }
+        this.indivSchools = Arrays.copyOf(indivSchools, indivSchools.length);
     }
 
     /**
