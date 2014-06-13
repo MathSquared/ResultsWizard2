@@ -36,9 +36,13 @@ public class EventResults {
     /**
      * Constructs a new object representing results in the given event.
      * 
+     * <p>
      * The {@link Event} passed into this method determines the amount of data that this object can store. For instance, if <code>evt.getTeamPlaces() == 0</code>, this object will not support specifying team places (the {@link #getIndivHonorees()} method will return null, and the {@link #setIndivHonorees(String[])} method will throw an {@link UnsupportedOperationException}).
+     * </p>
      * 
+     * <p>
      * This constructor is private so as to avoid EventResult objects in incomplete states (that don't represent fully available event results). To instantiate an EventResults object, use the {@link EventResults#EventResults(Event, String[], String[], Map)} constructor.
+     * </p>
      * 
      * @param evt the Event object represented
      */
@@ -74,9 +78,13 @@ public class EventResults {
     /**
      * Constructs a new object representing results in the given event, and initializes it with data about these results.
      * 
+     * <p>
      * The {@link Event} passed into this method determines the amount of data that this object can store. For instance, if <code>evt.getTeamPlaces() == 0</code>, this object will not support specifying team places (the {@link #getIndivHonorees()} method will return null, and the {@link #setIndivHonorees(String[])} method will throw an {@link UnsupportedOperationException}).
+     * </p>
      * 
+     * <p>
      * This constructor will fail if the passed-in results do not match the event specifications; for details on exceptional conditions, see {@link #setIndivHonorees()}, {@link #setTeamHonorees(String[])}, and {@link #setSpecialHonorees(Map)}.
+     * </p>
      * 
      * @param evt the Event object represented
      * @param indivHonorees an array of those placing individually, in rank order where index 0 is first place
@@ -85,8 +93,8 @@ public class EventResults {
      * @param specialHonorees a mapping from names of special honors to arrays of the names of those placing in them, in rank order where index 0 is first place
      * @param specialSchools a mapping from names of special honors to arrays of the schools of those placing in them, in rank order
      * @throws UnsupportedOperationException if this Event does not support a particular result type, and the corresponding parameter(s) was/were not null
-     * @throws NullPointerException if this Event supports a particular result type, and the corresponding parameter was null
-     * @throws IllegalArgumentException if a parameter is inconsistent with the Event specification
+     * @throws NullPointerException if this Event supports a particular result type, and the corresponding parameter(s) was/were null
+     * @throws IllegalArgumentException if a parameter is inconsistent with the Event specification or is otherwise formatted incorrectly; see {@link #setIndivResults(String[][], String[][])}, {@link #setTeamHonorees(String[][])}, and {@link #setSpecialResults(Map, Map)} for details on correct and incorrect formatting
      */
     public EventResults (Event evt, String[][] indivHonorees, String[][] indivSchools, String[][] teamHonorees, Map<String, String[][]> specialHonorees, Map<String, String[][]> specialSchools) {
         this(evt); // Initializes data structures, so we can work with their lengths when deciding whether or not to throw UOE or NPE
@@ -278,7 +286,7 @@ public class EventResults {
      * @param specialHonorees the specialHonorees to set
      * @throws UnsupportedOperationException if this Event does not support special honors (equivalently, if {@link #getSpecialHonorees()} returns null)
      * @throws NullPointerException if the parameter is null
-     * @throws IllegalArgumentException if the keys in <code>specialHonorees</code> do not match the {@linkplain Event#getSpecialHonors() special honors} specified by the Event, or the length of one of the arrays does not match the amount of places specified for that special honor, or one of the arrays does not properly {@linkplain ArrayUtils#checkTies(String[][]) skip places for ties}
+     * @throws IllegalArgumentException if the keys in <code>specialHonorees</code> do not match the {@linkplain Event#getSpecialHonors() special honors} specified by the Event, the length of one of the arrays does not match the amount of places specified for that special honor, or one of the arrays does not properly {@linkplain ArrayUtils#checkTies(String[][]) skip places for ties}
      */
     private void setSpecialHonorees (Map<String, String[][]> specialHonorees) {
         if (this.specialHonorees == null) {
@@ -353,7 +361,7 @@ public class EventResults {
      * @param specialSchools the specialSchools to set
      * @throws UnsupportedOperationException if this Event does not support special honors (equivalently, if {@link #getSpecialHonorees()} returns null)
      * @throws NullPointerException if the parameter is null
-     * @throws IllegalArgumentException if the keys in <code>specialSchools</code> do not match the {@linkplain Event#getSpecialHonors() special honors} specified by the Event, or the length of one of the arrays does not match the amount of places specified for that special honor, or one of the arrays does not properly {@linkplain ArrayUtils#checkTies(String[][]) skip places for ties}
+     * @throws IllegalArgumentException if the keys in <code>specialSchools</code> do not match the {@linkplain Event#getSpecialHonors() special honors} specified by the Event, the length of one of the arrays does not match the amount of places specified for that special honor, or one of the arrays does not properly {@linkplain ArrayUtils#checkTies(String[][]) skip places for ties}
      */
     private void setSpecialSchools (Map<String, String[][]> specialSchools) {
         if (this.specialSchools == null) {
