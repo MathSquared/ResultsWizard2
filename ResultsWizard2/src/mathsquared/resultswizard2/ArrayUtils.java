@@ -11,6 +11,12 @@ import java.util.Arrays;
  * 
  */
 public class ArrayUtils {
+    /**
+     * Creates a deep copy of a multi-dimensional array, copying all sub-arrays of the array (but not the elements themselves).
+     * 
+     * @param toCopy the multi-dimensional array to copy
+     * @return a copy of the array
+     */
     // HASHTAG UNCHECKED CASTS
     @SuppressWarnings("unchecked")
     public static <T> T[][] deepCopyOf (T[][] toCopy) {
