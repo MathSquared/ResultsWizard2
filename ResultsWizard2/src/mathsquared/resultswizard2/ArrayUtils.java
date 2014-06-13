@@ -65,10 +65,10 @@ public class ArrayUtils {
         for (String[] x : results) {
             // num never decreases by more than 1 each turn, and can never decrease if it is 0, so check for num < 0 is unnecessary
             assert (num >= 0);
-            if (num == 0 && (results == null || results.length == 0)) {
+            if (num == 0 && (x == null || x.length == 0)) {
                 return false;
             }
-            if (num > 0 && results != null && results.length != 0) {
+            if (num > 0 && x != null && x.length != 0) {
                 return false;
             }
             num += (x == null) ? -1 : x.length - 1;
