@@ -77,4 +77,37 @@ public class ArrayUtils {
         // no problems; num does not need to be 0 in case of ties for last place
         return true;
     }
+
+    /**
+     * Checks that the structure of two arrays is the same. That is:
+     * 
+     * <ul>
+     * <li><code>a.length == b.length</code></li>
+     * <li>For any integer <code>i</code>, <code>a[i]</code> is an array iff <code>b[i]</code> is an array</li>
+     * <li>For any integer <code>i</code>, if <code>a[i]</code> and <code>b[i]</code> are arrays, the first two statements are recursively valid for them as well</li>
+     * </ul>
+     * 
+     * @param a the first array to check
+     * @param b the second array to check
+     * @return true if the arrays have the same structure as defined above, false otherwise
+     */
+    public static boolean checkStructureSame (Object[] a, Object[] b) {
+        if (a.length != b.length)
+            return false;
+        for (int i = 0; i < a.length; i++) {
+            if (a[i] instanceof Object[] && b[i] instanceof Object[]) {
+                if (!checkStructureSame((Object[]) a[i], (Object[]) b[i])) {
+                    return false;
+                }
+            }
+
+            // In theory, since U is the same for both arrays, we wouldn't have one be an array of arrays and the other not be...but let's check
+            if (a[i] instanceof Object[] ^ b[i] instanceof Object[]) {
+                return false;
+            }
+        }
+
+        // no problems
+        return true;
+    }
 }
