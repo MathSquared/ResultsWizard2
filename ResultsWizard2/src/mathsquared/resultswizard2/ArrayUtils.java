@@ -15,11 +15,16 @@ public class ArrayUtils {
      * Creates a deep copy of a multi-dimensional array, copying all sub-arrays of the array (but not the elements themselves).
      * 
      * @param toCopy the multi-dimensional array to copy
-     * @return a copy of the array
+     * @return a copy of the array, or null if <code>toCopy</code> is null
      */
     // HASHTAG UNCHECKED CASTS
     @SuppressWarnings("unchecked")
     public static <T> T[][] deepCopyOf (T[][] toCopy) {
+        // Null handling; null is a copy of null
+        if (toCopy == null) {
+            return null;
+        }
+
         // Instantiate a generic array
         Class<T[]> type = (Class<T[]>) toCopy.getClass().getComponentType();
         T[][] copied = (T[][]) Array.newInstance(type, toCopy.length);
@@ -45,10 +50,19 @@ public class ArrayUtils {
      * For every sub-array of a result array (which represents a tie), if the sub-array contains more than one element, places should be skipped in accordance. This corresponds to normal practice; for example, if two people tie for first place, the next place awarded is third place (and the second-place array should be null or empty).
      * </p>
      * 
+     * <p>
+     * For a parameter of null, this method returns true.
+     * </p>
+     * 
      * @param results the results array whose integrity to check
      * @return true if the array correctly skips places for ties; false otherwise
      */
     public static boolean checkTies (String[][] results) {
+        // An empty array is structured correctly, since there are no unstructured elements
+        if (results == null) {
+            return true;
+        }
+
         /*
          * Implementation:
          * 
@@ -87,11 +101,23 @@ public class ArrayUtils {
      * <li>For any integer <code>i</code>, if <code>a[i]</code> and <code>b[i]</code> are arrays, the first two statements are recursively valid for them as well</li>
      * </ul>
      * 
+     * <p>
+     * If one of the arrays is null, this method returns true iff both are null.
+     * </p>
+     * 
      * @param a the first array to check
      * @param b the second array to check
      * @return true if the arrays have the same structure as defined above, false otherwise
      */
     public static boolean checkStructureSame (Object[] a, Object[] b) {
+        // Null handling; two nulls are structured the same, but a null and non-null are not
+        if (a == null && b == null) {
+            return true;
+        }
+        if (a == null ^ b == null) {
+            return false;
+        }
+
         if (a.length != b.length)
             return false;
         for (int i = 0; i < a.length; i++) {
