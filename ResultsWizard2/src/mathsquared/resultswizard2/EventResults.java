@@ -13,6 +13,9 @@ import java.util.Map;
  * - implement support for ties (including either larger arrays to allow ties in last place, combined with arrays signaling when a tie takes place, OR TreeSets that encapsulate collections of tied students...we're looking at Map<String, Set<String>[]> here)
  * - allow for the amount of points scored in an event
  * - check for nulls in indivHonorees/teamHonorees/specialHonorees (indivSchools/specialSchools should allow null for independent competitors--and nulls should be allowed depending on how I represent ties)
+ * - sweepstakes
+ * --- allow clients to select different methods of sweepstakes point handling for ties (average, highest...)
+ * --- compute sweeps points for all schools in an event, then pass them into a Map (similar to ResultsWizard1)
  */
 
 /**
