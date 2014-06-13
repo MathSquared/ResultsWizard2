@@ -81,21 +81,27 @@ public class EventResults {
      * 
      * @param evt the Event object represented
      * @param indivHonorees an array of those placing individually, in rank order where index 0 is first place
+     * @param indivSchools the schools of those with the same index in indivHonorees
      * @param teamHonorees an array of those placing as teams, in rank order where index 0 is first place
      * @param specialHonorees a mapping from names of special honors to arrays of the names of those placing in them, in rank order where index 0 is first place
-     * @throws UnsupportedOperationException if this Event does not support a particular result type, and the corresponding parameter was not null
+     * @param specialSchools a mapping from names of special honors to arrays of the schools of those placing in them, in rank order
+     * @throws UnsupportedOperationException if this Event does not support a particular result type, and the corresponding parameter(s) was/were not null
      * @throws NullPointerException if this Event supports a particular result type, and the corresponding parameter was null
      * @throws IllegalArgumentException if a parameter is inconsistent with the Event specification
      */
-    public EventResults (Event evt, String[] indivHonorees, String[] indivSchools, String[] teamHonorees, Map<String, String[]> specialHonorees) {
+    public EventResults (Event evt, String[] indivHonorees, String[] indivSchools, String[] teamHonorees, Map<String, String[]> specialHonorees, Map<String, String[]> specialSchools) {
         this(evt); // Initializes data structures, so we can work with their lengths when deciding whether or not to throw UOE or NPE
 
         // Only call these methods if the event is supported; if not, UOE if the parameter was not null
         if (this.indivHonorees != null) { // event supported, since we bothered to instantiate a data structure in the constructor
             setIndivHonorees(indivHonorees); // will NPE if parameter was null
+            setIndivSchools(indivSchools);
         } else { // unsupported
             if (indivHonorees != null) { // unsupported, but passed in an object anyway
                 throw new UnsupportedOperationException("Event " + evt.getPrimaryName() + " does not support individual places; parameter must be null");
+            }
+            if (indivSchools != null) { // unsupported, but passed in an object anyway
+                throw new UnsupportedOperationException("Event " + evt.getPrimaryName() + " does not support individual places; schools parameter must be null");
             }
         }
         if (this.teamHonorees != null) { // event supported, since we bothered to instantiate a data structure in the constructor
@@ -107,9 +113,13 @@ public class EventResults {
         }
         if (this.specialHonorees != null) { // event supported, since we bothered to instantiate a data structure in the constructor
             setSpecialHonorees(specialHonorees); // will NPE if parameter was null
+            setSpecialSchools(specialSchools);
         } else { // unsupported
             if (specialHonorees != null) { // unsupported, but passed in an object anyway
                 throw new UnsupportedOperationException("Event " + evt.getPrimaryName() + " does not support special honors; parameter must be null");
+            }
+            if (specialSchools != null) { // unsupported, but passed in an object anyway
+                throw new UnsupportedOperationException("Event " + evt.getPrimaryName() + " does not support special honors; schools parameter must be null");
             }
         }
     }
