@@ -4,6 +4,7 @@
 package mathsquared.resultswizard2;
 
 import java.awt.Graphics;
+import java.io.Serializable;
 
 /**
  * Represents an object capable of drawing itself.
@@ -13,7 +14,10 @@ import java.awt.Graphics;
  * @author MathSquared
  * 
  */
-public interface Slide {
+public interface Slide extends Serializable {
+    // Obtained from serialver
+    public static final long serialVersionUID = 3343226026369768497L;
+
     /**
      * Draws this Slide's data to the given <code>Graphics</code> object.
      * 
