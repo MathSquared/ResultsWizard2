@@ -172,7 +172,7 @@ public class EventResults {
      * @param indivSchools the indivSchools to set
      * @throws UnsupportedOperationException if this Event does not support individual results (equivalently, if {@link #getIndivHonorees()} returns null)
      * @throws NullPointerException if the parameter is null
-     * @throws IllegalArgumentException if the length of <code>indivHonorees</code> does not match the {@linkplain Event#getIndivPlaces() amount of individual places} specified by the Event
+     * @throws IllegalArgumentException if the length of <code>indivSchools</code> does not match the {@linkplain Event#getIndivPlaces() amount of individual places} specified by the Event
      */
     private void setIndivSchools (String[][] indivSchools) {
         if (this.indivSchools == null) {
