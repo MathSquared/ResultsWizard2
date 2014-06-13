@@ -7,6 +7,14 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+/*
+ * TODO:
+ * 
+ * - implement support for ties (including either larger arrays to allow ties in last place, combined with arrays signaling when a tie takes place, OR TreeSets that encapsulate collections of tied students...we're looking at Map<String, Set<String>[]> here)
+ * - allow for the amount of points scored in an event
+ * - check for nulls in indivHonorees/teamHonorees/specialHonorees (indivSchools/specialSchools should allow null for independent competitors--and nulls should be allowed depending on how I represent ties)
+ */
+
 /**
  * Represents a given competition event and its results.
  * 
