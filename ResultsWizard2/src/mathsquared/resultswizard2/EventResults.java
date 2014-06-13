@@ -93,8 +93,7 @@ public class EventResults {
 
         // Only call these methods if the event is supported; if not, UOE if the parameter was not null
         if (this.indivHonorees != null) { // event supported, since we bothered to instantiate a data structure in the constructor
-            setIndivHonorees(indivHonorees); // will NPE if parameter was null
-            setIndivSchools(indivSchools);
+            setIndivResults(indivHonorees, indivSchools); // will NPE if parameter was null
         } else { // unsupported
             if (indivHonorees != null) { // unsupported, but passed in an object anyway
                 throw new UnsupportedOperationException("Event " + evt.getPrimaryName() + " does not support individual places; parameter must be null");
@@ -111,8 +110,7 @@ public class EventResults {
             }
         }
         if (this.specialHonorees != null) { // event supported, since we bothered to instantiate a data structure in the constructor
-            setSpecialHonorees(specialHonorees); // will NPE if parameter was null
-            setSpecialSchools(specialSchools);
+            setSpecialResults(specialHonorees, specialSchools); // will NPE if parameter was null
         } else { // unsupported
             if (specialHonorees != null) { // unsupported, but passed in an object anyway
                 throw new UnsupportedOperationException("Event " + evt.getPrimaryName() + " does not support special honors; parameter must be null");
@@ -143,7 +141,7 @@ public class EventResults {
      * @throws NullPointerException if the parameter is null
      * @throws IllegalArgumentException if the length of <code>indivHonorees</code> does not match the {@linkplain Event#getIndivPlaces() amount of individual places} specified by the Event
      */
-    public void setIndivHonorees (String[][] indivHonorees) {
+    private void setIndivHonorees (String[][] indivHonorees) {
         if (this.indivHonorees == null) {
             throw new UnsupportedOperationException("Event " + ev.getPrimaryName() + " does not support individual results");
         }
@@ -176,7 +174,7 @@ public class EventResults {
      * @throws NullPointerException if the parameter is null
      * @throws IllegalArgumentException if the length of <code>indivHonorees</code> does not match the {@linkplain Event#getIndivPlaces() amount of individual places} specified by the Event
      */
-    public void setIndivSchools (String[][] indivSchools) {
+    private void setIndivSchools (String[][] indivSchools) {
         if (this.indivSchools == null) {
             throw new UnsupportedOperationException("Event " + ev.getPrimaryName() + " does not support individual results");
         }
@@ -187,6 +185,24 @@ public class EventResults {
             throw new IllegalArgumentException("Length of indivSchools must match specification in Event (here, " + ev.getIndivPlaces() + " for " + ev.getPrimaryName());
         }
         this.indivSchools = ArrayUtils.deepCopyOf(indivSchools);
+    }
+
+    /**
+     * Sets the names and schools of those placing individually, in rank order where index 0 is first place.
+     * 
+     * @param indivHonorees the indivHonorees to set
+     * @param indivSchools the indivSchools to set
+     * @throws UnsupportedOperationException if this Event does not support individual results (equivalently, if {@link #getIndivHonorees()} returns null)
+     * @throws NullPointerException if the parameter is null
+     * @throws IllegalArgumentException if the length of <code>indivHonorees</code> or <code>indivSchools</code> does not match the {@linkplain Event#getIndivPlaces() amount of individual places} specified by the Event, or <code>indivHonorees</code> and <code>indivSchools</code> do not have the same {@linkplain ArrayUtils#checkStructureSame(Object[], Object[]) tied structure}
+     */
+    public void setIndivResults (String[][] indivHonorees, String[][] indivSchools) {
+        if (!ArrayUtils.checkStructureSame(indivHonorees, indivSchools)) {
+            throw new IllegalArgumentException("Structure of honorees and schools must match");
+        }
+
+        setIndivHonorees(indivHonorees);
+        setIndivSchools(indivSchools);
     }
 
     /**
@@ -255,7 +271,7 @@ public class EventResults {
      * @throws NullPointerException if the parameter is null
      * @throws IllegalArgumentException if the keys in <code>specialHonorees</code> do not match the {@linkplain Event#getSpecialHonors() special honors} specified by the Event, or the length of one of the arrays does not match the amount of places specified for that special honor
      */
-    public void setSpecialHonorees (Map<String, String[][]> specialHonorees) {
+    private void setSpecialHonorees (Map<String, String[][]> specialHonorees) {
         if (this.specialHonorees == null) {
             throw new UnsupportedOperationException("Event " + ev.getPrimaryName() + " does not support special honors");
         }
@@ -323,7 +339,7 @@ public class EventResults {
      * @throws NullPointerException if the parameter is null
      * @throws IllegalArgumentException if the keys in <code>specialSchools</code> do not match the {@linkplain Event#getSpecialHonors() special honors} specified by the Event, or the length of one of the arrays does not match the amount of places specified for that special honor
      */
-    public void setSpecialSchools (Map<String, String[][]> specialSchools) {
+    private void setSpecialSchools (Map<String, String[][]> specialSchools) {
         if (this.specialSchools == null) {
             throw new UnsupportedOperationException("Event " + ev.getPrimaryName() + " does not support special honors");
         }
@@ -356,5 +372,34 @@ public class EventResults {
         }
 
         this.specialSchools = ret;
+    }
+
+    /**
+     * Sets the names and schools of those placing in special honors.
+     * 
+     * <p>
+     * Each parameter is a mapping from names of special honors to arrays of the names or schools of those placing in them, in rank order where index 0 is first place.
+     * </p>
+     * 
+     * @param specialHonorees the specialHonorees to set
+     * @param specialSchools the specialSchools to set
+     * @throws UnsupportedOperationException if this Event does not support special honors (equivalently, if {@link #getSpecialHonorees()} returns null)
+     * @throws NullPointerException if the parameter is null
+     * @throws IllegalArgumentException if the keys in <code>specialHonors</code> and <code>specialSchools</code> do not match each other or the {@linkplain Event#getSpecialHonors() special honors} specified by the Event, the length of one of the arrays does not match the amount of places specified for that special honor, or for any String <code>honor</code>, <code>specialHonorees.get(x)</code> and <code>specialSchools.get(x)</code> do not have the same {@linkplain ArrayUtils#checkStructureSame(Object[], Object[]) tied structure}
+     */
+    public void setSpecialResults (Map<String, String[][]> specialHonorees, Map<String, String[][]> specialSchools) {
+        // Check that the keySets match to avoid problems later
+        if (!specialHonorees.keySet().equals(specialSchools.keySet())) {
+            throw new IllegalArgumentException("Keys in specialHonorees and specialSchools must match");
+        }
+
+        for (String x : specialHonorees.keySet()) {
+            if (!ArrayUtils.checkStructureSame(specialHonorees.get(x), specialSchools.get(x))) {
+                throw new IllegalArgumentException("Structure of results for honor " + x + " does not match between specialHonorees and specialSchools");
+            }
+        }
+
+        setSpecialHonorees(specialHonorees);
+        setSpecialSchools(specialSchools);
     }
 }
