@@ -37,4 +37,34 @@ public class ArrayUtils {
 
         return copied;
     }
+
+    public static boolean checkTies (String[][] results) {
+        /*
+         * Implementation:
+         * 
+         * The algorithm keeps track of the amount of results that have been seen so far, where a "result" is one String.
+         * 
+         * For each sub-array of the input array, the algorithm adds subArr.length - 1 to an internal tracking variable.
+         * 
+         * If this variable is non-zero, it means that there was a tie previously, and the next few places should be skipped with null.
+         * 
+         * If this variable is zero, it means that there have been no ties--or all were accounted for--so the next array should have elements.
+         */
+
+        int num = 0; // tracking variable mentioned above
+        for (String[] x : results) {
+            // num never decreases by more than 1 each turn, and can never decrease if it is 0, so check for num < 0 is unnecessary
+            assert (num >= 0);
+            if (num == 0 && (results == null || results.length == 0)) {
+                return false;
+            }
+            if (num > 0 && results != null && results.length != 0) {
+                return false;
+            }
+            num += (x == null) ? -1 : x.length - 1;
+        }
+
+        // no problems; num does not need to be 0 in case of ties for last place
+        return true;
+    }
 }
