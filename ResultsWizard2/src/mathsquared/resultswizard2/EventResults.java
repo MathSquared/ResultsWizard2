@@ -3,7 +3,6 @@
  */
 package mathsquared.resultswizard2;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -133,7 +132,7 @@ public class EventResults {
         if (indivHonorees == null) {
             return null;
         }
-        return Arrays.copyOf(indivHonorees, indivHonorees.length);
+        return ArrayUtils.deepCopyOf(indivHonorees);
     }
 
     /**
@@ -154,7 +153,7 @@ public class EventResults {
         if (indivHonorees.length != ev.getIndivPlaces()) {
             throw new IllegalArgumentException("Length of indivHonorees must match specification in Event (here, " + ev.getIndivPlaces() + " for " + ev.getPrimaryName());
         }
-        this.indivHonorees = Arrays.copyOf(indivHonorees, indivHonorees.length);
+        this.indivHonorees = ArrayUtils.deepCopyOf(indivHonorees);
     }
 
     /**
@@ -166,7 +165,7 @@ public class EventResults {
         if (indivSchools == null) {
             return null;
         }
-        return Arrays.copyOf(indivSchools, indivSchools.length);
+        return ArrayUtils.deepCopyOf(indivSchools);
     }
 
     /**
@@ -187,7 +186,7 @@ public class EventResults {
         if (indivSchools.length != ev.getIndivPlaces()) {
             throw new IllegalArgumentException("Length of indivSchools must match specification in Event (here, " + ev.getIndivPlaces() + " for " + ev.getPrimaryName());
         }
-        this.indivSchools = Arrays.copyOf(indivSchools, indivSchools.length);
+        this.indivSchools = ArrayUtils.deepCopyOf(indivSchools);
     }
 
     /**
@@ -199,7 +198,7 @@ public class EventResults {
         if (teamHonorees == null) {
             return null;
         }
-        return Arrays.copyOf(teamHonorees, teamHonorees.length);
+        return ArrayUtils.deepCopyOf(teamHonorees);
     }
 
     /**
@@ -220,7 +219,7 @@ public class EventResults {
         if (teamHonorees.length != ev.getTeamPlaces()) {
             throw new IllegalArgumentException("Length of teamHonorees must match specification in Event (here, " + ev.getTeamPlaces() + " for " + ev.getPrimaryName());
         }
-        this.teamHonorees = Arrays.copyOf(teamHonorees, teamHonorees.length);
+        this.teamHonorees = ArrayUtils.deepCopyOf(teamHonorees);
     }
 
     /**
@@ -238,7 +237,7 @@ public class EventResults {
         for (Map.Entry<String, String[][]> x : specialHonorees.entrySet()) {
             String k = x.getKey();
             String[][] v = x.getValue();
-            ret.put(k, Arrays.copyOf(v, v.length));
+            ret.put(k, ArrayUtils.deepCopyOf(v));
         }
 
         return ret;
@@ -285,7 +284,7 @@ public class EventResults {
         for (Map.Entry<String, String[][]> x : specialHonorees.entrySet()) {
             String k = x.getKey();
             String[][] v = x.getValue();
-            ret.put(k, Arrays.copyOf(v, v.length));
+            ret.put(k, ArrayUtils.deepCopyOf(v));
         }
 
         this.specialHonorees = ret;
@@ -306,7 +305,7 @@ public class EventResults {
         for (Map.Entry<String, String[][]> x : specialSchools.entrySet()) {
             String k = x.getKey();
             String[][] v = x.getValue();
-            ret.put(k, Arrays.copyOf(v, v.length));
+            ret.put(k, ArrayUtils.deepCopyOf(v));
         }
 
         return ret;
@@ -353,7 +352,7 @@ public class EventResults {
         for (Map.Entry<String, String[][]> x : specialSchools.entrySet()) {
             String k = x.getKey();
             String[][] v = x.getValue();
-            ret.put(k, Arrays.copyOf(v, v.length));
+            ret.put(k, ArrayUtils.deepCopyOf(v));
         }
 
         this.specialSchools = ret;
