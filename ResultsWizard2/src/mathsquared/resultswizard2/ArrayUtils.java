@@ -127,7 +127,7 @@ public class ArrayUtils {
                 }
             }
 
-            // In theory, since U is the same for both arrays, we wouldn't have one be an array of arrays and the other not be...but let's check
+            // Not generic, so no enforcement on same type...might have one be an array of arrays and the other not be
             if (a[i] instanceof Object[] ^ b[i] instanceof Object[]) {
                 return false;
             }
