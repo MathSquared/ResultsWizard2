@@ -139,7 +139,7 @@ public class EventResults {
      * @param indivHonorees the indivHonorees to set
      * @throws UnsupportedOperationException if this Event does not support individual results (equivalently, if {@link #getIndivHonorees()} returns null)
      * @throws NullPointerException if the parameter is null
-     * @throws IllegalArgumentException if the length of <code>indivHonorees</code> does not match the {@linkplain Event#getIndivPlaces() amount of individual places} specified by the Event
+     * @throws IllegalArgumentException if the length of <code>indivHonorees</code> does not match the {@linkplain Event#getIndivPlaces() amount of individual places} specified by the Event, or <code>indivHonorees</code> does not properly {@linkplain ArrayUtils#checkTies(String[][]) skip places for ties}
      */
     private void setIndivHonorees (String[][] indivHonorees) {
         if (this.indivHonorees == null) {
@@ -150,6 +150,9 @@ public class EventResults {
         }
         if (indivHonorees.length != ev.getIndivPlaces()) {
             throw new IllegalArgumentException("Length of indivHonorees must match specification in Event (here, " + ev.getIndivPlaces() + " for " + ev.getPrimaryName());
+        }
+        if (!ArrayUtils.checkTies(indivHonorees)) {
+            throw new IllegalArgumentException("indivHonorees must correctly skip places for ties and must not contain extraneous nulls");
         }
         this.indivHonorees = ArrayUtils.deepCopyOf(indivHonorees);
     }
@@ -172,7 +175,7 @@ public class EventResults {
      * @param indivSchools the indivSchools to set
      * @throws UnsupportedOperationException if this Event does not support individual results (equivalently, if {@link #getIndivHonorees()} returns null)
      * @throws NullPointerException if the parameter is null
-     * @throws IllegalArgumentException if the length of <code>indivSchools</code> does not match the {@linkplain Event#getIndivPlaces() amount of individual places} specified by the Event
+     * @throws IllegalArgumentException if the length of <code>indivSchools</code> does not match the {@linkplain Event#getIndivPlaces() amount of individual places} specified by the Event, or <code>indivSchools</code> does not properly {@linkplain ArrayUtils#checkTies(String[][]) skip places for ties}
      */
     private void setIndivSchools (String[][] indivSchools) {
         if (this.indivSchools == null) {
@@ -184,6 +187,9 @@ public class EventResults {
         if (indivSchools.length != ev.getIndivPlaces()) {
             throw new IllegalArgumentException("Length of indivSchools must match specification in Event (here, " + ev.getIndivPlaces() + " for " + ev.getPrimaryName());
         }
+        if (!ArrayUtils.checkTies(indivSchools)) {
+            throw new IllegalArgumentException("indivSchools must correctly skip places for ties and must not contain extraneous nulls");
+        }
         this.indivSchools = ArrayUtils.deepCopyOf(indivSchools);
     }
 
@@ -194,7 +200,7 @@ public class EventResults {
      * @param indivSchools the indivSchools to set
      * @throws UnsupportedOperationException if this Event does not support individual results (equivalently, if {@link #getIndivHonorees()} returns null)
      * @throws NullPointerException if the parameter is null
-     * @throws IllegalArgumentException if the length of <code>indivHonorees</code> or <code>indivSchools</code> does not match the {@linkplain Event#getIndivPlaces() amount of individual places} specified by the Event, or <code>indivHonorees</code> and <code>indivSchools</code> do not have the same {@linkplain ArrayUtils#checkStructureSame(Object[], Object[]) tied structure}
+     * @throws IllegalArgumentException if the length of <code>indivHonorees</code> or <code>indivSchools</code> does not match the {@linkplain Event#getIndivPlaces() amount of individual places} specified by the Event, <code>indivHonorees</code> and <code>indivSchools</code> do not have the same {@linkplain ArrayUtils#checkStructureSame(Object[], Object[]) tied structure}, or <code>indivHonorees</code> or <code>indivSchools</code> does not properly {@linkplain ArrayUtils#checkTies(String[][]) skip places for ties}
      */
     public void setIndivResults (String[][] indivHonorees, String[][] indivSchools) {
         if (!ArrayUtils.checkStructureSame(indivHonorees, indivSchools)) {
@@ -223,7 +229,7 @@ public class EventResults {
      * @param teamHonorees the teamHonorees to set
      * @throws UnsupportedOperationException if this Event does not support team results (equivalently, if {@link #getTeamHonorees()} returns null)
      * @throws NullPointerException if the parameter is null
-     * @throws IllegalArgumentException if the length of <code>teamHonorees</code> does not match the {@linkplain Event#getTeamPlaces() amount of team places} specified by the Event
+     * @throws IllegalArgumentException if the length of <code>teamHonorees</code> does not match the {@linkplain Event#getTeamPlaces() amount of team places} specified by the Event, or <code>teamHonorees</code> does not properly {@linkplain ArrayUtils#checkTies(String[][]) skip places for ties}
      */
     public void setTeamHonorees (String[][] teamHonorees) {
         if (this.teamHonorees == null) {
@@ -234,6 +240,9 @@ public class EventResults {
         }
         if (teamHonorees.length != ev.getTeamPlaces()) {
             throw new IllegalArgumentException("Length of teamHonorees must match specification in Event (here, " + ev.getTeamPlaces() + " for " + ev.getPrimaryName());
+        }
+        if (!ArrayUtils.checkTies(teamHonorees)) {
+            throw new IllegalArgumentException("teamHonorees must correctly skip places for ties and must not contain extraneous nulls");
         }
         this.teamHonorees = ArrayUtils.deepCopyOf(teamHonorees);
     }
@@ -269,7 +278,7 @@ public class EventResults {
      * @param specialHonorees the specialHonorees to set
      * @throws UnsupportedOperationException if this Event does not support special honors (equivalently, if {@link #getSpecialHonorees()} returns null)
      * @throws NullPointerException if the parameter is null
-     * @throws IllegalArgumentException if the keys in <code>specialHonorees</code> do not match the {@linkplain Event#getSpecialHonors() special honors} specified by the Event, or the length of one of the arrays does not match the amount of places specified for that special honor
+     * @throws IllegalArgumentException if the keys in <code>specialHonorees</code> do not match the {@linkplain Event#getSpecialHonors() special honors} specified by the Event, or the length of one of the arrays does not match the amount of places specified for that special honor, or one of the arrays does not properly {@linkplain ArrayUtils#checkTies(String[][]) skip places for ties}
      */
     private void setSpecialHonorees (Map<String, String[][]> specialHonorees) {
         if (this.specialHonorees == null) {
@@ -279,11 +288,13 @@ public class EventResults {
             throw new NullPointerException("specialHonorees must not be null");
         }
 
-        // Check that the passed-in Map has same honors and same places in each
+        // Check that the passed-in Map has same honors and same places in each and skips places correctly
         if (!specialHonorees.keySet().equals(ev.getSpecialHonors().keySet())) {
             throw new IllegalArgumentException("Keys in specialHonorees must match those specified in the Event");
         }
         for (String x : specialHonorees.keySet()) {
+            // Check amount of places
+
             // How many places there should be for this special honor
             int expected = ev.getSpecialHonors().get(x);
 
@@ -292,6 +303,11 @@ public class EventResults {
 
             if (expected != observed) {
                 throw new IllegalArgumentException("Places passed in for honor " + x + " in event " + ev.getPrimaryName() + " must match those specified in the Event (expected: " + expected + "; observed: " + observed + ")");
+            }
+
+            // Check place skips
+            if (!ArrayUtils.checkTies(specialHonorees.get(x))) {
+                throw new IllegalArgumentException("Places passed in for honor " + x + " do not properly skip places for ties");
             }
         }
 
@@ -337,7 +353,7 @@ public class EventResults {
      * @param specialSchools the specialSchools to set
      * @throws UnsupportedOperationException if this Event does not support special honors (equivalently, if {@link #getSpecialHonorees()} returns null)
      * @throws NullPointerException if the parameter is null
-     * @throws IllegalArgumentException if the keys in <code>specialSchools</code> do not match the {@linkplain Event#getSpecialHonors() special honors} specified by the Event, or the length of one of the arrays does not match the amount of places specified for that special honor
+     * @throws IllegalArgumentException if the keys in <code>specialSchools</code> do not match the {@linkplain Event#getSpecialHonors() special honors} specified by the Event, or the length of one of the arrays does not match the amount of places specified for that special honor, or one of the arrays does not properly {@linkplain ArrayUtils#checkTies(String[][]) skip places for ties}
      */
     private void setSpecialSchools (Map<String, String[][]> specialSchools) {
         if (this.specialSchools == null) {
@@ -352,6 +368,8 @@ public class EventResults {
             throw new IllegalArgumentException("Keys in specialSchools must match those specified in the Event");
         }
         for (String x : specialSchools.keySet()) {
+            // Check amount of places
+
             // How many places there should be for this special honor
             int expected = ev.getSpecialHonors().get(x);
 
@@ -360,6 +378,11 @@ public class EventResults {
 
             if (expected != observed) {
                 throw new IllegalArgumentException("Places passed in for honor " + x + " in event " + ev.getPrimaryName() + " must match those specified in the Event (expected: " + expected + "; observed: " + observed + ")");
+            }
+
+            // Check place skips
+            if (!ArrayUtils.checkTies(specialSchools.get(x))) {
+                throw new IllegalArgumentException("Places passed in for honor " + x + " do not properly skip places for ties");
             }
         }
 
@@ -385,7 +408,7 @@ public class EventResults {
      * @param specialSchools the specialSchools to set
      * @throws UnsupportedOperationException if this Event does not support special honors (equivalently, if {@link #getSpecialHonorees()} returns null)
      * @throws NullPointerException if the parameter is null
-     * @throws IllegalArgumentException if the keys in <code>specialHonors</code> and <code>specialSchools</code> do not match each other or the {@linkplain Event#getSpecialHonors() special honors} specified by the Event, the length of one of the arrays does not match the amount of places specified for that special honor, or for any String <code>honor</code>, <code>specialHonorees.get(x)</code> and <code>specialSchools.get(x)</code> do not have the same {@linkplain ArrayUtils#checkStructureSame(Object[], Object[]) tied structure}
+     * @throws IllegalArgumentException if the keys in <code>specialHonors</code> and <code>specialSchools</code> do not match each other or the {@linkplain Event#getSpecialHonors() special honors} specified by the Event, the length of one of the arrays does not match the amount of places specified for that special honor, one of the arrays does not properly {@linkplain ArrayUtils#checkTies(String[][]) skip places for ties}, or for any String <code>honor</code>, <code>specialHonorees.get(x)</code> and <code>specialSchools.get(x)</code> do not have the same {@linkplain ArrayUtils#checkStructureSame(Object[], Object[]) tied structure}
      */
     public void setSpecialResults (Map<String, String[][]> specialHonorees, Map<String, String[][]> specialSchools) {
         // Check that the keySets match to avoid problems later
