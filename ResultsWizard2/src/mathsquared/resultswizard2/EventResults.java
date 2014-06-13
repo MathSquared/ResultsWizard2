@@ -21,6 +21,7 @@ public class EventResults {
     private String[] indivSchools;
     private String[] teamHonorees;
     private Map<String, String[]> specialHonorees;
+    private Map<String, String[]> specialSchools;
 
     /**
      * Constructs a new object representing results in the given event.
@@ -48,6 +49,14 @@ public class EventResults {
             // Initialize each array in the Map to the proper length
             for (String x : ev.getSpecialHonors().keySet()) {
                 specialHonorees.put(x, new String[ev.getSpecialHonors().get(x)]);
+            }
+
+            // Now, the schools
+            specialSchools = new HashMap<String, String[]>();
+
+            // Initialize each array in the Map to the proper length
+            for (String x : ev.getSpecialHonors().keySet()) {
+                specialSchools.put(x, new String[ev.getSpecialHonors().get(x)]);
             }
         }
     }
@@ -259,5 +268,73 @@ public class EventResults {
         }
 
         this.specialHonorees = ret;
+    }
+
+    /**
+     * Returns a mapping from names of special honors to arrays of the schools of the competitors placing in them, in rank order where index 0 is first place.
+     * 
+     * @return the specialSchools, or null if this {@linkplain Event event} does not award special honors
+     */
+    public Map<String, String[]> getSpecialSchools () {
+        if (specialSchools == null) {
+            return null;
+        }
+
+        // Copy everything
+        Map<String, String[]> ret = new HashMap<String, String[]>();
+        for (Map.Entry<String, String[]> x : specialSchools.entrySet()) {
+            String k = x.getKey();
+            String[] v = x.getValue();
+            ret.put(k, Arrays.copyOf(v, v.length));
+        }
+
+        return ret;
+    }
+
+    /**
+     * Sets the schools of those competitors placing in special honors.
+     * 
+     * <p>
+     * The parameter is a mapping from names of special honors to arrays of the schools of those placing in them, in rank order where index 0 is first place.
+     * </p>
+     * 
+     * @param specialSchools the specialSchools to set
+     * @throws UnsupportedOperationException if this Event does not support special honors (equivalently, if {@link #getSpecialHonorees()} returns null)
+     * @throws NullPointerException if the parameter is null
+     * @throws IllegalArgumentException if the keys in <code>specialSchools</code> do not match the {@linkplain Event#getSpecialHonors() special honors} specified by the Event, or the length of one of the arrays does not match the amount of places specified for that special honor
+     */
+    public void setSpecialSchools (Map<String, String[]> specialSchools) {
+        if (this.specialSchools == null) {
+            throw new UnsupportedOperationException("Event " + ev.getPrimaryName() + " does not support special honors");
+        }
+        if (specialSchools == null) {
+            throw new NullPointerException("specialSchools must not be null");
+        }
+
+        // Check that the passed-in Map has same honors and same places in each
+        if (!specialSchools.keySet().equals(ev.getSpecialHonors().keySet())) {
+            throw new IllegalArgumentException("Keys in specialSchools must match those specified in the Event");
+        }
+        for (String x : specialSchools.keySet()) {
+            // How many places there should be for this special honor
+            int expected = ev.getSpecialHonors().get(x);
+
+            // How many there actually are
+            int observed = specialSchools.get(x).length;
+
+            if (expected != observed) {
+                throw new IllegalArgumentException("Places passed in for honor " + x + " in event " + ev.getPrimaryName() + " must match those specified in the Event (expected: " + expected + "; observed: " + observed + ")");
+            }
+        }
+
+        // Copy everything
+        Map<String, String[]> ret = new HashMap<String, String[]>();
+        for (Map.Entry<String, String[]> x : specialSchools.entrySet()) {
+            String k = x.getKey();
+            String[] v = x.getValue();
+            ret.put(k, Arrays.copyOf(v, v.length));
+        }
+
+        this.specialSchools = ret;
     }
 }
