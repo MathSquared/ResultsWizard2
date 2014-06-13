@@ -28,11 +28,11 @@ public class EventResults {
     private Event ev;
 
     // May be null if there are zero honorees in the corresponding category
-    private String[] indivHonorees;
-    private String[] indivSchools;
-    private String[] teamHonorees;
-    private Map<String, String[]> specialHonorees;
-    private Map<String, String[]> specialSchools;
+    private String[][] indivHonorees;
+    private String[][] indivSchools;
+    private String[][] teamHonorees;
+    private Map<String, String[][]> specialHonorees;
+    private Map<String, String[][]> specialSchools;
 
     /**
      * Constructs a new object representing results in the given event.
@@ -48,26 +48,26 @@ public class EventResults {
 
         // Set up the data structures based on the event spec
         if (ev.getIndivPlaces() > 0) {
-            indivHonorees = new String[ev.getIndivPlaces()];
-            indivSchools = new String[ev.getIndivPlaces()];
+            indivHonorees = new String[ev.getIndivPlaces()][];
+            indivSchools = new String[ev.getIndivPlaces()][];
         }
         if (ev.getTeamPlaces() > 0) {
-            teamHonorees = new String[ev.getTeamPlaces()];
+            teamHonorees = new String[ev.getTeamPlaces()][];
         }
         if (ev.getSpecialHonors().size() > 0) {
-            specialHonorees = new HashMap<String, String[]>();
+            specialHonorees = new HashMap<String, String[][]>();
 
             // Initialize each array in the Map to the proper length
             for (String x : ev.getSpecialHonors().keySet()) {
-                specialHonorees.put(x, new String[ev.getSpecialHonors().get(x)]);
+                specialHonorees.put(x, new String[ev.getSpecialHonors().get(x)][]);
             }
 
             // Now, the schools
-            specialSchools = new HashMap<String, String[]>();
+            specialSchools = new HashMap<String, String[][]>();
 
             // Initialize each array in the Map to the proper length
             for (String x : ev.getSpecialHonors().keySet()) {
-                specialSchools.put(x, new String[ev.getSpecialHonors().get(x)]);
+                specialSchools.put(x, new String[ev.getSpecialHonors().get(x)][]);
             }
         }
     }
@@ -89,7 +89,7 @@ public class EventResults {
      * @throws NullPointerException if this Event supports a particular result type, and the corresponding parameter was null
      * @throws IllegalArgumentException if a parameter is inconsistent with the Event specification
      */
-    public EventResults (Event evt, String[] indivHonorees, String[] indivSchools, String[] teamHonorees, Map<String, String[]> specialHonorees, Map<String, String[]> specialSchools) {
+    public EventResults (Event evt, String[][] indivHonorees, String[][] indivSchools, String[][] teamHonorees, Map<String, String[][]> specialHonorees, Map<String, String[][]> specialSchools) {
         this(evt); // Initializes data structures, so we can work with their lengths when deciding whether or not to throw UOE or NPE
 
         // Only call these methods if the event is supported; if not, UOE if the parameter was not null
@@ -129,7 +129,7 @@ public class EventResults {
      * 
      * @return the indivHonorees, or null if this {@linkplain Event event} does not award individual results
      */
-    public String[] getIndivHonorees () {
+    public String[][] getIndivHonorees () {
         if (indivHonorees == null) {
             return null;
         }
@@ -144,7 +144,7 @@ public class EventResults {
      * @throws NullPointerException if the parameter is null
      * @throws IllegalArgumentException if the length of <code>indivHonorees</code> does not match the {@linkplain Event#getIndivPlaces() amount of individual places} specified by the Event
      */
-    public void setIndivHonorees (String[] indivHonorees) {
+    public void setIndivHonorees (String[][] indivHonorees) {
         if (this.indivHonorees == null) {
             throw new UnsupportedOperationException("Event " + ev.getPrimaryName() + " does not support individual results");
         }
@@ -162,7 +162,7 @@ public class EventResults {
      * 
      * @return the indivSchools, or null if this {@linkplain Event event} does not award individual results
      */
-    public String[] getIndivSchools () {
+    public String[][] getIndivSchools () {
         if (indivSchools == null) {
             return null;
         }
@@ -177,7 +177,7 @@ public class EventResults {
      * @throws NullPointerException if the parameter is null
      * @throws IllegalArgumentException if the length of <code>indivHonorees</code> does not match the {@linkplain Event#getIndivPlaces() amount of individual places} specified by the Event
      */
-    public void setIndivSchools (String[] indivSchools) {
+    public void setIndivSchools (String[][] indivSchools) {
         if (this.indivSchools == null) {
             throw new UnsupportedOperationException("Event " + ev.getPrimaryName() + " does not support individual results");
         }
@@ -195,7 +195,7 @@ public class EventResults {
      * 
      * @return the teamHonorees, or null if this {@linkplain Event event} does not award team results
      */
-    public String[] getTeamHonorees () {
+    public String[][] getTeamHonorees () {
         if (teamHonorees == null) {
             return null;
         }
@@ -210,7 +210,7 @@ public class EventResults {
      * @throws NullPointerException if the parameter is null
      * @throws IllegalArgumentException if the length of <code>teamHonorees</code> does not match the {@linkplain Event#getTeamPlaces() amount of team places} specified by the Event
      */
-    public void setTeamHonorees (String[] teamHonorees) {
+    public void setTeamHonorees (String[][] teamHonorees) {
         if (this.teamHonorees == null) {
             throw new UnsupportedOperationException("Event " + ev.getPrimaryName() + " does not support team results");
         }
@@ -228,16 +228,16 @@ public class EventResults {
      * 
      * @return the specialHonorees, or null if this {@linkplain Event event} does not award special honors
      */
-    public Map<String, String[]> getSpecialHonorees () {
+    public Map<String, String[][]> getSpecialHonorees () {
         if (specialHonorees == null) {
             return null;
         }
 
         // Copy everything
-        Map<String, String[]> ret = new HashMap<String, String[]>();
-        for (Map.Entry<String, String[]> x : specialHonorees.entrySet()) {
+        Map<String, String[][]> ret = new HashMap<String, String[][]>();
+        for (Map.Entry<String, String[][]> x : specialHonorees.entrySet()) {
             String k = x.getKey();
-            String[] v = x.getValue();
+            String[][] v = x.getValue();
             ret.put(k, Arrays.copyOf(v, v.length));
         }
 
@@ -256,7 +256,7 @@ public class EventResults {
      * @throws NullPointerException if the parameter is null
      * @throws IllegalArgumentException if the keys in <code>specialHonorees</code> do not match the {@linkplain Event#getSpecialHonors() special honors} specified by the Event, or the length of one of the arrays does not match the amount of places specified for that special honor
      */
-    public void setSpecialHonorees (Map<String, String[]> specialHonorees) {
+    public void setSpecialHonorees (Map<String, String[][]> specialHonorees) {
         if (this.specialHonorees == null) {
             throw new UnsupportedOperationException("Event " + ev.getPrimaryName() + " does not support special honors");
         }
@@ -281,10 +281,10 @@ public class EventResults {
         }
 
         // Copy everything
-        Map<String, String[]> ret = new HashMap<String, String[]>();
-        for (Map.Entry<String, String[]> x : specialHonorees.entrySet()) {
+        Map<String, String[][]> ret = new HashMap<String, String[][]>();
+        for (Map.Entry<String, String[][]> x : specialHonorees.entrySet()) {
             String k = x.getKey();
-            String[] v = x.getValue();
+            String[][] v = x.getValue();
             ret.put(k, Arrays.copyOf(v, v.length));
         }
 
@@ -296,16 +296,16 @@ public class EventResults {
      * 
      * @return the specialSchools, or null if this {@linkplain Event event} does not award special honors
      */
-    public Map<String, String[]> getSpecialSchools () {
+    public Map<String, String[][]> getSpecialSchools () {
         if (specialSchools == null) {
             return null;
         }
 
         // Copy everything
-        Map<String, String[]> ret = new HashMap<String, String[]>();
-        for (Map.Entry<String, String[]> x : specialSchools.entrySet()) {
+        Map<String, String[][]> ret = new HashMap<String, String[][]>();
+        for (Map.Entry<String, String[][]> x : specialSchools.entrySet()) {
             String k = x.getKey();
-            String[] v = x.getValue();
+            String[][] v = x.getValue();
             ret.put(k, Arrays.copyOf(v, v.length));
         }
 
@@ -324,7 +324,7 @@ public class EventResults {
      * @throws NullPointerException if the parameter is null
      * @throws IllegalArgumentException if the keys in <code>specialSchools</code> do not match the {@linkplain Event#getSpecialHonors() special honors} specified by the Event, or the length of one of the arrays does not match the amount of places specified for that special honor
      */
-    public void setSpecialSchools (Map<String, String[]> specialSchools) {
+    public void setSpecialSchools (Map<String, String[][]> specialSchools) {
         if (this.specialSchools == null) {
             throw new UnsupportedOperationException("Event " + ev.getPrimaryName() + " does not support special honors");
         }
@@ -349,10 +349,10 @@ public class EventResults {
         }
 
         // Copy everything
-        Map<String, String[]> ret = new HashMap<String, String[]>();
-        for (Map.Entry<String, String[]> x : specialSchools.entrySet()) {
+        Map<String, String[][]> ret = new HashMap<String, String[][]>();
+        for (Map.Entry<String, String[][]> x : specialSchools.entrySet()) {
             String k = x.getKey();
-            String[] v = x.getValue();
+            String[][] v = x.getValue();
             ret.put(k, Arrays.copyOf(v, v.length));
         }
 
