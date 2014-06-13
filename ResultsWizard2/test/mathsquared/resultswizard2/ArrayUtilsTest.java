@@ -18,7 +18,8 @@ public class ArrayUtilsTest {
     /**
      * Test method for {@link mathsquared.resultswizard2.ArrayUtils#deepCopyOf(T[][])}.
      */
-    @Test
+    // Timeout to detect infinite recursion with null
+    @Test(timeout = 2000)
     public void testDeepCopyOf () {
         // Initialize some arrays
 
@@ -29,6 +30,9 @@ public class ArrayUtilsTest {
         Integer[][] easier = new Integer[][] { {1, 2}, {3}, {4, 5, 6}};
         Integer[][] easierResult = ArrayUtils.deepCopyOf(easier);
         assertArrayEquals("2-D irregular Integer array", easier, easierResult);
+
+        Object[][] nul = null;
+        assertArrayEquals("Null", ArrayUtils.deepCopyOf(nul), null); // infinite recursion detected by timeout
     }
 
     /**
