@@ -29,6 +29,15 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
+/**
+ * Obtains connection details from a user for connecting to a local or remote computer. If remote, also obtains a corresponding {@link Socket}.
+ * 
+ * <p>
+ * The user's selection is returned by the {@link #call()} method, which sets the visibility of this frame and blocks until the user makes a valid selection.
+ * 
+ * @author MathSquared
+ * 
+ */
 public class ConnectionDetailsFrame extends JFrame implements Callable<Socket> {
 
     private JPanel contentPane;
@@ -217,6 +226,11 @@ public class ConnectionDetailsFrame extends JFrame implements Callable<Socket> {
         setLocationRelativeTo(null);
     }
 
+    /**
+     * Returns a <code>Socket</code> connected to the user-specified IP/host and port.
+     * 
+     * @return a {@link Socket} as specified by the user, or null if the connection was specified as local or the user closed the window other than by activating the Submit button
+     */
     public Socket call () {
         setVisible(true);
         while (!finished);
