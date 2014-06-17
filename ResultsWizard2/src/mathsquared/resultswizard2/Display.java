@@ -3,6 +3,8 @@
  */
 package mathsquared.resultswizard2;
 
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
@@ -77,6 +79,10 @@ public class Display implements Runnable {
 
     public void run () {
         // TODO display stuff
+
+        // Select a graphics device
+        GraphicsDevice[] gds = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices();
+        GraphicsDevice gd = GraphicsDeviceSelector.selectGraphicsDevice(gds);
     }
 
 }
