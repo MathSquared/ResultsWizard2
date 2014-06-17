@@ -29,10 +29,10 @@ public class Display implements Runnable {
      * @param args the command-line arguments; unused
      */
     public static void main (String[] args) {
-        ConnectionDetailsFrame cdf = new ConnectionDetailsFrame(false);
+        ConnectionDetailsFrame cdf = new ConnectionDetailsFrame(false); // disallow local connections by passing in false
         Socket sock = cdf.call();
 
-        // Don't allow the user to specify a null network connection (even though we disallow remote, they can still press the close button)
+        // Don't allow the user to specify a null network connection (even though we disallow local, they can still press the close button)
         while (sock == null) {
             JOptionPane.showMessageDialog(null, "You must specify an IP address and port, then press the Submit button.");
             sock = cdf.call();
