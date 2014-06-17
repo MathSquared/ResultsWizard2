@@ -51,7 +51,7 @@ public class ConnectionDetailsFrame extends JFrame implements Callable<Socket> {
     /**
      * Create the frame.
      */
-    public ConnectionDetailsFrame () {
+    public ConnectionDetailsFrame (boolean allowLocal) {
         setTitle("Connection Details");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 450, 300);
@@ -75,6 +75,7 @@ public class ConnectionDetailsFrame extends JFrame implements Callable<Socket> {
 
         JRadioButton rdbtnLocal = new JRadioButton("Local (this computer)");
         localOrRemoteGroup.add(rdbtnLocal);
+        rdbtnLocal.setEnabled(allowLocal);
         selectLocationPanel.add(rdbtnLocal);
 
         final JRadioButton rdbtnRemote = new JRadioButton("Remote (another computer)");

@@ -16,7 +16,7 @@ public class ConnectionDetailsFrameTest {
      */
     @Test
     public void testConnectionDetailsFrame () {
-        ConnectionDetailsFrame cdf = new ConnectionDetailsFrame();
+        ConnectionDetailsFrame cdf = new ConnectionDetailsFrame(true);
         cdf.call();
     }
 
