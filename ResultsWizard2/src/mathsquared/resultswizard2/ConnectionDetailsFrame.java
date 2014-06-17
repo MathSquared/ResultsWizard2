@@ -74,11 +74,11 @@ public class ConnectionDetailsFrame extends JFrame implements Callable<Socket> {
         selectLocationPanel.add(selectLocationVerticalStrut);
 
         JRadioButton rdbtnLocal = new JRadioButton("Local (this computer)");
-        rdbtnLocal.setSelected(true);
         localOrRemoteGroup.add(rdbtnLocal);
         selectLocationPanel.add(rdbtnLocal);
 
         final JRadioButton rdbtnRemote = new JRadioButton("Remote (another computer)");
+        rdbtnRemote.setSelected(true);
         localOrRemoteGroup.add(rdbtnRemote);
         selectLocationPanel.add(rdbtnRemote);
 
@@ -99,6 +99,7 @@ public class ConnectionDetailsFrame extends JFrame implements Callable<Socket> {
 
         JPanel remotePanel = new JPanel();
         detailPanel.add(remotePanel, "remoteCard");
+        ((CardLayout) detailPanel.getLayout()).show(detailPanel, "remoteCard");
         remotePanel.setLayout(new BorderLayout(0, 0));
 
         JLabel lblRemoteHeader = new JLabel("Please specify the connection details below:");
