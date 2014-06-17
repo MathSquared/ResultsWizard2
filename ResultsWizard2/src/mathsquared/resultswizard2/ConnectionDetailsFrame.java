@@ -3,55 +3,47 @@ package mathsquared.resultswizard2;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Component;
-import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.IOException;
 import java.net.InetAddress;
+import java.net.Socket;
 import java.net.UnknownHostException;
-import java.text.ParseException;
+import java.util.concurrent.Callable;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
-import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
-import javax.swing.text.DefaultFormatter;
 
-public class ConnectionDetailsFrame extends JFrame {
+public class ConnectionDetailsFrame extends JFrame implements Callable<Socket> {
 
     private JPanel contentPane;
     private JTextField portField;
-    private JFormattedTextField ipAddrField;
+    private JTextField ipAddrField;
     private final ButtonGroup localOrRemoteGroup = new ButtonGroup();
 
-    /**
-     * Launch the application.
-     */
-    public static void main (String[] args) {
-        EventQueue.invokeLater(new Runnable() {
-            public void run () {
-                try {
-                    ConnectionDetailsFrame frame = new ConnectionDetailsFrame();
-                    frame.setVisible(true);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
+    private boolean finished = false;
+    private Socket output = null;
 
     /**
      * Create the frame.
      */
     public ConnectionDetailsFrame () {
+        setTitle("Connection Details");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 450, 300);
         contentPane = new JPanel();
@@ -77,7 +69,7 @@ public class ConnectionDetailsFrame extends JFrame {
         localOrRemoteGroup.add(rdbtnLocal);
         selectLocationPanel.add(rdbtnLocal);
 
-        JRadioButton rdbtnRemote = new JRadioButton("Remote (another computer)");
+        final JRadioButton rdbtnRemote = new JRadioButton("Remote (another computer)");
         localOrRemoteGroup.add(rdbtnRemote);
         selectLocationPanel.add(rdbtnRemote);
 
@@ -85,14 +77,15 @@ public class ConnectionDetailsFrame extends JFrame {
         contentPane.add(detailAndSubmitPanel, BorderLayout.SOUTH);
         detailAndSubmitPanel.setLayout(new BorderLayout(0, 0));
 
-        JPanel detailPanel = new JPanel();
+        final JPanel detailPanel = new JPanel();
         detailAndSubmitPanel.add(detailPanel, BorderLayout.NORTH);
         detailPanel.setLayout(new CardLayout(0, 0));
 
         JPanel localPanel = new JPanel();
         detailPanel.add(localPanel, "localCard");
 
-        JLabel lblLocalDescriptor = new JLabel("This component will connect to another component running on this computer.");
+        JLabel lblLocalDescriptor = new JLabel("<html><body style='width:300px;text-align:center;'>This component will connect to another component running on this computer.</body></html>");
+        lblLocalDescriptor.setHorizontalAlignment(SwingConstants.CENTER);
         localPanel.add(lblLocalDescriptor);
 
         JPanel remotePanel = new JPanel();
@@ -136,26 +129,7 @@ public class ConnectionDetailsFrame extends JFrame {
         gbc_connectionDetailsGridHorizontalStrut.gridy = 1;
         connectionDetailsPanel.add(connectionDetailsGridHorizontalStrut, gbc_connectionDetailsGridHorizontalStrut);
 
-        ipAddrField = new JFormattedTextField(new DefaultFormatter() {
-            /**
-             * 
-             */
-            private static final long serialVersionUID = -3566361116104247105L;
-
-            {
-                setValueClass(InetAddress.class);
-            }
-
-            public Object stringToValue (String addr) throws ParseException {
-                try {
-                    return InetAddress.getByName(addr);
-                } catch (UnknownHostException e) {
-                    ParseException parseE = new ParseException("Invalid IP address or host name", 0);
-                    parseE.initCause(e);
-                    throw parseE;
-                }
-            }
-        });
+        ipAddrField = new JTextField();
         ipAddrField.setHorizontalAlignment(SwingConstants.CENTER);
         ipAddrField.setText("127.0.0.1");
         GridBagConstraints gbc_ipAddrField = new GridBagConstraints();
@@ -189,6 +163,64 @@ public class ConnectionDetailsFrame extends JFrame {
 
         JButton btnSubmit = new JButton("Submit");
         detailAndSubmitPanel.add(btnSubmit, BorderLayout.SOUTH);
+
+        // Event listeners to change cards
+        rdbtnLocal.addActionListener(new ActionListener() {
+            public void actionPerformed (ActionEvent e) {
+                CardLayout layout = (CardLayout) (detailPanel.getLayout());
+                layout.show(detailPanel, "localCard");
+            }
+        });
+        rdbtnRemote.addActionListener(new ActionListener() {
+            public void actionPerformed (ActionEvent e) {
+                CardLayout layout = (CardLayout) (detailPanel.getLayout());
+                layout.show(detailPanel, "remoteCard");
+            }
+        });
+
+        // Event listener for Submit button
+        btnSubmit.addActionListener(new ActionListener() {
+            public void actionPerformed (ActionEvent e) {
+                boolean whetherToClose = false; // don't close if an error occurs
+
+                // Clean up (if local, output remains null)
+                if (rdbtnRemote.isSelected()) {
+                    try {
+                        output = new Socket(InetAddress.getByName(ipAddrField.getText()), Integer.parseInt(portField.getText()));
+                        whetherToClose = true;
+                    } catch (IllegalArgumentException e1) {
+                        JOptionPane.showMessageDialog(ConnectionDetailsFrame.this, "Error: Invalid port " + portField.getText() + "; must be a number between 0 and 65535");
+                    } catch (UnknownHostException e1) {
+                        JOptionPane.showMessageDialog(ConnectionDetailsFrame.this, "Error: unable to connect to " + ipAddrField.getText() + "; host unknown");
+                    } catch (IOException e1) {
+                        JOptionPane.showMessageDialog(ConnectionDetailsFrame.this, "An I/O error occurred: " + e1.getMessage());
+                    }
+                } else { // local
+                    output = null;
+                    whetherToClose = true;
+                }
+
+                if (whetherToClose) {
+                    ConnectionDetailsFrame.this.setVisible(false);
+                    finished = true;
+                }
+            }
+        });
+
+        addWindowListener(new WindowAdapter() {
+            public void windowClosing (WindowEvent e) {
+                finished = true;
+            }
+        });
+
+        // Center on screen
+        setLocationRelativeTo(null);
+    }
+
+    public Socket call () {
+        setVisible(true);
+        while (!finished);
+        return output;
     }
 
 }
