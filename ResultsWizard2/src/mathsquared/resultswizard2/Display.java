@@ -8,6 +8,9 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
+import java.net.Socket;
+
+import javax.swing.JOptionPane;
 
 /**
  * Runs the display logic of the program; acts as the client in a client-server framework.
@@ -24,10 +27,39 @@ public class Display implements Runnable {
      * @param args the command-line arguments; unused
      */
     public static void main (String[] args) {
-        // TODO obtain network address (in a local Piped__Stream setup, this object would be instantiated by the main app)
-        // TODO create Socket and streams
+        ConnectionDetailsFrame cdf = new ConnectionDetailsFrame(false);
+        Socket sock = cdf.call();
 
-        // TODO instantiate and run the Display
+        // Don't allow the user to specify a null network connection (even though we disallow remote, they can still press the close button)
+        while (sock == null) {
+            JOptionPane.showMessageDialog(null, "You must specify an IP address and port, then press the Submit button.");
+            sock = cdf.call();
+        }
+
+        InputStream sockIn;
+        OutputStream sockOut;
+
+        try {
+            sockIn = sock.getInputStream();
+            sockOut = sock.getOutputStream();
+        } catch (IOException e) {
+            System.out.println("ERROR: I/O error occurred when initializing network communication");
+            e.printStackTrace(System.out);
+            System.out.println("Exiting...");
+            System.exit(0);
+            return;
+        }
+
+        // Run the app
+        try {
+            new Display(sockIn, sockOut);
+        } catch (IOException e) {
+            System.out.println("ERROR: I/O error occurred when initializing display");
+            e.printStackTrace(System.out);
+            System.out.println("Exiting...");
+            System.exit(0);
+            return;
+        }
     }
 
     /**
