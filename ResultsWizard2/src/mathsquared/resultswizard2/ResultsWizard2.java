@@ -23,8 +23,8 @@ public class ResultsWizard2 {
      */
     public static void main (String[] args) {
         // Setup comms
-        ConnectionDetailsFrame cdf = new ConnectionDetailsFrame(true);
-        Socket sock = cdf.call();
+        WaitForConnectionFrame wfcf = new WaitForConnectionFrame();
+        Socket sock = wfcf.call();
         InputStream istr;
         OutputStream ostr;
         if (sock != null) { // there is a socket; remote
