@@ -62,8 +62,8 @@ public class StreamQueueProxy implements Runnable {
                     outQ.poll(); // separated into two calls so if a write fails, we don't simply lose the polled element
                 }
             } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                System.out.println("An I/O error has occurred during writing: " + e.getMessage());
+                e.printStackTrace(System.out);
             }
 
             // Continually retrieve objects from the input queue until a given time limit is exceeded
@@ -78,7 +78,7 @@ public class StreamQueueProxy implements Runnable {
                                 System.out.println("Error: Class not found: " + e.getMessage());
                                 e.printStackTrace(System.out);
                             } catch (IOException e) {
-                                System.out.println("An I/O error has occurred: " + e.getMessage());
+                                System.out.println("An I/O error has occurred during reading: " + e.getMessage());
                                 e.printStackTrace(System.out);
                             }
                             return null; // if an exception is thrown
