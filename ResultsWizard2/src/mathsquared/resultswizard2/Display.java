@@ -93,14 +93,12 @@ public class Display implements Runnable {
 
     /**
      * Reinitializes the Object__Streams based on the <code>InputStream</code> and <code>OutputStream</code> given to the constructor.
+     * 
+     * @throws IOException if either of the Object__Stream constructors throws an <code>IOException</code>
      */
-    private void restartStreams () {
-        try {
-            out = new ObjectOutputStream(outRaw);
-            in = new ObjectInputStream(inRaw);
-        } catch (IOException e) {
-            System.out.println("Error when reinitializing streams: " + e.getMessage());
-        }
+    private void restartStreams () throws IOException {
+        out = new ObjectOutputStream(outRaw);
+        in = new ObjectInputStream(inRaw);
     }
 
 }
