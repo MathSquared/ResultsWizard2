@@ -21,6 +21,9 @@ import javax.swing.JOptionPane;
  * 
  */
 public class Display implements Runnable {
+    // Original streams, in case they need reinitialization based on a corrupted object received by the Object__Streams
+    private OutputStream outRaw;
+    private InputStream inRaw;
 
     ObjectInputStream in;
     ObjectOutputStream out;
@@ -72,6 +75,9 @@ public class Display implements Runnable {
      * @throws IOException if an I/O error occurs when instantiating the object
      */
     public Display (InputStream cmds, OutputStream resp) throws IOException {
+        inRaw = cmds;
+        outRaw = resp;
+
         // Create Object__Streams
         in = new ObjectInputStream(cmds);
         out = new ObjectOutputStream(resp);
@@ -83,6 +89,18 @@ public class Display implements Runnable {
         // Select a graphics device
         GraphicsDevice[] gds = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices();
         GraphicsDevice gd = GraphicsDeviceSelector.selectGraphicsDevice(gds);
+    }
+
+    /**
+     * Reinitializes the Object__Streams based on the <code>InputStream</code> and <code>OutputStream</code> given to the constructor.
+     */
+    private void restartStreams () {
+        try {
+            out = new ObjectOutputStream(outRaw);
+            in = new ObjectInputStream(inRaw);
+        } catch (IOException e) {
+            System.out.println("Error when reinitializing streams: " + e.getMessage());
+        }
     }
 
 }
