@@ -6,8 +6,10 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -83,7 +85,12 @@ public class WaitForConnectionFrame extends JFrame implements Callable<Socket> {
         lblIpAddress.setHorizontalAlignment(SwingConstants.RIGHT);
         ipInfoPanel.add(lblIpAddress);
 
-        JLabel lblIpLabel = new JLabel("IP Label");
+        JLabel lblIpLabel;
+        try {
+            lblIpLabel = new JLabel(InetAddress.getLocalHost().getHostAddress());
+        } catch (UnknownHostException e2) {
+            lblIpLabel = new JLabel("ERROR: UNKNOWN IP");
+        }
         ipInfoPanel.add(lblIpLabel);
 
         JLabel lblPort = new JLabel("Port:");
