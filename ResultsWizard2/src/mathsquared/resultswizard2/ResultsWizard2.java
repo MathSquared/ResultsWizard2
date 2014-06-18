@@ -51,6 +51,8 @@ public class ResultsWizard2 {
                 return;
             }
         }
+
+        // TODO make sure this side calls the ObjectOutputStream constructor first! otherwise, deadlock results (see Javadoc)
     }
 
 }
