@@ -5,10 +5,14 @@ package mathsquared.resultswizard2;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.net.Socket;
+
+import javax.swing.JOptionPane;
 
 /**
  * Main class for the application; runs the administrator GUI that handles result entry.
@@ -17,6 +21,9 @@ import java.net.Socket;
  * 
  */
 public class ResultsWizard2 {
+
+    private ObjectOutputStream out;
+    private ObjectInputStream in;
 
     /**
      * @param args the command-line arguments; unused
@@ -52,7 +59,16 @@ public class ResultsWizard2 {
             }
         }
 
-        // TODO make sure this side calls the ObjectOutputStream constructor first! otherwise, deadlock results (see Javadoc)
+        // make sure this side calls the ObjectOutputStream constructor first! otherwise, deadlock results (see Javadoc)
+        ObjectOutputStream objOut = null;
+        ObjectInputStream objIn = null;
+        try {
+            objOut = new ObjectOutputStream(ostr);
+            objIn = new ObjectInputStream(istr);
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "An I/O error occurred: " + e.getMessage());
+            System.exit(1);
+        }
     }
 
 }
