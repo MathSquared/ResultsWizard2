@@ -69,6 +69,8 @@ public class ResultsWizard2 {
      * Starts the application, using the given streams for communication.
      */
     public ResultsWizard2 (InputStream istr, OutputStream ostr) {
+        inRaw = istr;
+        outRaw = ostr;
         try {
             out = new ObjectOutputStream(ostr);
             in = new ObjectInputStream(istr);
@@ -78,6 +80,18 @@ public class ResultsWizard2 {
         }
 
         // TODO start the GUI and do great things
+    }
+
+    /**
+     * Reinitializes the Object__Streams based on the <code>InputStream</code> and <code>OutputStream</code> given to the constructor.
+     */
+    private void restartStreams () {
+        try {
+            out = new ObjectOutputStream(outRaw);
+            in = new ObjectInputStream(inRaw);
+        } catch (IOException e) {
+            System.out.println("Error when reinitializing streams: " + e.getMessage());
+        }
     }
 
 }
