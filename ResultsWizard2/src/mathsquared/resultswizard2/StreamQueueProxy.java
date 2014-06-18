@@ -86,11 +86,11 @@ public class StreamQueueProxy implements Runnable {
                     });
                     inQ.add(future.get(1000, TimeUnit.MILLISECONDS));
                 }
-            } catch (TimeoutException e) {
+            } catch (TimeoutException e) { // task timed out, so we exit the loop--probably no more data to read
 
             } catch (InterruptedException e) {
 
-            } catch (ExecutionException e) {
+            } catch (ExecutionException e) { // Callable threw an exception
                 System.out.println("Object retrieval failed: " + e.getMessage());
                 e.printStackTrace(System.out);
             }
