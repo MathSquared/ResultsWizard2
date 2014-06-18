@@ -21,6 +21,9 @@ import javax.swing.JOptionPane;
  * 
  */
 public class ResultsWizard2 {
+    // Original streams, in case they need reinitialization based on a corrupted object received by the Object__Streams
+    private OutputStream outRaw;
+    private InputStream inRaw;
 
     private ObjectOutputStream out;
     private ObjectInputStream in;
@@ -60,17 +63,21 @@ public class ResultsWizard2 {
                 return;
             }
         }
+    }
 
-        // make sure this side calls the ObjectOutputStream constructor first! otherwise, deadlock results (see Javadoc)
-        ObjectOutputStream objOut = null;
-        ObjectInputStream objIn = null;
+    /**
+     * Starts the application, using the given streams for communication.
+     */
+    public ResultsWizard2 (InputStream istr, OutputStream ostr) {
         try {
-            objOut = new ObjectOutputStream(ostr);
-            objIn = new ObjectInputStream(istr);
+            out = new ObjectOutputStream(ostr);
+            in = new ObjectInputStream(istr);
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "An I/O error occurred: " + e.getMessage());
             System.exit(1);
         }
+
+        // TODO start the GUI and do great things
     }
 
 }
