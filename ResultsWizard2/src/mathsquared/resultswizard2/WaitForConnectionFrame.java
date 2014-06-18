@@ -121,8 +121,10 @@ public class WaitForConnectionFrame extends JFrame implements Callable<Socket> {
                 try {
                     int portCand = Integer.parseInt(portField.getText());
                     if (portCand >= 0 && portCand <= 65535) {
+                        ServerSocket oldServ = serv;
+                        serv = new ServerSocket(portCand);
+                        oldServ.close(); // release the port
                         port = portCand;
-                        serv = new ServerSocket(port);
                     } else {
                         throw new NumberFormatException("Invalid range for port parameter");
                     }
