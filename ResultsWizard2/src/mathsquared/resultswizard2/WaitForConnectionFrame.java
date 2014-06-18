@@ -100,6 +100,10 @@ public class WaitForConnectionFrame extends JFrame implements Callable<Socket> {
         final JLabel lblPortLabel = new JLabel(Integer.toString(port));
         ipInfoPanel.add(lblPortLabel);
 
+        JLabel lblIfYouAre = new JLabel("<html><body style='width:100%;text-align:center;'>If this computer and the intended display unit are not on the same network, you may need to forward this machine's port. Consult your router documentation for more information.</body></html>");
+        lblIfYouAre.setAlignmentX(Component.CENTER_ALIGNMENT);
+        contentPane.add(lblIfYouAre);
+
         Component verticalStrut = Box.createVerticalStrut(20);
         contentPane.add(verticalStrut);
 
