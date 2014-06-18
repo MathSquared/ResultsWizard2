@@ -42,7 +42,7 @@ public class ResultsWizard2 {
                 System.out.println("ERROR: I/O error occurred when initializing network communication");
                 e.printStackTrace(System.out);
                 System.out.println("Exiting...");
-                System.exit(0);
+                System.exit(1);
                 return;
             }
         } else { // local
@@ -54,7 +54,7 @@ public class ResultsWizard2 {
                 System.out.println("ERROR: I/O error occurred when initializing display");
                 e.printStackTrace(System.out);
                 System.out.println("Exiting...");
-                System.exit(0);
+                System.exit(1);
                 return;
             }
         }
