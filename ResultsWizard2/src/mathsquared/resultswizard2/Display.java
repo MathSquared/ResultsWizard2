@@ -79,8 +79,8 @@ public class Display implements Runnable {
         outRaw = resp;
 
         // Create Object__Streams
-        in = new ObjectInputStream(cmds);
         out = new ObjectOutputStream(resp);
+        in = new ObjectInputStream(cmds);
     }
 
     public void run () {
