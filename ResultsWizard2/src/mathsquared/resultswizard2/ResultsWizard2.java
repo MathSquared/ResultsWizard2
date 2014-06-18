@@ -39,6 +39,7 @@ public class ResultsWizard2 {
                 istr = sock.getInputStream();
                 ostr = sock.getOutputStream();
             } catch (IOException e) {
+                JOptionPane.showMessageDialog(null, "An I/O error occurred when initializing network communication: " + e.getMessage());
                 System.out.println("ERROR: I/O error occurred when initializing network communication");
                 e.printStackTrace(System.out);
                 System.out.println("Exiting...");
@@ -51,6 +52,7 @@ public class ResultsWizard2 {
             try {
                 new Display(new PipedInputStream((PipedOutputStream) ostr), new PipedOutputStream((PipedInputStream) istr));
             } catch (IOException e) {
+                JOptionPane.showMessageDialog(null, "An I/O error occurred when initializing the display: " + e.getMessage());
                 System.out.println("ERROR: I/O error occurred when initializing display");
                 e.printStackTrace(System.out);
                 System.out.println("Exiting...");
