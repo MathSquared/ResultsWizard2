@@ -35,7 +35,7 @@ public class GraphicsDeviceSelector {
      * Creates a String representation of a <code>GraphicsDevice</code>, including information about its current <code>DisplayMode</code>.
      * 
      * @param gd the {@link GraphicsDevice} to examine
-     * @return a String in the format <code>"[ &lt;IDstring> ] &lt;width>x&lt;height>, &lt;bitDepth>-bit @ &lt;refreshRate> Hz"<code>, where <code>IDstring = gd.getIDstring()</code>, <code>width = gd.getDisplayMode().getWidth()</code>, etc. (All values are obtained from the {@link DisplayMode} except for the <code>IDstring</code>.)
+     * @return a String in the format <code>"[ &lt;IDstring> ] &lt;width>x&lt;height>, &lt;bitDepth>-bit @ &lt;refreshRate> Hz"</code>, where <code>IDstring = gd.getIDstring()</code>, <code>width = gd.getDisplayMode().getWidth()</code>, etc. (All values are obtained from the {@link DisplayMode} except for the <code>IDstring</code>.)
      */
     public static String graphicsDeviceToString (GraphicsDevice gd) {
         DisplayMode dm = gd.getDisplayMode();
