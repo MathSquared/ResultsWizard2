@@ -1,7 +1,6 @@
 package mathsquared.resultswizard2;
 
 import java.awt.Component;
-import java.awt.EventQueue;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -41,22 +40,6 @@ public class WaitForConnectionFrame extends JFrame implements Callable<Socket> {
     private Socket sock;
 
     private volatile ServerSocket serv;
-
-    /**
-     * Launch the application.
-     */
-    public static void main (String[] args) {
-        EventQueue.invokeLater(new Runnable() {
-            public void run () {
-                try {
-                    WaitForConnectionFrame frame = new WaitForConnectionFrame();
-                    frame.setVisible(true);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
 
     /**
      * Create the frame.
@@ -168,7 +151,14 @@ public class WaitForConnectionFrame extends JFrame implements Callable<Socket> {
         }
     }
 
-    public Socket call () {
+    /**
+     * Returns a <code>Socket</code> representing a client connected to the user-specified port, or null if the user closes the window or opts to run a local session.
+     * 
+     * @return the described <code>Socket</code>, or null if a local session
+     */
+    public synchronized Socket call () {
+        setVisible(true);
+
         ExecutorService pool = Executors.newCachedThreadPool();
         while (!ready) {
             Future<Socket> future = pool.submit(new Callable<Socket>() {
