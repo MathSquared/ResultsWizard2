@@ -9,8 +9,12 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.Window;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.OutputStream;
+import java.util.Queue;
 
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
@@ -51,8 +55,13 @@ public class DisplayPanel extends JPanel implements Runnable {
     // no frame skip logic needed
 
     // messages
-    private final ObjectInputStream OIS;
-    private final ObjectOutputStream OOS;
+    private InputStream inRaw;
+    private OutputStream outRaw;
+    private ObjectInputStream ois;
+    private ObjectOutputStream oos;
+    private Queue in;
+    private Queue out;
+    private StreamQueueProxy sqProxy;
 
     /**
      * Creates a DisplayPanel with the given parameters and prepares it for use.
@@ -64,14 +73,20 @@ public class DisplayPanel extends JPanel implements Runnable {
      * @param ois the ObjectInputStream carrying {@link Command}s for the display unit
      * @param oos the ObjectOutputStream carrying {@link Command}s from the display unit
      */
-    public DisplayPanel (int width, int height, int fps, Color bgColor, ObjectInputStream ois, ObjectOutputStream oos) {
+    public DisplayPanel (int width, int height, int fps, Color bgColor, InputStream is, OutputStream os) throws IOException {
         WIDTH = width;
         HEIGHT = height;
         FPS = fps;
         period = 1000000000L / fps;
         BG_COLOR = bgColor;
-        OIS = ois;
-        OOS = oos;
+        inRaw = is;
+        outRaw = os;
+        this.oos = new ObjectOutputStream(os);
+        this.ois = new ObjectInputStream(is);
+
+        sqProxy = new StreamQueueProxy(ois, oos);
+        in = sqProxy.getInQ();
+        out = sqProxy.getOutQ();
 
         setBackground(bgColor);
         setPreferredSize(new Dimension(width, height));

@@ -7,8 +7,6 @@ import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 
@@ -24,9 +22,6 @@ public class Display implements Runnable {
     // Original streams, in case they need reinitialization based on a corrupted object received by the Object__Streams
     private OutputStream outRaw;
     private InputStream inRaw;
-
-    ObjectInputStream in;
-    ObjectOutputStream out;
 
     /**
      * @param args the command-line arguments; unused
@@ -78,9 +73,7 @@ public class Display implements Runnable {
         inRaw = cmds;
         outRaw = resp;
 
-        // Create Object__Streams
-        out = new ObjectOutputStream(resp);
-        in = new ObjectInputStream(cmds);
+        // TODO delegate Object__Stream creation to the DisplayPanel (that way, it can restart streams if needed)
     }
 
     public void run () {
@@ -89,16 +82,6 @@ public class Display implements Runnable {
         // Select a graphics device
         GraphicsDevice[] gds = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices();
         GraphicsDevice gd = GraphicsDeviceSelector.selectGraphicsDevice(gds);
-    }
-
-    /**
-     * Reinitializes the Object__Streams based on the <code>InputStream</code> and <code>OutputStream</code> given to the constructor.
-     * 
-     * @throws IOException if either of the Object__Stream constructors throws an <code>IOException</code>
-     */
-    private void restartStreams () throws IOException {
-        out = new ObjectOutputStream(outRaw);
-        in = new ObjectInputStream(inRaw);
     }
 
 }
