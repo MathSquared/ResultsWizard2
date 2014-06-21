@@ -6,6 +6,7 @@ package mathsquared.resultswizard2;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -81,7 +82,21 @@ public class StreamQueueProxy implements Runnable {
                                 System.out.println("An I/O error has occurred during reading: " + e.getMessage());
                                 e.printStackTrace(System.out);
                             }
-                            return null; // if an exception is thrown
+
+                            // TODO rewrite this with an instance of a non-anonymous implementing class of Command, when I write an implementation
+                            return new Command() {
+                                public Message getType () {
+                                    return Message.XMIT_ERROR_RESTART;
+                                }
+
+                                public String getStringPayload () {
+                                    throw new UnsupportedOperationException("This message does not carry a String payload");
+                                }
+
+                                public Map<String, Slide[]> getStringSlidesPayload () {
+                                    throw new UnsupportedOperationException("This message does not carry a Map<String, Slide[]> payload");
+                                }
+                            }; // if an exception is thrown; this queue chokes on null
                         }
                     });
                     inQ.add(future.get(1000, TimeUnit.MILLISECONDS));
@@ -106,6 +121,10 @@ public class StreamQueueProxy implements Runnable {
 
     /**
      * Returns a <code>Queue</code> that will be continually updated to contain objects from the given <code>ObjectInputStream</code> while this StreamQueueProxy is running. The <code>Queue</code> will be thread-safe.
+     * 
+     * <p>
+     * Note that if the <code>Queue</code> ever returns a value of {@link Message#XMIT_ERROR_RESTART}, the client application should discard this StreamQueueProxy, both <code>Queue</code>s from it, and the <code>Object__Streams</code> passed into the constructor, and, after error-correction behavior of the application's choosing, construct a new StreamQueueProxy with <code>Object__Streams</code> newly constructed from the original raw binary streams.
+     * </p>
      * 
      * @return a <code>Queue</code> for input into the client program
      */
