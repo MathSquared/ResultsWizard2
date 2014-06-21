@@ -14,7 +14,7 @@ package mathsquared.resultswizard2;
  * 
  */
 public enum Message {
-    POISON(ParamType.NONE), ADD(ParamType.MAP_STRING_SLIDES), REMOVE(ParamType.STRING), RETR_SLIDES(ParamType.NONE), RESP_SLIDES(ParamType.MAP_STRING_SLIDES), TICKER(ParamType.STRING), RETR_TICKER(ParamType.NONE), RESP_TICKER(ParamType.STRING);
+    POISON(ParamType.NONE), ADD(ParamType.MAP_STRING_SLIDES), REMOVE(ParamType.STRING), RETR_SLIDES(ParamType.NONE), RESP_SLIDES(ParamType.MAP_STRING_SLIDES), TICKER(ParamType.STRING), RETR_TICKER(ParamType.NONE), RESP_TICKER(ParamType.STRING), XMIT_ERROR_RESTART(ParamType.NONE);
 
     // TODO add messages for keep-alive system by server (possibly via a required confirmation for all packets)--not needed for client, since it never initiates communication with server and SHOULD proceed even if no comms from server
 
