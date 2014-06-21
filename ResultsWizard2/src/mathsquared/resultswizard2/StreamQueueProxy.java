@@ -70,7 +70,7 @@ public class StreamQueueProxy implements Runnable {
             // Continually retrieve objects from the input queue until a given time limit is exceeded
             ExecutorService pool = Executors.newCachedThreadPool();
             try {
-                while (true) {
+                while (true) { // loop exits due to a TimeoutException caught by the enclosing try--this is (hopefully) not an infinite loop
                     Future<Object> future = pool.submit(new Callable<Object>() {
                         public Object call () {
                             try {
