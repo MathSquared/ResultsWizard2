@@ -26,6 +26,7 @@ public class Fraction {
         canonicalizeDenominator();
         calculateUnit();
         matchUnitNumeratorSign();
+        simplify();
     }
 
     /**
@@ -62,6 +63,16 @@ public class Fraction {
         unit = 0;
         unitValid = false;
         calculateUnit();
+    }
+
+    /**
+     * Simplifies a fraction to its lowest terms.
+     */
+    private void simplify () {
+        int gcd = GcdUtils.gcd(numerator, denominator);
+
+        numerator /= gcd;
+        denominator /= gcd;
     }
 
     /**
