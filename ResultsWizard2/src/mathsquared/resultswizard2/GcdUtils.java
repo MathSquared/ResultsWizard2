@@ -17,7 +17,7 @@ public class GcdUtils {
      * @param b the second integer
      * @return the GCD of a and b
      */
-    public int gcd (int a, int b) {
+    public static int gcd (int a, int b) {
         int t = 0;
         while (b != 0) {
             t = b;
@@ -34,7 +34,7 @@ public class GcdUtils {
      * @param b the second integer
      * @return the LCM of a and b
      */
-    public int lcm (int a, int b) {
+    public static int lcm (int a, int b) {
         return a / gcd(a, b) * b; // reordered to avoid overflow; correctly, a*b / gcd(a, b)
     }
 }
