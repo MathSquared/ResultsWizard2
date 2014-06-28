@@ -21,7 +21,7 @@ public class GcdUtils {
         int t = 0;
         while (b != 0) {
             t = b;
-            b = a % b;
+            b = mod(a, b);
             a = t;
         }
         return a;
@@ -36,5 +36,20 @@ public class GcdUtils {
      */
     public static int lcm (int a, int b) {
         return a / gcd(a, b) * b; // reordered to avoid overflow; correctly, a*b / gcd(a, b)
+    }
+
+    /**
+     * Computes the mathematical modulus of two numbers.
+     * 
+     * <p>
+     * The Java <code>%</code> operator returns a result that adopts the sign of the dividend; however, a true mathematical modulus adopts the sign of the divisor. This method implements a mathematical modulus.
+     * </p>
+     * 
+     * @param a the dividend
+     * @param b the divisor
+     * @return a mod b
+     */
+    public static int mod (int a, int b) {
+        return ((a % b) + b) % b;
     }
 }
