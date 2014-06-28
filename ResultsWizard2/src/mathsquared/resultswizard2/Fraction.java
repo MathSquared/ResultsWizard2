@@ -6,6 +6,8 @@ package mathsquared.resultswizard2;
 /**
  * An immutable object that represents a proper fraction. Can support improper fractions intermittently as well.
  * 
+ * Note that any post-conditions on any methods of this class only apply after the constructor has successfully completed, as several clean-up methods are required to ensure that a Fraction is represented in a canonical form.
+ * 
  * @author MathSquared
  * 
  */
