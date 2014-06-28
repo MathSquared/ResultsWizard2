@@ -9,7 +9,7 @@ package mathsquared.resultswizard2;
  * @author MathSquared
  * 
  */
-public class GcdUtils {
+public class GcdUtils { // TODO write unit tests
     /**
      * Returns the greatest common divisor of two integers.
      * 

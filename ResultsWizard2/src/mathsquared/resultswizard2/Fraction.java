@@ -11,7 +11,7 @@ package mathsquared.resultswizard2;
  * @author MathSquared
  * 
  */
-public class Fraction {
+public class Fraction { // TODO write unit tests
     private int unit;
     private boolean unitValid = false; // Turns true when a unit is calculated and false when it is extracted
     private int numerator;
