@@ -183,8 +183,12 @@ public class Fraction { // TODO write unit tests
      * 
      * @param divisor the number by which to divide
      * @return a new Fraction divided by the divisor
+     * @throws ArithmeticException if the divisor is 0
      */
     public Fraction divide (int divisor) {
+        if (divisor == 0) {
+            throw new ArithmeticException("divisor must not be 0");
+        }
         return new Fraction(getImproperNumerator(), denominator * divisor);
     }
 
@@ -193,8 +197,12 @@ public class Fraction { // TODO write unit tests
      * 
      * @param divisor the Fraction by which to divide
      * @return a new Fraction divided by the divisor
+     * @throws ArithmeticException if the numerator of the divisor is 0
      */
     public Fraction divide (Fraction divisor) {
+        if (divisor.getImproperNumerator() == 0) {
+            throw new IllegalArgumentException("numerator of the divisor must not be 0");
+        }
         return new Fraction(getImproperNumerator() * divisor.getDenominator(), denominator * divisor.getImproperNumerator());
     }
 
