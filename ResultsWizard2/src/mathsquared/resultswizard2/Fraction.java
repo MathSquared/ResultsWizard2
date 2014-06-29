@@ -150,7 +150,7 @@ public class Fraction { // TODO write unit tests
     // Arithmetic //
 
     /**
-     * Returns a new Fraction representing this Fraction multiplied by -1.
+     * Negates a Fraction (finds its additive inverse). This is equivalent to multiplication by -1.
      * 
      * @return a new Fraction representing the negative of this Fraction
      */
@@ -159,7 +159,7 @@ public class Fraction { // TODO write unit tests
     }
 
     /**
-     * Returns a new Fraction representing this Fraction multiplied by an integer.
+     * Multiplies a Fraction by an integer.
      * 
      * @param multiplier the number by which to multiply
      * @return a new Fraction multiplied by the multiplier
@@ -169,7 +169,7 @@ public class Fraction { // TODO write unit tests
     }
 
     /**
-     * Returns a new Fraction representing this Fraction divided by an Integer.
+     * Divides a Fraction by an integer.
      * 
      * @param divisor the number by which to divide
      * @return a new Fraction divided by the divisor
@@ -179,7 +179,7 @@ public class Fraction { // TODO write unit tests
     }
 
     /**
-     * Returns a new Fraction representing this Fraction raised to a given integer power.
+     * Raises a Fraction to a power.
      * 
      * <p>
      * This method assumes that any fraction raised to the 0 power is equal to 1. If the given exponent is negative, this method acts as if <code>this.reciprocal().pow(-exponent)</code> was called.
@@ -199,7 +199,7 @@ public class Fraction { // TODO write unit tests
     }
 
     /**
-     * Returns a new Fraction representing the reciprocal of this Fraction. The new Fraction is canonicalized, so it may be the case that <code>fraction.getNumerator() != fraction.reciprocal().getDenominator()</code>.
+     * Finds the reciprocal (multiplicative inverse) of a Fraction. The new Fraction is canonicalized, so it may be the case that <code>fraction.getNumerator() != fraction.reciprocal().getDenominator()</code>.
      * 
      * @return a new Fraction representing the denominator of this Fraction divided by the numerator
      */
@@ -208,7 +208,7 @@ public class Fraction { // TODO write unit tests
     }
 
     /**
-     * Returns a new Fraction representing the sum of a Fraction and an integer.
+     * Adds an integer to a Fraction.
      * 
      * @param augend the integer to add to this Fraction
      * @return a new Fraction representing the result of <code>(this + augend)</code>
@@ -218,7 +218,7 @@ public class Fraction { // TODO write unit tests
     }
 
     /**
-     * Returns a new Fraction representing the sum of two Fractions.
+     * Adds two Fractions together.
      * 
      * @param augend the Fraction to which to add this one
      * @return a new Fraction representing the result of <code>(this + augend)</code>
@@ -235,7 +235,7 @@ public class Fraction { // TODO write unit tests
     }
 
     /**
-     * Returns a new Fraction representing the difference between a Fraction and an integer.
+     * Subtracts an integer from a Fraction.
      * 
      * @param subtrahend the integer to subtract from this Fraction
      * @return a new Fraction representing the result of <code>(this - subtrahend)</code>
@@ -245,7 +245,7 @@ public class Fraction { // TODO write unit tests
     }
 
     /**
-     * Returns a new Fraction representing the difference between two Fractions.
+     * Subtracts two Fractions.
      * 
      * @param subtrahend the Fraction to subtract from this Fraction
      * @return a new Fraction representing the result of <code>(this - subtrahend)</code>
