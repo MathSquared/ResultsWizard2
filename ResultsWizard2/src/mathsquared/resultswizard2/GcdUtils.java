@@ -24,7 +24,7 @@ public class GcdUtils { // TODO write unit tests
         int t = 0;
         while (b != 0) {
             t = b;
-            b = mod(a, b);
+            b = a % b;
             a = t;
         }
         return a;
