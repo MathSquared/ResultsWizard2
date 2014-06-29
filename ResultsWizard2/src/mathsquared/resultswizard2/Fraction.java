@@ -17,10 +17,33 @@ public class Fraction { // TODO write unit tests
     private int numerator;
     private int denominator;
 
+    /**
+     * Constructs a Fraction representing the given whole number. This is equivalent to <code>Fraction(num, 1)</code> and is provided as a convenience method.
+     * 
+     * @param num the integer to represent
+     */
     public Fraction (int num) {
         this(num, 1);
     }
 
+    /**
+     * Constructs a Fraction representing the quotient of two integers.
+     * 
+     * <p>
+     * The Fraction is canonicalized as follows:
+     * </p>
+     * 
+     * <ul>
+     * <li>If the denominator of the fraction is negative, both the numerator and denominator are multiplied by -1.</li>
+     * <li>A whole-number unit is extracted from the fraction. Thus, {@link #getNumerator()} returns what the numerator would be if this quotient were expressed as a mixed number; {@link #getImproperNumerator()} returns what it would be as an improper fraction.</li>
+     * <li>The sign of the unit and numerator are matched. If they don't match, the fraction takes on the value of (unit + (numerator / denominator)); thus, (6)u(-1/2) becomes (5)u(1/2).</li>
+     * <li>The fraction is simplified to its lowest terms by dividing out the GCD of the numerator and denominator.</li>
+     * </ul>
+     * 
+     * @param num the numerator of the fraction
+     * @param den the denominator of the fraction
+     * @throws ArithmeticException if <code>den == 0</code>
+     */
     public Fraction (int num, int den) {
         if (den == 0) {
             throw new ArithmeticException("Denominator must not be equal to 0");
