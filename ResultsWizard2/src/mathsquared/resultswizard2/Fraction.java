@@ -145,4 +145,55 @@ public class Fraction { // TODO write unit tests
     public int getDenominator () {
         return denominator;
     }
+
+    // Arithmetic //
+
+    /**
+     * Returns a new Fraction representing this Fraction multiplied by an integer.
+     * 
+     * @param multiplier the number by which to multiply
+     * @return a new Fraction multiplied by the multiplier
+     */
+    public Fraction multiply (int multiplier) {
+        return new Fraction(getImproperNumerator() * multiplier, denominator);
+    }
+
+    /**
+     * Returns a new Fraction representing this Fraction divided by an Integer.
+     * 
+     * @param divisor the number by which to divide
+     * @return a new Fraction divided by the divisor
+     */
+    public Fraction divide (int divisor) {
+        return new Fraction(getImproperNumerator(), denominator * divisor);
+    }
+
+    /**
+     * Returns a new Fraction representing this Fraction raised to a given integer power.
+     * 
+     * <p>
+     * This method assumes that any fraction raised to the 0 power is equal to 1. If the given exponent is negative, this method acts as if <code>this.reciprocal().pow(-exponent)</code> was called.
+     * 
+     * @param exponent the power to which to raise this Fraction
+     * @return a new Fraction raised to the given power
+     */
+    public Fraction pow (int exponent) {
+        // Math.pow will return non-integer results for negative exponents, so we take the reciprocal here first
+        if (exponent < 0) {
+            return reciprocal().pow(-exponent);
+        }
+        if (exponent == 0) {
+            return new Fraction(1, 1);
+        }
+        return new Fraction((int) Math.pow(getImproperNumerator(), exponent), (int) Math.pow(denominator, exponent));
+    }
+
+    /**
+     * Returns a new Fraction representing the reciprocal of this Fraction. The new Fraction is canonicalized, so it may be the case that <code>fraction.getNumerator() != fraction.reciprocal().getDenominator()</code>.
+     * 
+     * @return a new Fraction representing the denominator of this Fraction divided by the numerator
+     */
+    public Fraction reciprocal () {
+        return new Fraction(denominator, getImproperNumerator());
+    }
 }
