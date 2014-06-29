@@ -169,6 +169,16 @@ public class Fraction { // TODO write unit tests
     }
 
     /**
+     * Multiplies two Fractions together.
+     * 
+     * @param multiplier the Fraction by which to multiply
+     * @return a new Fraction multiplied by the multiplier
+     */
+    public Fraction multiply (Fraction multiplier) {
+        return new Fraction(getImproperNumerator() * multiplier.getImproperNumerator(), denominator * multiplier.getDenominator());
+    }
+
+    /**
      * Divides a Fraction by an integer.
      * 
      * @param divisor the number by which to divide
@@ -176,6 +186,16 @@ public class Fraction { // TODO write unit tests
      */
     public Fraction divide (int divisor) {
         return new Fraction(getImproperNumerator(), denominator * divisor);
+    }
+
+    /**
+     * Divides a Fraction by another. This is equivalent to multiplication by the divisor's reciprocal.
+     * 
+     * @param divisor the Fraction by which to divide
+     * @return a new Fraction divided by the divisor
+     */
+    public Fraction divide (Fraction divisor) {
+        return new Fraction(getImproperNumerator() * divisor.getDenominator(), denominator * divisor.getImproperNumerator());
     }
 
     /**
