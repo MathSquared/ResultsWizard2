@@ -150,6 +150,15 @@ public class Fraction { // TODO write unit tests
     // Arithmetic //
 
     /**
+     * Returns a new Fraction representing this Fraction multiplied by -1.
+     * 
+     * @return a new Fraction representing the negative of this Fraction
+     */
+    public Fraction negative () {
+        return new Fraction(-getImproperNumerator(), denominator);
+    }
+
+    /**
      * Returns a new Fraction representing this Fraction multiplied by an integer.
      * 
      * @param multiplier the number by which to multiply
@@ -196,5 +205,52 @@ public class Fraction { // TODO write unit tests
      */
     public Fraction reciprocal () {
         return new Fraction(denominator, getImproperNumerator());
+    }
+
+    /**
+     * Returns a new Fraction representing the sum of a Fraction and an integer.
+     * 
+     * @param augend the integer to add to this Fraction
+     * @return a new Fraction representing the result of <code>(this + augend)</code>
+     */
+    public Fraction add (int augend) {
+        return new Fraction(getImproperNumerator() + augend * denominator, denominator);
+    }
+
+    /**
+     * Returns a new Fraction representing the sum of two Fractions.
+     * 
+     * @param augend the Fraction to which to add this one
+     * @return a new Fraction representing the result of <code>(this + augend)</code>
+     */
+    public Fraction add (Fraction augend) {
+        int lcm = GcdUtils.lcm(denominator, augend.getDenominator());
+        int multiplyA = lcm / denominator;
+        int multiplyB = lcm / augend.getDenominator();
+
+        int numA = getImproperNumerator();
+        int numB = augend.getImproperNumerator();
+
+        return new Fraction(numA * multiplyA + numB * multiplyB, lcm);
+    }
+
+    /**
+     * Returns a new Fraction representing the difference between a Fraction and an integer.
+     * 
+     * @param subtrahend the integer to subtract from this Fraction
+     * @return a new Fraction representing the result of <code>(this - subtrahend)</code>
+     */
+    public Fraction subtract (int subtrahend) {
+        return add(-subtrahend);
+    }
+
+    /**
+     * Returns a new Fraction representing the difference between two Fractions.
+     * 
+     * @param subtrahend the Fraction to subtract from this Fraction
+     * @return a new Fraction representing the result of <code>(this - subtrahend)</code>
+     */
+    public Fraction subtract (Fraction subtrahend) {
+        return add(subtrahend.negative());
     }
 }
