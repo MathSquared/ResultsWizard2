@@ -51,7 +51,7 @@ public class GcdUtils { // TODO write unit tests
      * 
      * @param a the dividend
      * @param b the divisor
-     * @return a mod b
+     * @return a mod b; that is, <code>(((a % b) + b) % b)</code>
      */
     public static int mod (int a, int b) {
         return ((a % b) + b) % b;
