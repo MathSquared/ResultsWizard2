@@ -15,9 +15,12 @@ public class GcdUtils { // TODO write unit tests
      * 
      * @param a the first integer
      * @param b the second integer
-     * @return the GCD of a and b
+     * @return the GCD of a and b; always positive
      */
     public static int gcd (int a, int b) {
+        // Fix signs
+        a = (a < 0 ? -a : a);
+        b = (b < 0 ? -b : b);
         int t = 0;
         while (b != 0) {
             t = b;
@@ -32,10 +35,11 @@ public class GcdUtils { // TODO write unit tests
      * 
      * @param a the first integer
      * @param b the second integer
-     * @return the LCM of a and b
+     * @return the LCM of a and b; always positive
      */
     public static int lcm (int a, int b) {
-        return a / gcd(a, b) * b; // reordered to avoid overflow; correctly, a*b / gcd(a, b)
+        int ret = a / gcd(a, b) * b; // reordered to avoid overflow; correctly, a*b / gcd(a, b)
+        return (ret < 0 ? -ret : ret);
     }
 
     /**
