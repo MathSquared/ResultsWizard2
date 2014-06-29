@@ -31,6 +31,11 @@ public class Fraction { // TODO write unit tests
         simplify();
     }
 
+    // Setup methods //
+    /*
+     * Setup methods; called in constructor Before these methods are called, the Fraction may be in a non-canonical state.
+     */
+
     /**
      * If the denominator of a fraction is negative, switches the sign of both the numerator and denominator. This way, the denominator is always positive.
      */
@@ -76,6 +81,8 @@ public class Fraction { // TODO write unit tests
         numerator /= gcd;
         denominator /= gcd;
     }
+
+    // Accessors //
 
     /**
      * Returns the unit currently associated with this fraction. If the unit is {@linkplain #isUnitValid() invalid}, this method returns 0. If the fraction represents a negative quantity, the value returned by this method will be negative.
