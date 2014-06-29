@@ -11,7 +11,7 @@ package mathsquared.resultswizard2;
  */
 public class GcdUtils { // TODO write unit tests
     /**
-     * Returns the greatest common divisor of two integers.
+     * Returns the greatest common divisor of two integers. This method accepts negative arguments.
      * 
      * @param a the first integer
      * @param b the second integer
@@ -31,7 +31,7 @@ public class GcdUtils { // TODO write unit tests
     }
 
     /**
-     * Returns the least common multiple of two integers.
+     * Returns the least common multiple of two integers. This method accepts negative arguments.
      * 
      * @param a the first integer
      * @param b the second integer
