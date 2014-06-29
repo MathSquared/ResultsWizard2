@@ -17,6 +17,10 @@ public class Fraction { // TODO write unit tests
     private int numerator;
     private int denominator;
 
+    public Fraction (int num) {
+        this(num, 1);
+    }
+
     public Fraction (int num, int den) {
         if (den == 0) {
             throw new ArithmeticException("Denominator must not be equal to 0");
