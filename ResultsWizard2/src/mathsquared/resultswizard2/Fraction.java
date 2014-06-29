@@ -250,7 +250,9 @@ public class Fraction { // TODO write unit tests
         if (exponent == 0) {
             return new Fraction(1, 1);
         }
-        return new Fraction((int) Math.pow(getImproperNumerator(), exponent), (int) Math.pow(denominator, exponent));
+
+        // use integer power function for max precision (avoid floating-point round-off error)
+        return new Fraction(GcdUtils.pow(getImproperNumerator(), exponent), GcdUtils.pow(denominator, exponent));
     }
 
     /**
