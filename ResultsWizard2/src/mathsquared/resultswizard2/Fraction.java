@@ -133,6 +133,7 @@ public class Fraction { // TODO write unit tests
      * 
      * @return the improper numerator
      */
+    // USE THIS METHOD FOR ARITHMETIC TO SUPPORT OPERATION CHAINING; DO NOT DIRECTLY EMPLOY numerator
     public int getImproperNumerator () {
         return numerator + (unitValid ? unit : 0) * denominator;
     }
