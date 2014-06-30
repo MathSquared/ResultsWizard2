@@ -300,9 +300,13 @@ public class Fraction { // TODO write unit tests
      * Finds the reciprocal (multiplicative inverse) of a Fraction. The new Fraction is canonicalized, so it may be the case that <code>fraction.getNumerator() != fraction.reciprocal().getDenominator()</code>.
      * 
      * @return a new Fraction representing the denominator of this Fraction divided by the numerator
+     * @throws ArithmeticException if the Fraction represents a zero quantity, i.e. if <code>(getImproperNumerator() == 0)</code>
      */
     public Fraction reciprocal () {
         checkDenominatorNonzero();
+        if (getImproperNumerator() == 0) {
+            throw new ArithmeticException("Cannot take the reciprocal of a zero fraction");
+        }
         return new Fraction(denominator, getImproperNumerator());
     }
 
