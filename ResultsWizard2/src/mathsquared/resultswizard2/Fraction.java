@@ -17,6 +17,9 @@ public class Fraction { // TODO write unit tests
     private int numerator;
     private int denominator;
 
+    // If the denominator is detected as 0, this is false--prevents finalizer exploits from propagating 0 denominators
+    private boolean valid = true;
+
     /**
      * Constructs a Fraction representing the given whole number. This is equivalent to <code>Fraction(num, 1)</code> and is provided as a convenience method.
      * 
@@ -46,6 +49,7 @@ public class Fraction { // TODO write unit tests
      */
     public Fraction (int num, int den) {
         if (den == 0) {
+            valid = false;
             throw new ArithmeticException("Denominator must not be equal to 0");
         }
 
@@ -56,6 +60,37 @@ public class Fraction { // TODO write unit tests
         calculateUnit();
         matchUnitNumeratorSign();
         simplify();
+    }
+
+    /**
+     * Marks this fraction as invalid and throws an {@link UnsupportedOperationException} if the denominator is 0.
+     */
+    private void checkDenominatorNonzero () {
+        if (!valid || denominator == 0) {
+            valid = false;
+            throw new UnsupportedOperationException("Fraction invalid; denominator is 0");
+        }
+    }
+
+    /**
+     * If either this fraction or another given fraction have a zero denominator, throws an UnsupportedOperationException and marks the invalid fraction(s) as such.
+     * 
+     * @param secondOperand the other fraction to check
+     */
+    private void checkDenominatorNonzero (Fraction secondOperand) {
+        String exceptionMessage = null; // tracks exception messages in case both fractions are invalid
+        if (!valid || denominator == 0) {
+            valid = false;
+            exceptionMessage = "First operand invalid; denominator is 0";
+        }
+        if (!secondOperand.valid || secondOperand.getDenominator() == 0) {
+            secondOperand.valid = false;
+            exceptionMessage = (exceptionMessage == null ? "Second operand invalid; denominator is 0" : "Both fractions invalid; denominators are 0");
+        }
+
+        if (exceptionMessage != null) {
+            throw new UnsupportedOperationException(exceptionMessage);
+        }
     }
 
     // Setup methods //
@@ -182,6 +217,7 @@ public class Fraction { // TODO write unit tests
      * @return a new Fraction representing the negative of this Fraction
      */
     public Fraction negative () {
+        checkDenominatorNonzero();
         return new Fraction(-getImproperNumerator(), denominator);
     }
 
@@ -192,6 +228,7 @@ public class Fraction { // TODO write unit tests
      * @return a new Fraction multiplied by the multiplier
      */
     public Fraction multiply (int multiplier) {
+        checkDenominatorNonzero();
         return new Fraction(getImproperNumerator() * multiplier, denominator);
     }
 
@@ -202,6 +239,7 @@ public class Fraction { // TODO write unit tests
      * @return a new Fraction multiplied by the multiplier
      */
     public Fraction multiply (Fraction multiplier) {
+        checkDenominatorNonzero(multiplier);
         return new Fraction(getImproperNumerator() * multiplier.getImproperNumerator(), denominator * multiplier.getDenominator());
     }
 
@@ -213,6 +251,7 @@ public class Fraction { // TODO write unit tests
      * @throws ArithmeticException if the divisor is 0
      */
     public Fraction divide (int divisor) {
+        checkDenominatorNonzero();
         if (divisor == 0) {
             throw new ArithmeticException("divisor must not be 0");
         }
@@ -227,6 +266,7 @@ public class Fraction { // TODO write unit tests
      * @throws ArithmeticException if the numerator of the divisor is 0
      */
     public Fraction divide (Fraction divisor) {
+        checkDenominatorNonzero(divisor);
         if (divisor.getImproperNumerator() == 0) {
             throw new IllegalArgumentException("numerator of the divisor must not be 0");
         }
@@ -243,6 +283,7 @@ public class Fraction { // TODO write unit tests
      * @return a new Fraction raised to the given power
      */
     public Fraction pow (int exponent) {
+        checkDenominatorNonzero();
         // Math.pow will return non-integer results for negative exponents, so we take the reciprocal here first
         if (exponent < 0) {
             return reciprocal().pow(-exponent);
@@ -261,6 +302,7 @@ public class Fraction { // TODO write unit tests
      * @return a new Fraction representing the denominator of this Fraction divided by the numerator
      */
     public Fraction reciprocal () {
+        checkDenominatorNonzero();
         return new Fraction(denominator, getImproperNumerator());
     }
 
@@ -271,6 +313,7 @@ public class Fraction { // TODO write unit tests
      * @return a new Fraction representing the result of <code>(this + augend)</code>
      */
     public Fraction add (int augend) {
+        checkDenominatorNonzero();
         return new Fraction(getImproperNumerator() + augend * denominator, denominator);
     }
 
@@ -281,6 +324,7 @@ public class Fraction { // TODO write unit tests
      * @return a new Fraction representing the result of <code>(this + augend)</code>
      */
     public Fraction add (Fraction augend) {
+        checkDenominatorNonzero(augend);
         int lcm = GcdUtils.lcm(denominator, augend.getDenominator());
         int multiplyA = lcm / denominator;
         int multiplyB = lcm / augend.getDenominator();
@@ -298,6 +342,7 @@ public class Fraction { // TODO write unit tests
      * @return a new Fraction representing the result of <code>(this - subtrahend)</code>
      */
     public Fraction subtract (int subtrahend) {
+        checkDenominatorNonzero();
         return add(-subtrahend);
     }
 
@@ -308,6 +353,7 @@ public class Fraction { // TODO write unit tests
      * @return a new Fraction representing the result of <code>(this - subtrahend)</code>
      */
     public Fraction subtract (Fraction subtrahend) {
+        checkDenominatorNonzero(subtrahend);
         return add(subtrahend.negative());
     }
 }
