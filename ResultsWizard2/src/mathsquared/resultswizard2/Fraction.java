@@ -6,7 +6,13 @@ package mathsquared.resultswizard2;
 /**
  * An immutable object that represents a proper fraction. Can support improper fractions intermittently as well.
  * 
+ * <p>
  * Note that any post-conditions on any methods of this class only apply after the constructor has successfully completed, as several clean-up methods are required to ensure that a Fraction is represented in a canonical form.
+ * </p>
+ * 
+ * <p>
+ * Objects of this class may be marked as invalid at any time if they have zero denominators. If a Fraction is marked as invalid, subsequent operations will throw an {@link UnsupportedOperationException}. This is done on a best-effort basis; a Fraction with a zero denominator is not guaranteed to be marked invalid immediately. Note that the public constructors will disallow the creation of a Fraction with a zero denominator, so such Fractions should not be encountered in normal usage.
+ * </p>
  * 
  * @author MathSquared
  * 
