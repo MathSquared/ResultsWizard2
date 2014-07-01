@@ -48,4 +48,16 @@ public enum TiePlaceAssignment {
             return low - diff / 2; // halfway through the range--since division truncates, this will round towards low
         }
     };
+
+    // Default implementation
+    /**
+     * Given a range of places, assigns a place to all competitors tied within that range.
+     * 
+     * @param placeOne one inclusive end of the range
+     * @param placeTwo another inclusive end of the range (need not be greater than placeOne)
+     * @return the place to assign to the competitors in the given range
+     */
+    public int assignPlace (int placeOne, int placeTwo) {
+        return 0;
+    }
 }
