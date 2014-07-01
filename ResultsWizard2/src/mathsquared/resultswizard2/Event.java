@@ -46,8 +46,7 @@ public class Event {
      * @throws NullPointerException if any parameter is null or contains null as an element, key, or value
      * @throws IllegalArgumentException if <code>primaryName</code> contains a character outside the allowable range, <code>(indivPlaces &lt; 0)</code>, <code>(teamPlaces &lt; 0)</code>, <code>(specialHonors.get(x) &lt;= 0)</code> for any <code>x</code> present in <code>specialHonors.keySet()</code>, <code>(indivSweeps.length != indivPlaces</code>, <code>(teamSweeps.length != teamPlaces)</code>, or <code>(!specialHonors.keySet().equals(specialSweeps.keySet()))</code>
      */
-    // Package-access constructor
-    Event (String primaryName, String[] otherNames, int indivPlaces, int teamPlaces, Map<String, Integer> specialHonors, int[] indivSweeps, int[] teamSweeps, Map<String, int[]> specialSweeps) {
+    public Event (String primaryName, String[] otherNames, int indivPlaces, int teamPlaces, Map<String, Integer> specialHonors, int[] indivSweeps, int[] teamSweeps, Map<String, int[]> specialSweeps) {
         // Null checks
         if (primaryName == null) {
             throw new NullPointerException("primaryName must not be null");
