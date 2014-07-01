@@ -389,6 +389,19 @@ public class Fraction { // TODO write unit tests
         return unit + numerator * 1.0 / denominator;
     }
 
+    /**
+     * Tests whether a Fraction is equivalent to another object.
+     * 
+     * <p>
+     * A Fraction is considered equal to another object <code>other</code> if and only if:
+     * </p>
+     * 
+     * <ul>
+     * <li><code>other</code> is a <code>Byte</code>, <code>Short</code>, <code>Integer</code>, or <code>Long</code> and this fraction represents a whole number that is precisely equal to the number represented by <code>other</code></li>
+     * <li><code>other</code> is a <code>Float</code> or <code>Double</code> and <code>this.toDouble()</code> precisely equals the value represented by <code>other</code></li>
+     * <li><code>other</code> is another <code>Fraction</code> and both fractions' {@linkplain #getImproperNumerator() improper numerators} and {@linkplain #getDenominator() denominators} are equal to each other when both fractions are in lowest terms</li>
+     * </ul>
+     */
     public boolean equals (Object other) {
         canonicalize();
 
