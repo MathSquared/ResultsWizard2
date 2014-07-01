@@ -144,6 +144,12 @@ public class Fraction { // TODO write unit tests
      * Simplifies a fraction to its lowest terms.
      */
     private void simplify () {
+        // Handle zero correctly to avoid BAD THINGS HAPPENING (like division by 0)
+        if (numerator == 0) {
+            denominator = 1; // 0/1 == 0/2 == 0/3.14159 == 0/-37 == ...
+            return;
+        }
+
         int gcd = GcdUtils.gcd(numerator, denominator);
 
         numerator /= gcd;
