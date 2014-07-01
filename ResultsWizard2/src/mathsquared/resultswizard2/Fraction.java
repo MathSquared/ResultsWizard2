@@ -372,4 +372,13 @@ public class Fraction { // TODO write unit tests
         checkDenominatorNonzero(subtrahend);
         return add(subtrahend.negative());
     }
+
+    /**
+     * Converts a Fraction to the double it represents. This is done as if returning <code>(unit + (double) numerator / denominator)</code>.
+     * 
+     * @return the double equivalent of this Fraction
+     */
+    public double toDouble () {
+        return unit + numerator * 1.0 / denominator;
+    }
 }
