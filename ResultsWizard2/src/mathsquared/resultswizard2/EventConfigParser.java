@@ -21,7 +21,7 @@ import java.util.Set;
  * @author MathSquared
  * 
  */
-public class EventConfigParser {
+public class EventConfigParser { // TODO allow sweepstakes specified upon data entry by specifying "prompt" or similar in config
 
     /**
      * Loads an event file into a {@link Map} from the event's primary name to its {@linkplain Event event object}.
