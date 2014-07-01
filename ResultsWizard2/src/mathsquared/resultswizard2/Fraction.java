@@ -388,4 +388,22 @@ public class Fraction { // TODO write unit tests
     public double toDouble () {
         return unit + numerator * 1.0 / denominator;
     }
+
+    public boolean equals (Object other) {
+        canonicalize();
+
+        // Check some special cases
+        if (other instanceof Byte || other instanceof Short || other instanceof Integer || other instanceof Long) {
+            // ensure number is correct && fraction is a whole number (entire denominator can be divided out)
+            return getImproperNumerator() / denominator == ((Number) other).intValue() && GcdUtils.gcd(getImproperNumerator(), denominator) == denominator;
+        } else if (other instanceof Float || other instanceof Double) {
+            return toDouble() == ((Number) other).doubleValue();
+        } else if (other instanceof Fraction) {
+            Fraction fOther = (Fraction) other;
+            fOther.canonicalize();
+            return unit == fOther.getUnit() && numerator == fOther.getNumerator() && denominator == fOther.getDenominator();
+        } else {
+            return false;
+        }
+    }
 }
