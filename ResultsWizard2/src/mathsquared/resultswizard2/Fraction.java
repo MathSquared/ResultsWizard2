@@ -62,6 +62,13 @@ public class Fraction { // TODO write unit tests
         numerator = num;
         denominator = den;
 
+        canonicalize();
+    }
+
+    /**
+     * Canonicalizes this fraction according to the criteria {@linkplain #Fraction(int, int) noted above}. This method may be invoked at any time.
+     */
+    private void canonicalize () {
         canonicalizeDenominator();
         calculateUnit();
         matchUnitNumeratorSign();
