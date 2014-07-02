@@ -10,6 +10,19 @@ package mathsquared.resultswizard2;
  * 
  */
 public class Sweepstakes {
+    /**
+     * Assigns sweepstakes points to all competitors in an event. For all array parameters, index 0 represents first place.
+     * 
+     * <p>
+     * Note that if <code>sweepsM</code> equals {@link SweepstakesAssignment.CUSTOM}, this method returns null, since assigning sweepstakes points with a custom scheme falls to the user, who should be prompted by the application.
+     * </p>
+     * 
+     * @param quantities the number of competitors tied for each place; if there is a tie, the other places in the tie are skipped, so a two-way tie for first followed by a competitor in third is represented by passing in <code>[2, 1]</code>
+     * @param spec the number of sweepstakes points assigned to competitors in each place
+     * @param tiePlaceM the {@link TiePlaceAssignment} handling assigning one place to each competitor
+     * @param sweepsM the {@link SweepstakesAssignment} dictating the sweepstakes points that should be assigned to each competitor
+     * @return
+     */
     public Fraction[] assignPoints (int[] quantities, int[] spec, TiePlaceAssignment tiePlaceM, SweepstakesAssignment sweepsM) {
         if (sweepsM == SweepstakesAssignment.CUSTOM) {
             return null; // the app should be prompting--leave that to the GUI code, not the back-end
