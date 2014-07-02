@@ -21,7 +21,7 @@ public class Sweepstakes {
      * @param spec the number of sweepstakes points assigned to competitors in each place
      * @param tiePlaceM the {@link TiePlaceAssignment} handling assigning one place to each competitor
      * @param sweepsM the {@link SweepstakesAssignment} dictating the sweepstakes points that should be assigned to each competitor
-     * @return
+     * @return an array where each entry is the number of points to assign to the tie in the corresponding index of <code>quantities</code>
      */
     public Fraction[] assignPoints (int[] quantities, int[] spec, TiePlaceAssignment tiePlaceM, SweepstakesAssignment sweepsM) {
         if (sweepsM == SweepstakesAssignment.CUSTOM) {
