@@ -31,9 +31,13 @@ public enum SweepstakesAssignment {
      */
     MID_ROUND_WORSE,
     /**
-     * Indicates the average of all the sweepstakes point assignments within the range.
+     * Indicates the average of all the sweepstakes point assignments within the range, treating places beyond the sweeps totals specified as having zero sweepstakes values.
      */
     AVERAGE,
+    /**
+     * Indicates the average of all the sweepstakes point assignments within the range, ignoring any places beyond the amount of sweeps totals specified.
+     */
+    AVERAGE_ALL,
     /**
      * Indicates the average of all the sweepstakes point assignments within the range, excluding those for the highest and lowest place.
      */
