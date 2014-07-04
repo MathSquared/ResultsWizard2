@@ -30,22 +30,22 @@ public class FractionTest {
     @Test
     public void testFractionIntInt () {
         Fraction twoFourths = new Fraction(2, 4);
-        assertTrue("Canonical: Simplification", twoFourths.getNumerator() == 1 && twoFourths.getDenominator() == 2);
+        assertTrue("Canonical: Simplification", twoFourths.getUnit() == 0 && twoFourths.getNumerator() == 1 && twoFourths.getDenominator() == 2);
 
         Fraction zero = new Fraction(0, 3);
-        assertTrue("Canonical: 0/n", zero.getNumerator() == 0 && zero.getDenominator() == 1);
+        assertTrue("Canonical: 0/n", zero.getUnit() == 0 && zero.getNumerator() == 0 && zero.getDenominator() == 1);
 
         Fraction sevenFifths = new Fraction(7, 5);
         assertTrue("Canonical: Unit calculation", sevenFifths.getUnit() == 1 && sevenFifths.getNumerator() == 2 && sevenFifths.getDenominator() == 5);
 
         Fraction twoNegativeThirds = new Fraction(2, -3);
-        assertTrue("Canonical: Negative numerator", twoNegativeThirds.getNumerator() == -2 && twoNegativeThirds.getDenominator() == 3);
+        assertTrue("Canonical: Negative numerator", twoNegativeThirds.getUnit() == 0 && twoNegativeThirds.getNumerator() == -2 && twoNegativeThirds.getDenominator() == 3);
 
         Fraction negativeEightSixths = new Fraction(-8, 6);
         assertTrue("Canonical: Evil simplification", negativeEightSixths.getUnit() == -1 && negativeEightSixths.getNumerator() == -1 && negativeEightSixths.getDenominator() == 3);
 
         Fraction negativeThreeNegativeSevenths = new Fraction(-3, -7);
-        assertTrue("Canonical: Double negative", negativeThreeNegativeSevenths.getNumerator() == 3 && negativeThreeNegativeSevenths.getDenominator() == 7);
+        assertTrue("Canonical: Double negative", negativeThreeNegativeSevenths.getUnit() == 0 && negativeThreeNegativeSevenths.getNumerator() == 3 && negativeThreeNegativeSevenths.getDenominator() == 7);
     }
 
     /**
