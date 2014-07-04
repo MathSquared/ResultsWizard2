@@ -106,15 +106,28 @@ public class FractionTest {
      */
     @Test
     public void testPow () {
-        fail("Not yet implemented");
+        Fraction negativeTwoThirds = new Fraction(-2, 3);
+        Fraction fourNinths = new Fraction(4, 9);
+        Fraction negativeEightTwentySevenths = new Fraction(-8, 27);
+        Fraction negativeThreeHalves = new Fraction(-3, 2);
+        Fraction nineFourths = new Fraction(9, 4);
+
+        assertEquals("^2", negativeTwoThirds.pow(2), fourNinths);
+        assertEquals("^3", negativeTwoThirds.pow(3), negativeEightTwentySevenths);
+        assertEquals("^-1", negativeTwoThirds.pow(-1), negativeThreeHalves);
+        assertEquals("^-2", negativeTwoThirds.pow(-2), nineFourths);
     }
 
     /**
      * Test method for {@link mathsquared.resultswizard2.Fraction#reciprocal()}.
      */
-    @Test
+    @Test(expected = ArithmeticException.class)
     public void testReciprocal () {
-        fail("Not yet implemented");
+        Fraction threeFourths = new Fraction(3, 4);
+        assertEquals("3/4", threeFourths.reciprocal(), new Fraction(4, 3));
+
+        Fraction zero = new Fraction(0);
+        zero.reciprocal(); // throws ArithmeticException
     }
 
     /**
