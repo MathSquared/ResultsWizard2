@@ -43,6 +43,9 @@ public class FractionTest {
 
         Fraction negativeEightSixths = new Fraction(-8, 6);
         assertTrue("Canonical: Evil simplification", negativeEightSixths.getUnit() == -1 && negativeEightSixths.getNumerator() == -1 && negativeEightSixths.getDenominator() == 3);
+
+        Fraction negativeThreeNegativeSevenths = new Fraction(-3, -7);
+        assertTrue("Canonical: Double negative", negativeThreeNegativeSevenths.getNumerator() == 3 && negativeThreeNegativeSevenths.getDenominator() == 7);
     }
 
     /**
