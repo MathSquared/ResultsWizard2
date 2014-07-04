@@ -187,6 +187,12 @@ public class FractionTest {
         Fraction f4 = new Fraction(3, 1);
         assertEquals("Different constructors", f3, f4);
 
+        Fraction f5 = new Fraction(7, 5);
+        Fraction f6 = new Fraction(7, 5);
+        Fraction f7 = new Fraction(14, 10);
+        assertEquals("Improper", f5, f6);
+        assertEquals("Improper uncanonical", f5, f7);
+
         assertEquals("Double", f2, 1.0 / 2);
         assertEquals("Int", f3, 3);
     }
