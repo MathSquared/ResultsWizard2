@@ -3,13 +3,15 @@
  */
 package mathsquared.resultswizard2;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import org.junit.Test;
 
 /**
  * @author MathSquared
- *
+ * 
  */
 public class FractionTest {
 
@@ -18,7 +20,8 @@ public class FractionTest {
      */
     @Test
     public void testFractionInt () {
-        fail("Not yet implemented");
+        Fraction four = new Fraction(4);
+        assertEquals("Not stupid", four, new Fraction(4, 1));
     }
 
     /**
@@ -26,7 +29,20 @@ public class FractionTest {
      */
     @Test
     public void testFractionIntInt () {
-        fail("Not yet implemented");
+        Fraction twoFourths = new Fraction(2, 4);
+        assertTrue("Canonical: Simplification", twoFourths.getNumerator() == 1 && twoFourths.getDenominator() == 2);
+
+        Fraction zero = new Fraction(0, 3);
+        assertTrue("Canonical: 0/n", zero.getNumerator() == 0 && zero.getDenominator() == 1);
+
+        Fraction sevenFifths = new Fraction(7, 5);
+        assertTrue("Canonical: Unit calculation", sevenFifths.getUnit() == 1 && sevenFifths.getNumerator() == 2 && sevenFifths.getDenominator() == 5);
+
+        Fraction twoNegativeThirds = new Fraction(2, -3);
+        assertTrue("Canonical: Negative numerator", twoNegativeThirds.getNumerator() == -2 && twoNegativeThirds.getDenominator() == 3);
+
+        Fraction negativeEightSixths = new Fraction(-8, 6);
+        assertTrue("Canonical: Evil simplification", negativeEightSixths.getUnit() == -1 && negativeEightSixths.getNumerator() == -1 && negativeEightSixths.getDenominator() == 3);
     }
 
     /**
@@ -138,7 +154,11 @@ public class FractionTest {
      */
     @Test
     public void testToDouble () {
-        fail("Not yet implemented");
+        Fraction half = new Fraction(1, 2);
+        assertTrue("1/2", half.toDouble() == 1 / 2);
+
+        Fraction fiveThirds = new Fraction(5, 3);
+        assertTrue("5/3", fiveThirds.toDouble() == 5 / 3);
     }
 
     /**
@@ -146,7 +166,16 @@ public class FractionTest {
      */
     @Test
     public void testEqualsObject () {
-        fail("Not yet implemented");
+        Fraction f1 = new Fraction(2, 4);
+        Fraction f2 = new Fraction(1, 2);
+        assertEquals("Simplification", f1, f2);
+
+        Fraction f3 = new Fraction(3);
+        Fraction f4 = new Fraction(3, 1);
+        assertEquals("Different constructors", f3, f4);
+
+        assertEquals("Double", f2, 1.0 / 2);
+        assertEquals("Int", f3, 3);
     }
 
 }
