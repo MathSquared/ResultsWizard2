@@ -4,6 +4,7 @@
 package mathsquared.resultswizard2;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -49,11 +50,21 @@ public class FractionTest {
     }
 
     /**
-     * Test method for {@link mathsquared.resultswizard2.Fraction#extractUnit()}.
+     * Test method for {@link mathsquared.resultswizard2.Fraction#getUnit()}, {@link mathsquared.resultswizard2.Fraction#extractUnit()}, and {@link mathsquared.resultswizard2.Fraction#isUnitValid()}.
      */
     @Test
     public void testExtractUnit () {
-        fail("Not yet implemented");
+        Fraction sevenThirds = new Fraction(7, 3);
+        int unit = sevenThirds.getUnit();
+        assertTrue("Correctness", sevenThirds.getUnit() == 7 / 3);
+        Fraction sevenNegativeThirds = new Fraction(7, -3);
+        assertTrue("Negativity", sevenNegativeThirds.getUnit() == 7 / -3);
+        assertTrue("Correctly flagged", sevenThirds.isUnitValid());
+
+        int extract = sevenThirds.extractUnit();
+        assertTrue("Extracted is same", unit == extract);
+        assertFalse("Invalidation", sevenThirds.isUnitValid());
+        assertTrue("Zeroing", sevenThirds.getUnit() == 0);
     }
 
     /**
@@ -61,7 +72,9 @@ public class FractionTest {
      */
     @Test
     public void testGetImproperNumerator () {
-        fail("Not yet implemented");
+        assertTrue("Basic", new Fraction(3, 2).getImproperNumerator() == 3);
+        assertTrue("Zero", new Fraction(0).getImproperNumerator() == 0);
+        assertTrue("Negative", new Fraction(4, -3).getImproperNumerator() == -4);
     }
 
     /**
