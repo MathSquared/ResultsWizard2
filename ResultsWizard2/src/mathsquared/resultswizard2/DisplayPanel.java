@@ -65,6 +65,8 @@ public class DisplayPanel extends JPanel implements Runnable {
     private Queue out;
     private StreamQueueProxy sqProxy;
 
+    private boolean commsActive; // false if the connection drops, true if the client is connected to a server
+
     /**
      * Creates a DisplayPanel with the given parameters and prepares it for use.
      * 
@@ -227,5 +229,14 @@ public class DisplayPanel extends JPanel implements Runnable {
             System.out.println("Graphics context error:");
             e.printStackTrace(System.out);
         }
+    }
+
+    /**
+     * Indicates whether this client is connected to a server.
+     * 
+     * @return true if this client is connected to an admin console; false if it is not connected (either never has been, or a previous connection drops)
+     */
+    public boolean getCommsActive () {
+        return commsActive;
     }
 }
