@@ -56,6 +56,7 @@ public class DisplayPanel extends JPanel implements Runnable {
     // no frame skip logic needed
 
     // messages
+    private Socket sock;
     private InputStream inRaw;
     private OutputStream outRaw;
     private ObjectInputStream ois;
@@ -79,6 +80,7 @@ public class DisplayPanel extends JPanel implements Runnable {
         FPS = fps;
         period = 1000000000L / fps;
         BG_COLOR = bgColor;
+        this.sock = sock;
         initStreams(sock);
         this.oos = new ObjectOutputStream(outRaw);
         this.ois = new ObjectInputStream(inRaw);
