@@ -14,6 +14,7 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
+import java.net.Socket;
 import java.util.Queue;
 
 import javax.swing.JPanel;
@@ -92,6 +93,17 @@ public class DisplayPanel extends JPanel implements Runnable {
         setPreferredSize(new Dimension(width, height));
 
         // no event listeners, except that we will pop Messages from the stream each time
+    }
+
+    /**
+     * (Re-)Initializes this Display to communicate over the given socket.
+     * 
+     * @param sock the {@link Socket} over which to communicate
+     * @throws IOException if <code>sock.getInputStream()</code> and/or <code>sock.getOutputStream()</code> would throw an <code>IOException</code>
+     */
+    private void initStreams (Socket sock) throws IOException {
+        inRaw = sock.getInputStream();
+        outRaw = sock.getOutputStream();
     }
 
     /**
