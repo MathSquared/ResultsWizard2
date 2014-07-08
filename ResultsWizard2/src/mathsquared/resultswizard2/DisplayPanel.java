@@ -27,6 +27,10 @@ import javax.swing.SwingUtilities;
  * Game loop logic is heavily based on the sample game loop in Chapter 2 of Killer Game Programming in Java by Andrew Davison, ISBN 978-0-596-00730-0.
  * </p>
  * 
+ * <p>
+ * If the connection to the server is ever lost, the DisplayPanel will continue projecting whatever data it has already received until it is able to connect to another server. Servers should NEVER make assumptions about the client's state, communicating with it often to request this information (also a good way to check for a dropped connection).
+ * </p>
+ * 
  * @author MathSquared
  * 
  */
