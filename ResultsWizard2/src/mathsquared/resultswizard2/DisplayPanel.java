@@ -71,19 +71,17 @@ public class DisplayPanel extends JPanel implements Runnable {
      * @param height the height of the projection surface, in pixels
      * @param fps the desired frames per second of the projection (normally, this will equal the monitor refresh rate in Hz)
      * @param bgColor the desired background color of the projection
-     * @param ois the ObjectInputStream carrying {@link Command}s for the display unit
-     * @param oos the ObjectOutputStream carrying {@link Command}s from the display unit
+     * @param sock the {@link Socket} with which this display will communicate with the admin console
      */
-    public DisplayPanel (int width, int height, int fps, Color bgColor, InputStream is, OutputStream os) throws IOException {
+    public DisplayPanel (int width, int height, int fps, Color bgColor, Socket sock) throws IOException {
         WIDTH = width;
         HEIGHT = height;
         FPS = fps;
         period = 1000000000L / fps;
         BG_COLOR = bgColor;
-        inRaw = is;
-        outRaw = os;
-        this.oos = new ObjectOutputStream(os);
-        this.ois = new ObjectInputStream(is);
+        initStreams(sock);
+        this.oos = new ObjectOutputStream(outRaw);
+        this.ois = new ObjectInputStream(inRaw);
 
         sqProxy = new StreamQueueProxy(ois, oos);
         in = sqProxy.getInQ();
