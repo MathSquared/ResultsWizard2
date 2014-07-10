@@ -58,7 +58,7 @@ public class ArrayUtils {
      * @param results the results array whose integrity to check
      * @return true if the array correctly skips places for ties; false otherwise
      */
-    public static boolean checkTies (String[][] results) {
+    public static boolean checkTies (Object[][] results) {
         // An empty array is structured correctly, since there are no unstructured elements
         if (results == null) {
             return true;
@@ -77,7 +77,7 @@ public class ArrayUtils {
          */
 
         int num = 0; // tracking variable mentioned above
-        for (String[] x : results) {
+        for (Object[] x : results) {
             // num never decreases by more than 1 each turn, and can never decrease if it is 0, so check for num < 0 is unnecessary
             assert (num >= 0);
             if (num == 0 && (x == null || x.length == 0)) {
