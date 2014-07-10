@@ -287,7 +287,7 @@ public class Fraction { // TODO write unit tests
     public Fraction divide (Fraction divisor) {
         checkDenominatorNonzero(divisor);
         if (divisor.getImproperNumerator() == 0) {
-            throw new IllegalArgumentException("numerator of the divisor must not be 0");
+            throw new ArithmeticException("numerator of the divisor must not be 0");
         }
         return new Fraction(getImproperNumerator() * divisor.getDenominator(), denominator * divisor.getImproperNumerator());
     }
