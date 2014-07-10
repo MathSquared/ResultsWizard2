@@ -54,4 +54,54 @@ public enum SweepstakesAssignment {
      * Indicates that an application should prompt for point totals in case of a tie.
      */
     CUSTOM;
+
+    /**
+     * Returns a SweepstakesAssignment corresponding to the given character.
+     * 
+     * <p>
+     * The scheme is as follows (case-insensitive):
+     * </p>
+     * 
+     * <ul>
+     * <li>t or h: {@link TOP}</li>
+     * <li>b or l: {@link BOTTOM}</li>
+     * <li>m: {@link MID_ROUND_BETTER}</li>
+     * <li>w: {@link MID_ROUND_WORSE}</li>
+     * <li>a: {@link AVERAGE}</li>
+     * <li>i: {@link AVERAGE_ALL}</li>
+     * <li>j: {@link AVERAGE_ADJUSTED}</li>
+     * <li>d: {@link MEDIAN}</li>
+     * <li>c: {@link CUSTOM}</li>
+     * <li>All others: {@link TIE_PLACE}</li>
+     * </ul>
+     * 
+     * @param from the character for which to return a SweepstakesAssignment
+     * @return the corresponding SweepstakesAssignment
+     */
+    public static SweepstakesAssignment forChar (char from) {
+        switch (Character.toLowerCase(from)) {
+        case 't':
+        case 'h':
+            return TOP;
+        case 'b':
+        case 'l':
+            return BOTTOM;
+        case 'm':
+            return MID_ROUND_BETTER;
+        case 'w':
+            return MID_ROUND_WORSE;
+        case 'a':
+            return AVERAGE;
+        case 'i': // "ignore" any beyond the places
+            return AVERAGE_ALL;
+        case 'j':
+            return AVERAGE_ADJUSTED;
+        case 'd':
+            return MEDIAN;
+        case 'c':
+            return CUSTOM;
+        default:
+            return TIE_PLACE;
+        }
+    }
 }
