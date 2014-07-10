@@ -4,6 +4,7 @@
 package mathsquared.resultswizard2;
 
 import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
@@ -161,5 +162,44 @@ public class ArrayUtils {
             ret[i] = (arr[i] != null) ? arr[i].length : 0; // null array has 0 length
         }
         return ret;
+    }
+
+    public static int[] condensedLengthArray (Object[][] arr) {
+        // TODO Check ties
+
+        return condensedLengthArray(lengthArray(arr));
+    }
+
+    public static int[] condensedLengthArray (int[] lengthArray) {
+        ArrayList<Integer> ret = new ArrayList<Integer>();
+        for (int i = 0; i < lengthArray.length; i++) {
+            int x = lengthArray[i];
+            if (x == 0) { // there should be no zeroes except to skip places
+                throw new IllegalArgumentException("Improperly formatted length array: zero at " + i);
+            }
+            if (x < 0) {
+                throw new IllegalArgumentException("Invalid length array: negative at " + i);
+            }
+            ret.add(x);
+            int initI = i;
+
+            // Skip places, checking to ensure that each one is 0--intentionally updates the outer loop counter
+            for (; i < initI + x - 1 && i < lengthArray.length; i++) {
+                if (lengthArray[i] < 0) {
+                    throw new IllegalArgumentException("Invalid length array: negative at " + i);
+                }
+                if (lengthArray[i] > 0) {
+                    throw new IllegalArgumentException("Improperly formatted length array: nonzero at " + i);
+                }
+            }
+        }
+
+        // Unbox the ArrayList (it would be easier if it was automatic, but I understand the performance hit array autounboxing would cause)
+        Integer[] pending = ret.toArray(new Integer[0]);
+        int[] retArr = new int[pending.length];
+        for (int i = 0; i < pending.length; i++) {
+            retArr[i] = pending[i];
+        }
+        return retArr;
     }
 }
