@@ -243,4 +243,51 @@ public class ArrayUtils {
         }
         return retArr;
     }
+
+    /**
+     * Indexes an array by another int array and returns the result.
+     * 
+     * <p>
+     * Specifically, returns an array <code>ret</code> such that:
+     * </p>
+     * 
+     * <ul>
+     * <li><code>ret.length == indices.length</code>, and</li>
+     * <li>for all integers <code>i</code> where <code>0 &lt; i &lt; ret.length</code>, <code>ret[i] == toIndex[indices[i]]</code></li>
+     * </ul>
+     * 
+     * <p>
+     * If <code>indices</code> is null, this method returns null. If <code>toIndex</code> is null, this method throws a <code>NullPointerException</code>.
+     * </p>
+     * 
+     * @param toIndex the array to index
+     * @param indices the indices within <code>toIndex</code> to return
+     * @return <code>toIndex</code> indexed by <code>indices</code>, as described above
+     * @throws ArrayIndexOutOfBoundsException if any entry in <code>indices</code> is negative or greater than <code>toIndex.length</code>
+     * @throws NullPointerException if <code>toIndex == null</code>
+     */
+    // HASHTAG UNCHECKED CASTS
+    @SuppressWarnings("unchecked")
+    public static <T> T[] index (T[] toIndex, int[] indices) {
+        // Null handling
+        if (indices == null) {
+            return null;
+        }
+        if (toIndex == null) {
+            throw new NullPointerException("toIndex must not be null");
+        }
+
+        // Instantiate a generic array (equivalent to ret = new T[indices.length])
+        Class<T> type = (Class<T>) toIndex.getClass().getComponentType();
+        T[] ret = (T[]) Array.newInstance(type, indices.length);
+
+        for (int i = 0; i < indices.length; i++) {
+            if (indices[i] < 0 || indices[i] > toIndex.length) {
+                throw new ArrayIndexOutOfBoundsException("Invalid index " + indices[i] + " at indices[" + i + "]");
+            }
+            ret[i] = toIndex[indices[i]];
+        }
+
+        return ret;
+    }
 }
