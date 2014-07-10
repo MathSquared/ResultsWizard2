@@ -107,7 +107,7 @@ public class SyntaxParser {
      * Parses a String representing a list of integers into an array of those integers.
      * 
      * <p>
-     * The integers are represented as base-10 strings separated by characters that are not ASCII digits. If the first character of the given String is not an ASCII digit, the first element of the list is taken to be 0. However, any terminating non-digit characters are ignored.
+     * The integers are represented as base-10 strings separated by one or more characters that are not ASCII digits. If the first character of the given String is not an ASCII digit, the first element of the list is taken to be 0. However, any terminating non-digit characters are ignored.
      * </p>
      * 
      * @param raw the list of integers, as a String
@@ -115,7 +115,7 @@ public class SyntaxParser {
      * @throws NumberFormatException if an integer in the list does not parse into a base-10 integer as the {@link Integer#parseInt(String)} method would parse it
      */
     public static int[] parseIntegerList (String raw) {
-        String[] numeralStrings = raw.split("\\D"); // split on non-digits, discarding trailing strings
+        String[] numeralStrings = raw.split("\\D+"); // split on non-digits, discarding trailing strings
         int[] ret = new int[numeralStrings.length];
 
         for (int i = 0; i < numeralStrings.length; i++) {
