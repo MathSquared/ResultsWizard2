@@ -30,7 +30,8 @@ public class Sweepstakes {
 
         Fraction[] ret = new Fraction[quantities.length];
 
-        int currPlace = 1; // tracks which place we're on, since multiple places are condensed into one entry in quantities
+        // Start at 0 because indexing into spec is 0-based, not 1-based, and subtracting 1 all the time is too tedious
+        int currPlace = 0; // tracks which place we're on, since multiple places are condensed into one entry in quantities
         for (int i = 0; i < quantities.length; i++) {
             int newPlace = currPlace + quantities[i] - 1; // fencepost; quantity of 1 is from place 1 to place 1, not 1 to 2
             Fraction sweeps = new Fraction(0);
