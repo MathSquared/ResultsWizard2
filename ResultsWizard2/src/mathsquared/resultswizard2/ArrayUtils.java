@@ -165,7 +165,10 @@ public class ArrayUtils {
     }
 
     public static int[] condensedLengthArray (Object[][] arr) {
-        // TODO Check ties
+        // Check ties
+        if (!checkTies(arr)) {
+            throw new IllegalArgumentException("Ties in array are incorrectly formatted");
+        }
 
         return condensedLengthArray(lengthArray(arr));
     }
