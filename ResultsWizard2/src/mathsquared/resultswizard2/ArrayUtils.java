@@ -136,4 +136,30 @@ public class ArrayUtils {
         // no problems
         return true;
     }
+
+    /**
+     * Returns an array of the lengths of the sub-arrays of a given array.
+     * 
+     * <p>
+     * That is, returns an array <code>ret</code> such that:
+     * </p>
+     * 
+     * <ul>
+     * <li><code>ret.length == arr.length</code>, and</li>
+     * <li>for all integers <code>i</code> where <code>0 &lt; i &lt; arr.length</code>, <code>ret[i] = arr[i].length</code>. The length of a null array is defined to be 0.</li>
+     * </ul>
+     * 
+     * @param arr a two-or-more-dimensional array
+     * @return a length array as described above, or null if <code>arr</code> is null
+     */
+    public static int[] lengthArray (Object[][] arr) {
+        if (arr == null) {
+            return null;
+        }
+        int[] ret = new int[arr.length];
+        for (int i = 0; i < arr.length; i++) {
+            ret[i] = (arr[i] != null) ? arr[i].length : 0; // null array has 0 length
+        }
+        return ret;
+    }
 }
