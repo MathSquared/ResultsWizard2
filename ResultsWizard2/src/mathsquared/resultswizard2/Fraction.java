@@ -381,12 +381,12 @@ public class Fraction { // TODO write unit tests
     }
 
     /**
-     * Converts a Fraction to the double it represents. This is done as if returning <code>(unit + (double) numerator / denominator)</code>.
+     * Converts a Fraction to the double it represents. This is done as if returning <code>((double) {@link #getImproperNumerator()} / denominator)</code>.
      * 
      * @return the double equivalent of this Fraction
      */
     public double toDouble () {
-        return unit + numerator * 1.0 / denominator;
+        return (double) getImproperNumerator() / denominator;
     }
 
     /**
