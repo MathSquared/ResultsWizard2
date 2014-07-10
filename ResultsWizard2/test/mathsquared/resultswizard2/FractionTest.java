@@ -94,7 +94,12 @@ public class FractionTest {
      */
     @Test
     public void testMultiplyInt () {
-        fail("Not yet implemented");
+        assertTrue("Proper to proper", new Fraction(1, 3).multiply(2).equals(new Fraction(2, 3)));
+        assertTrue("Proper to improper", new Fraction(2, 7).multiply(5).equals(new Fraction(10, 7)));
+        assertTrue("Improper to improper", new Fraction(7, 4).multiply(3).equals(new Fraction(21, 4)));
+        assertTrue("Perfect unit", new Fraction(7).multiply(2).equals(new Fraction(14)));
+        assertTrue("Zero multiplier", new Fraction(4, 5).multiply(0).equals(new Fraction(0)));
+        assertTrue("Negative multiplicand", new Fraction(-3, 5).multiply(3).equals(new Fraction(-9, 5)));
     }
 
     /**
@@ -102,7 +107,11 @@ public class FractionTest {
      */
     @Test
     public void testMultiplyFraction () {
-        fail("Not yet implemented");
+        assertTrue("Proper to proper", new Fraction(1, 3).multiply(new Fraction(2, 5)).equals(new Fraction(2, 15)));
+        assertTrue("Proper times improper", new Fraction(2, 3).multiply(new Fraction(4, 3)).equals(new Fraction(8, 9)));
+        assertTrue("Improper times proper", new Fraction(4, 3).multiply(new Fraction(2, 3)).equals(new Fraction(8, 9)));
+        assertTrue("Perfect unit times proper", new Fraction(6).multiply(new Fraction(2, 5)).equals(new Fraction(12, 5)));
+        assertTrue("Negative handling", new Fraction(-4, 3).multiply(new Fraction(2, -5)).equals(new Fraction(8, 15)));
     }
 
     /**
