@@ -164,6 +164,17 @@ public class ArrayUtils {
         return ret;
     }
 
+    /**
+     * Returns a condensed length array for a given array.
+     * 
+     * <p>
+     * This method behaves identically to <code>{@link #condensedLengthArray(int[]) condensedLengthArray}({@link #lengthArray(Object[][]) lengthArray}(arr))</code>.
+     * </p>
+     * 
+     * @param arr the input array
+     * @return a condensed length array for <code>arr</code>
+     * @throws IllegalArgumentException if <code>{@link #checkTies(Object[][]) checkTies}(arr)</code> returns false
+     */
     public static int[] condensedLengthArray (Object[][] arr) {
         // Check ties
         if (!checkTies(arr)) {
@@ -173,6 +184,30 @@ public class ArrayUtils {
         return condensedLengthArray(lengthArray(arr));
     }
 
+    /**
+     * Condenses a {@linkplain #lengthArray(Object[][]) length array}.
+     * 
+     * <p>
+     * Input to this method must be formatted as if it came from an array for which {@link #checkTies(Object[][])} returns true. That is:
+     * </p>
+     * 
+     * <ul>
+     * <li>the array must start with a non-zero integer</li>
+     * <li>every non-zero integer <code>i</code> in the array must be followed by <code>i - 1</code> zeroes (if <code>i - 1</code> is greater than the number of remaining spaces in the array, all of these remaining spaces must be filled with zeroes</code></li>
+     * </ul>
+     * 
+     * <p>
+     * In addition, the input array must contain no negative entries.
+     * </p>
+     * 
+     * <p>
+     * A condensed length array is a length array with all zeroes removed. Due to the <code>checkTies()</code> stipulation, a condensed length array can still be converted into a full length array. (Terminal zeroes are the exception, since not all of them have to be present in input to this method.)
+     * </p>
+     * 
+     * @param lengthArray a length array meeting the conditions above
+     * @return a condensed version of the length array
+     * @throws IllegalArgumentException if any entry in the length array is negative, the array contains a nonzero entry that should be zero, or a zero entry that should be nonzero
+     */
     public static int[] condensedLengthArray (int[] lengthArray) {
         ArrayList<Integer> ret = new ArrayList<Integer>();
         for (int i = 0; i < lengthArray.length; i++) {
