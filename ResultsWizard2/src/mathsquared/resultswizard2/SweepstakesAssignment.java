@@ -37,7 +37,7 @@ public enum SweepstakesAssignment {
     /**
      * Indicates the average of all the sweepstakes point assignments within the range, ignoring any places beyond the amount of sweeps totals specified.
      */
-    AVERAGE_ALL,
+    AVERAGE_IGNORE,
     /**
      * Indicates the average of all the sweepstakes point assignments within the range, excluding those for the highest and lowest place.
      */
@@ -68,7 +68,7 @@ public enum SweepstakesAssignment {
      * <li>m: {@link MID_ROUND_BETTER}</li>
      * <li>w: {@link MID_ROUND_WORSE}</li>
      * <li>a: {@link AVERAGE}</li>
-     * <li>i: {@link AVERAGE_ALL}</li>
+     * <li>i: {@link AVERAGE_IGNORE}</li>
      * <li>j: {@link AVERAGE_ADJUSTED}</li>
      * <li>d: {@link MEDIAN}</li>
      * <li>c: {@link CUSTOM}</li>
@@ -93,7 +93,7 @@ public enum SweepstakesAssignment {
         case 'a':
             return AVERAGE;
         case 'i': // "ignore" any beyond the places
-            return AVERAGE_ALL;
+            return AVERAGE_IGNORE;
         case 'j':
             return AVERAGE_ADJUSTED;
         case 'd':

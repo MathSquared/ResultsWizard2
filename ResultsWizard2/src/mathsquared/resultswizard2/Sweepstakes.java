@@ -59,7 +59,7 @@ public class Sweepstakes {
                 }
                 sweeps = new Fraction(total, count);
                 break;
-            case AVERAGE_ALL:
+            case AVERAGE_IGNORE:
                 int total1 = 0; // Ignore the numbers after the variables--they're duplicated in scope from case AVERAGE above, so they need to be distinguished.
                 int count1 = 0;
                 for (int j = currPlace; j <= newPlace && j < spec.length; j++) { // here, we stop the loop early since we ignore all nonexistent specifications
