@@ -197,10 +197,10 @@ public class FractionTest {
     @Test
     public void testToDouble () {
         Fraction half = new Fraction(1, 2);
-        assertTrue("1/2", half.toDouble() == 1 / 2);
+        assertTrue("1/2", half.toDouble() == 1.0 / 2);
 
         Fraction fiveThirds = new Fraction(5, 3);
-        assertTrue("5/3", fiveThirds.toDouble() == 5 / 3);
+        assertTrue("5/3", fiveThirds.toDouble() == 5.0 / 3);
     }
 
     /**
