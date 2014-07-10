@@ -48,7 +48,9 @@ public class SyntaxParserTest {
     @Test
     public void testParseIntegerList () {
         int[] parsed = SyntaxParser.parseIntegerList("1 2,3 4.5$");
+        int[] parsed2 = SyntaxParser.parseIntegerList("1, 2: 3, ");
         assertTrue("integer list: five integers, various separators, trailing", Arrays.equals(parsed, new int[] {1, 2, 3, 4, 5}));
+        assertTrue("integer list: various multiple-character separators, trailing", Arrays.equals(parsed, new int[] {1, 2, 3}));
     }
 
 }
