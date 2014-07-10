@@ -45,10 +45,12 @@ public class Event {
      * @param indivSweeps the amount of sweepstakes points to award for each individual placing, where 0 is for first place, 1 for second, etc.; <code>indivSweeps.length</code> must equal <code>indivPlaces</code>
      * @param teamSweeps the amount of sweepstakes points to award for each team placing, where 0 is for first place, 1 for second, etc.; <code>teamSweeps.length</code> must equal <code>teamPlaces</code>
      * @param specialSweeps the amount of sweepstakes points to award for each placing in each special honor, where the value for any key is the array of points to award for the honor indicated by that key; <code>specialSweeps.keySet().equals(specialHonors.keySet())</code> must be true (meaning <code>specialSweeps</code> and <code>specialHonors</code> must have mappings from the exact same keys)
+     * @param tieAssign the {@link TiePlaceAssignment} used to award places in the event of ties
+     * @param sweepsAssign the {@link SweepstakesAssignment} used to award sweepstakes points in the event of ties
      * @throws NullPointerException if any parameter is null or contains null as an element, key, or value
      * @throws IllegalArgumentException if <code>primaryName</code> contains a character outside the allowable range, <code>(indivPlaces &lt; 0)</code>, <code>(teamPlaces &lt; 0)</code>, <code>(specialHonors.get(x) &lt;= 0)</code> for any <code>x</code> present in <code>specialHonors.keySet()</code>, <code>(indivSweeps.length != indivPlaces</code>, <code>(teamSweeps.length != teamPlaces)</code>, or <code>(!specialHonors.keySet().equals(specialSweeps.keySet()))</code>
      */
-    public Event (String primaryName, String[] otherNames, int indivPlaces, int teamPlaces, Map<String, Integer> specialHonors, int[] indivSweeps, int[] teamSweeps, Map<String, int[]> specialSweeps) {
+    public Event (String primaryName, String[] otherNames, int indivPlaces, int teamPlaces, Map<String, Integer> specialHonors, int[] indivSweeps, int[] teamSweeps, Map<String, int[]> specialSweeps, TiePlaceAssignment tieAssign, SweepstakesAssignment sweepsAssign) {
         // Null checks
         if (primaryName == null) {
             throw new NullPointerException("primaryName must not be null");
@@ -88,6 +90,12 @@ public class Event {
             if (x.getValue() == null) {
                 throw new NullPointerException("specialSweeps must not contain null values (" + x.getKey() + " mapped to null)");
             }
+        }
+        if (tieAssign == null) {
+            throw new NullPointerException("tieAssign must not be null");
+        }
+        if (sweepsAssign == null) {
+            throw new NullPointerException("sweepsAssign must not be null");
         }
 
         // Sanity checks
@@ -129,6 +137,8 @@ public class Event {
         this.indivSweeps = Arrays.copyOf(indivSweeps, indivSweeps.length);
         this.teamSweeps = Arrays.copyOf(teamSweeps, teamSweeps.length);
         // specialSweeps handled below
+        this.tieAssign = tieAssign;
+        this.sweepsAssign = sweepsAssign;
 
         // Copy over the specialHonors
         this.specialHonors = new HashMap<String, Integer>();

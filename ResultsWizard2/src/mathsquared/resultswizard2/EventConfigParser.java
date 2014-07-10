@@ -62,7 +62,7 @@ public class EventConfigParser { // TODO allow sweepstakes specified upon data e
      * @return a <code>Map</code> from events' primary names to event objects
      * @throws IOException if an I/O error occurs when reading the data file
      * @throws NumberFormatException if a number in the data file does not parse correctly when one was expected
-     * @throws IllegalArgumentException if an invalid value is given for a field; see {@linkplain Event#Event(String, String[], int, int, Map, int[], int[], Map) the <code>Event</code> constructor}
+     * @throws IllegalArgumentException if an invalid value is given for a field; see {@linkplain Event#Event(String, String[], int, int, Map, int[], int[], Map, TiePlaceAssignment, SweepstakesAssignment) the <code>Event</code> constructor}
      */
     public static Map<String, Event> load (Reader read) throws IOException {
         Properties loaded = new Properties();
@@ -113,7 +113,7 @@ public class EventConfigParser { // TODO allow sweepstakes specified upon data e
             }
 
             // Finally, add to the Map
-            ret.put(x, new Event(x, otherNames, indivPlaces, teamPlaces, specialHonors, indivSweeps, teamSweeps, specialSweeps));
+            ret.put(x, new Event(x, otherNames, indivPlaces, teamPlaces, specialHonors, indivSweeps, teamSweeps, specialSweeps, TiePlaceAssignment.TOP, SweepstakesAssignment.TIE_PLACE));
         }
 
         // All events processed
@@ -127,7 +127,7 @@ public class EventConfigParser { // TODO allow sweepstakes specified upon data e
      * @return a <code>Map</code> from events' primary names to event objects
      * @throws IOException if an I/O error occurs when reading the data file
      * @throws NumberFormatException if a number in the data file does not parse correctly when one was expected
-     * @throws IllegalArgumentException if an invalid value is given for a field; see {@linkplain Event#Event(String, String[], int, int, Map, int[], int[], Map) the <code>Event</code> constructor}
+     * @throws IllegalArgumentException if an invalid value is given for a field; see {@linkplain Event#Event(String, String[], int, int, Map, int[], int[], Map, TiePlaceAssignment, SweepstakesAssignment) the <code>Event</code> constructor}
      * @see {@link #load(Reader)}
      */
     public static Map<String, Event> load (InputStream is) throws IOException {
@@ -143,7 +143,7 @@ public class EventConfigParser { // TODO allow sweepstakes specified upon data e
      * @return a <code>Map</code> from events' primary names to event objects
      * @throws IOException if an I/O error occurs when reading the data file
      * @throws NumberFormatException if a number in the data file does not parse correctly when one was expected
-     * @throws IllegalArgumentException if an invalid value is given for a field; see {@linkplain Event#Event(String, String[], int, int, Map, int[], int[], Map) the <code>Event</code> constructor}
+     * @throws IllegalArgumentException if an invalid value is given for a field; see {@linkplain Event#Event(String, String[], int, int, Map, int[], int[], Map, TiePlaceAssignment, SweepstakesAssignment) the <code>Event</code> constructor}
      * @see {@link #load(Reader)}
      */
     public static Map<String, Event> load (InputStream is, Charset cset) throws IOException {
