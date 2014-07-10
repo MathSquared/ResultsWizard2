@@ -82,7 +82,11 @@ public class FractionTest {
      */
     @Test
     public void testNegative () {
-        fail("Not yet implemented");
+        assertTrue("Proper", new Fraction(2, 3).negative().equals(new Fraction(-2, 3)));
+        assertTrue("Improper", new Fraction(5, 4).negative().equals(new Fraction(-5, 4)));
+        assertTrue("Zero", new Fraction(0).negative().equals(new Fraction(0)));
+        assertTrue("Perfect unit", new Fraction(3).negative().equals(new Fraction(-3)));
+        assertTrue("Already negative improper", new Fraction(-10, 7).negative().equals(new Fraction(10, 7)));
     }
 
     /**
