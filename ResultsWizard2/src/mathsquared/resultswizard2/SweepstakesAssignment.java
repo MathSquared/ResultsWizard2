@@ -39,7 +39,7 @@ public enum SweepstakesAssignment {
      */
     AVERAGE_IGNORE,
     /**
-     * Indicates the average of all the sweepstakes point assignments within the range, excluding those for the highest and lowest place.
+     * Indicates the average of all the sweepstakes point assignments within the range, excluding those for the highest and lowest place and treating places beyond the sweeps totals specified as having zero sweepstakes values.
      */
     AVERAGE_ADJUSTED,
     /**
