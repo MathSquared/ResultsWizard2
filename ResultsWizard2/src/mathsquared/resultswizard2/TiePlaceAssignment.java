@@ -72,8 +72,7 @@ public enum TiePlaceAssignment {
      * <li>b or l: {@link BOTTOM}</li>
      * <li>m: {@link MID_ROUND_BETTER}</li>
      * <li>w: {@link MID_ROUND_WORSE}</li>
-     * <li>All others: {@link TOP}
-     * <li>
+     * <li>All others: {@link TOP}</li>
      * </ul>
      * 
      * @param from the character for which to return a TiePlaceAssignment
