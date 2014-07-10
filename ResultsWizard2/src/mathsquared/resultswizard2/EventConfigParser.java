@@ -42,6 +42,8 @@ public class EventConfigParser { // TODO allow sweepstakes specified upon data e
      * <li><code>evt`<b>indivSweeps</b></code>: the amount of sweepstakes points to award for each individual place in the event, in order from first to last, as an {@linkplain SyntaxParser#parseIntegerList(String) integer list}</li>
      * <li><code>evt`<b>teamSweeps</b></code>: the amount of sweepstakes points to award for each team place in the event, in order from first to last, as an integer list</li>
      * <li><code>evt`<b>specialSweeps</b></code>: the amount of sweepstakes points to award for special honors in this event (see below)</li>
+     * <li><code>evt`<b>tieAssign</b></code>: the {@linkplain TiePlaceAssignment#forChar(char) character} corresponding to the {@link TiePlaceAssignment} used to assign places in case of ties (only the first character is considered)</li>
+     * <li><code>evt`<b>sweepsAssign</b></code>: the {@linkplain SweepstakesAssignment#forChar(char) character} corresponding to the {@link SweepstakesAssignment} used to assign sweepstakes points in case of ties (only the first character is considered)</li>
      * </ul>
      * 
      * <p>
@@ -81,7 +83,7 @@ public class EventConfigParser { // TODO allow sweepstakes specified upon data e
         Map<String, Event> ret = new HashMap<String, Event>();
         for (String x : events) {
             // Check that the property table contains all data fields
-            String[] propertyNames = {"otherNames", "indivPlaces", "teamPlaces", "specialHonors", "indivSweeps", "teamSweeps", "specialSweeps"};
+            String[] propertyNames = {"otherNames", "indivPlaces", "teamPlaces", "specialHonors", "indivSweeps", "teamSweeps", "specialSweeps", "tieAssign", "sweepsAssign"};
             for (String p : propertyNames) {
                 String propertyToCheck = x + "`" + p;
                 if (!loaded.containsKey(propertyToCheck)) {
@@ -97,6 +99,8 @@ public class EventConfigParser { // TODO allow sweepstakes specified upon data e
             int[] indivSweeps = SyntaxParser.parseIntegerList(loaded.getProperty(x + "`indivSweeps"));
             int[] teamSweeps = SyntaxParser.parseIntegerList(loaded.getProperty(x + "`teamSweeps"));
             // Special processing for specialSweeps done below
+            TiePlaceAssignment tieAssign = TiePlaceAssignment.forChar(loaded.getProperty(x + "`tieAssign").charAt(0));
+            SweepstakesAssignment sweepsAssign = SweepstakesAssignment.forChar(loaded.getProperty(x + "`sweepsAssign").charAt(0));
 
             Map<String, String> specialHonorsRaw = SyntaxParser.createPairwiseMap(SyntaxParser.parseQuotedSyntax(loaded.getProperty(x + "`specialHonors")));
             // We multiply size by 2 since default load factor is 0.75, so no more than 3/4 of the capacity can be taken; with capacity equal to twice the size, this passes with flying colors
@@ -113,7 +117,7 @@ public class EventConfigParser { // TODO allow sweepstakes specified upon data e
             }
 
             // Finally, add to the Map
-            ret.put(x, new Event(x, otherNames, indivPlaces, teamPlaces, specialHonors, indivSweeps, teamSweeps, specialSweeps, TiePlaceAssignment.TOP, SweepstakesAssignment.TIE_PLACE));
+            ret.put(x, new Event(x, otherNames, indivPlaces, teamPlaces, specialHonors, indivSweeps, teamSweeps, specialSweeps, tieAssign, sweepsAssign));
         }
 
         // All events processed
