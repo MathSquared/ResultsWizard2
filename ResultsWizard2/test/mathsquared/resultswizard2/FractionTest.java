@@ -117,17 +117,32 @@ public class FractionTest {
     /**
      * Test method for {@link mathsquared.resultswizard2.Fraction#divide(int)}.
      */
-    @Test
+    @Test(expected = ArithmeticException.class)
     public void testDivideInt () {
-        fail("Not yet implemented");
+        assertTrue("Proper to proper", new Fraction(4, 5).divide(3).equals(new Fraction(4, 15)));
+        assertTrue("Improper to proper", new Fraction(7, 3).divide(8).equals(new Fraction(7, 24)));
+        assertTrue("Improper to improper", new Fraction(15, 7).divide(2).equals(new Fraction(15, 14)));
+        assertTrue("Perfect unit and simplification", new Fraction(16).divide(4).equals(new Fraction(4)));
+        assertTrue("Zero multiplier", new Fraction(0).divide(57).equals(0));
+        assertTrue("Negative over negative", new Fraction(-3, 5).divide(-2).equals(new Fraction(3, 10)));
+
+        // exception
+        new Fraction(4, 7).divide(0);
     }
 
     /**
      * Test method for {@link mathsquared.resultswizard2.Fraction#divide(mathsquared.resultswizard2.Fraction)}.
      */
-    @Test
+    @Test(expected = ArithmeticException.class)
     public void testDivideFraction () {
-        fail("Not yet implemented");
+        assertTrue("Proper over proper", new Fraction(3, 4).divide(new Fraction(2, 5)).equals(new Fraction(15, 8)));
+        assertTrue("Proper over improper and simp.", new Fraction(4, 7).divide(new Fraction(6, 5)).equals(new Fraction(10, 21)));
+        assertTrue("Improper over proper", new Fraction(8, 5).divide(new Fraction(3, 4)).equals(new Fraction(32, 15)));
+        assertTrue("Two perfect units", new Fraction(5).divide(new Fraction(2)).equals(new Fraction(5, 2)));
+        assertTrue("Negative handling", new Fraction(9, -5).divide(new Fraction(-7, 4)).equals(new Fraction(36, 35)));
+
+        // exception
+        new Fraction(8, 5).divide(new Fraction(0, 17));
     }
 
     /**
