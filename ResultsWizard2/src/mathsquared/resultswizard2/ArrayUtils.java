@@ -205,10 +205,13 @@ public class ArrayUtils {
      * </p>
      * 
      * @param lengthArray a length array meeting the conditions above
-     * @return a condensed version of the length array
+     * @return a condensed version of the length array, or null if <code>lengthArray</code> is null
      * @throws IllegalArgumentException if any entry in the length array is negative, the array contains a nonzero entry that should be zero, or a zero entry that should be nonzero
      */
     public static int[] condensedLengthArray (int[] lengthArray) {
+        if (lengthArray == null) {
+            return null;
+        }
         ArrayList<Integer> ret = new ArrayList<Integer>();
         for (int i = 0; i < lengthArray.length; i++) {
             int x = lengthArray[i];
