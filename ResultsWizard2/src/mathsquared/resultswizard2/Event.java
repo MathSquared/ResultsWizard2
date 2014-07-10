@@ -23,6 +23,8 @@ public class Event {
     private int[] indivSweeps; // The amount of sweepstakes points to award to each place in this event (0 being first, 1 second, etc.)
     private int[] teamSweeps; // The amount of sweepstakes points to award to each team place in this event (0 being first, 1 second, etc.)
     private Map<String, int[]> specialSweeps; // The amount of sweepstakes points to award to each special honor (indices correspond with specialHonors); the array is the points to award for each place
+    private TiePlaceAssignment tieAssign; // How this event assigns places in the event of ties
+    private SweepstakesAssignment sweepsAssign; // How this event assigns sweepstakes points in the event of ties
 
     /**
      * Creates an object representing a new competition event. All objects passed in have their data copied into the class; in this way, the Event object maintains no references to passed-in data.
@@ -223,5 +225,19 @@ public class Event {
         }
 
         return ret;
+    }
+
+    /**
+     * @return the tieAssign
+     */
+    public TiePlaceAssignment getTieAssign () {
+        return tieAssign;
+    }
+
+    /**
+     * @return the sweepsAssign
+     */
+    public SweepstakesAssignment getSweepsAssign () {
+        return sweepsAssign;
     }
 }
