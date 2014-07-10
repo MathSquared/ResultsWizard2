@@ -60,4 +60,39 @@ public enum TiePlaceAssignment {
     public int assignPlace (int placeOne, int placeTwo) {
         return 0;
     }
+
+    /**
+     * Returns a TiePlaceAssignment corresponding to the given character.
+     * 
+     * <p>
+     * The scheme is as follows (case-insensitive):
+     * </p>
+     * 
+     * <ul>
+     * <li>b or l: {@link BOTTOM}</li>
+     * <li>m: {@link MID_ROUND_BETTER}</li>
+     * <li>w: {@link MID_ROUND_WORSE}</li>
+     * <li>All others: {@link TOP}
+     * <li>
+     * </ul>
+     * 
+     * @param from the character for which to return a TiePlaceAssignment
+     * @return the corresponding TiePlaceAssignment
+     */
+    public static TiePlaceAssignment forChar (char from) {
+        switch (Character.toLowerCase(from)) {
+        case 't':
+        case 'h': // high
+            return TOP;
+        case 'b':
+        case 'l': // low
+            return BOTTOM;
+        case 'm':
+            return MID_ROUND_BETTER;
+        case 'w':
+            return MID_ROUND_WORSE;
+        default:
+            return TOP;
+        }
+    }
 }
