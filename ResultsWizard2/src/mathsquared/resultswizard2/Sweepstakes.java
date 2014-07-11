@@ -152,4 +152,30 @@ public class Sweepstakes {
 
         return ret;
     }
+
+    /**
+     * Computes sweepstakes from start to finish.
+     * 
+     * <p>
+     * This method behaves identically to the following code snippet:
+     * </p>
+     * 
+     * <code>
+     * int[] quantities = ArrayUtils.condensedLengthArray(results);
+     * Fraction[] sweeps = assignPoints(quantities, spec, tieAssign, sweepsAssign);
+     * return linkSweepstakes(results, sweeps);
+     * </code>
+     * 
+     * @param results the results of the event, as if returned by {@link EventResults#getIndivHonorees()} or a similar method; must correctly {@linkplain ArrayUtils#checkTies(Object[][]) skip places for ties}
+     * @param spec the specification for sweepstakes points in the event, where index 0 represents the number of points to award for first place
+     * @param tieAssign the {@link TiePlaceAssignment} used to assign places in the event of a tie
+     * @param sweepsAssign the {@link SweepstakesAssignment} used to assign sweepstakes points in the event of a tie
+     * @return a Map from each entry in <code>results</code> to the corresponding amount of sweepstakes points they earn (entries earning 0 points may or may not be included)
+     * @throws IllegalArgumentException if <code>results</code> does not properly skip places for ties
+     */
+    public static Map<String, Fraction> computeSweeps (String[][] results, int[] spec, TiePlaceAssignment tieAssign, SweepstakesAssignment sweepsAssign) {
+        int[] quantities = ArrayUtils.condensedLengthArray(results);
+        Fraction[] sweeps = assignPoints(quantities, spec, tieAssign, sweepsAssign);
+        return linkSweepstakes(results, sweeps);
+    }
 }
