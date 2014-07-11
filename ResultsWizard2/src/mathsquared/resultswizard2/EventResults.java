@@ -130,6 +130,41 @@ public class EventResults {
     }
 
     /**
+     * Returns the sweepstakes points for individual winners in this event. Specifically, returns a Map from names of honorees to amount of sweeps points received.
+     * 
+     * @param studentNames if true, the returned Map has student names as keys; if false, school names are used as keys
+     * @return a Map from student or school names to amount of points earned (entries earning 0 points may or may not be included)
+     */
+    public Map<String, Fraction> computeIndivSweeps (boolean studentNames) {
+        return Sweepstakes.computeSweeps((studentNames ? indivHonorees : indivSchools), ev.getIndivSweeps(), ev.getTieAssign(), ev.getSweepsAssign());
+    }
+
+    /**
+     * Returns the sweepstakes points for team winners in this event. Specifically, returns a Map from names of honored schools to amount of sweeps points received.
+     * 
+     * @return a Map from school names to amount of points earned (entries earning 0 points may or may not be included)
+     */
+    public Map<String, Fraction> computeTeamSweeps () {
+        return Sweepstakes.computeSweeps(teamHonorees, ev.getTeamSweeps(), ev.getTieAssign(), ev.getSweepsAssign());
+    }
+
+    /**
+     * Returns the sweepstakes points for winners in the given special honor. Specifically, returns a Map from names of honorees to amount of sweeps points received.
+     * 
+     * @param honorName the name of the special honor for which to compute sweeps
+     * @param studentNames if true, the returned Map has student names as keys; if false, school names are used as keys
+     * @return a Map from student or school names to amount of points earned in the honor given by <code>honorName</code> (entries earning 0 points may or may not be included)
+     * @throws NullPointerException if no results are available for <code>honorName</code> (equivalently, if <code>(studentNames ? specialHonorees : specialSchools).get(honorName) == null</code>)
+     */
+    public Map<String, Fraction> computeSpecialSweeps (String honorName, boolean studentNames) {
+        String[][] results = (studentNames ? specialHonorees : specialSchools).get(honorName);
+        if (results == null) {
+            throw new NullPointerException("No results for honor " + honorName);
+        }
+        return Sweepstakes.computeSweeps(results, ev.getSpecialSweeps().get(honorName), ev.getTieAssign(), ev.getSweepsAssign());
+    }
+
+    /**
      * Returns an array of the names of those placing individually, in rank order where index 0 is first place.
      * 
      * @return the indivHonorees, or null if this {@linkplain Event event} does not award individual results
