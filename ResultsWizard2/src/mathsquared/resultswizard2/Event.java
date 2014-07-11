@@ -101,7 +101,7 @@ public class Event {
         // Sanity checks
         for (char x : primaryName.toCharArray()) {
             if (x < 0x20 || x > 0x7E || x == '`') {
-                throw new IllegalArgumentException(String.format("Character U+%X must not appear in an event's primary name", x));
+                throw new IllegalArgumentException(String.format("Character U+%04X must not appear in an event's primary name", x));
             }
         }
         if (indivPlaces < 0) {
