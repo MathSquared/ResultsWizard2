@@ -160,11 +160,13 @@ public class Sweepstakes {
      * This method behaves identically to the following code snippet:
      * </p>
      * 
+     * <p>
      * <code>
-     * int[] quantities = ArrayUtils.condensedLengthArray(results);
-     * Fraction[] sweeps = assignPoints(quantities, spec, tieAssign, sweepsAssign);
+     * int[] quantities = ArrayUtils.condensedLengthArray(results);<br />
+     * Fraction[] sweeps = assignPoints(quantities, spec, tieAssign, sweepsAssign);<br />
      * return linkSweepstakes(results, sweeps);
      * </code>
+     * </p>
      * 
      * @param results the results of the event, as if returned by {@link EventResults#getIndivHonorees()} or a similar method; must correctly {@linkplain ArrayUtils#checkTies(Object[][]) skip places for ties}
      * @param spec the specification for sweepstakes points in the event, where index 0 represents the number of points to award for first place
