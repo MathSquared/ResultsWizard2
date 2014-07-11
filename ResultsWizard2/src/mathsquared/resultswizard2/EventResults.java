@@ -165,6 +165,27 @@ public class EventResults {
     }
 
     /**
+     * Computes the sum total amount of sweepstakes points to award to all schools for this event.
+     * 
+     * <p>
+     * This is equivalent to {@linkplain AdditiveMapUtils#addAllNumbers(Map, Map, boolean) numerically adding} the results of {@link #computeIndivSweeps(boolean) computeIndivSweeps(false)}, {@link #computeTeamSweeps()}, and {@link #computeSpecialSweeps(String, boolean) computeSpecialSweeps(x, false)} where <code>x</code> takes on all of the values of <code>getSpecialHonorees().keySet()</code> (equivalently, the names of all of the special honors in this event).
+     * </p>
+     * 
+     * @return a Map from school names to amount of points earned in this event (entries earning 0 points may or may not be included)
+     */
+    public Map<String, Fraction> computeTotalSweeps () {
+        Map<String, Fraction> ret = computeIndivSweeps(false); // must use schools because of team sweeps
+        AdditiveMapUtils.addAllNumbers(ret, computeTeamSweeps(), false);
+
+        // Add all special honors
+        for (String x : specialHonorees.keySet()) {
+            AdditiveMapUtils.addAllNumbers(ret, computeSpecialSweeps(x, false), false);
+        }
+
+        return ret;
+    }
+
+    /**
      * Returns an array of the names of those placing individually, in rank order where index 0 is first place.
      * 
      * @return the indivHonorees, or null if this {@linkplain Event event} does not award individual results
