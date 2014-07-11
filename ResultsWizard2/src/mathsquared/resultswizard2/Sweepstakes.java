@@ -3,6 +3,9 @@
  */
 package mathsquared.resultswizard2;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Given a set of event results, determines the amount of sweepstakes points to assign to each contestant.
  * 
@@ -94,6 +97,57 @@ public class Sweepstakes {
 
             ret[i] = sweeps;
             currPlace += quantities[i]; // next set of places; this time, we want to move past the range we're in
+        }
+
+        return ret;
+    }
+
+    /**
+     * Links an array of sweepstakes points to corresponding results.
+     * 
+     * <p>
+     * Specifically, iterates through the non-null subarrays of <code>results</code> and the entries of <code>sweeps</code>, and returns a Map from each string in <code>results</code> to the sum of corresponding entries in <code>sweeps</code>.
+     * </p>
+     * 
+     * <p>
+     * Definition of "corresponding entry":
+     * </p>
+     * 
+     * <ol>
+     * <li>Assign each sub-array of nonzero length in <code>results</code> an ID, which is equal to the number of sub-arrays before it that are not null or of length 0</li>
+     * <li>For each string in each sub-array of <code>results</code>, the corresponding entry in <code>sweeps</code> is that located at the index in <code>sweeps</code> equal to the ID of the sub-array in <code>results</code> containing that string</li>
+     * </ol>
+     * 
+     * <p>
+     * If a string occurs multiple times, the corresponding entries in <code>sweeps</code> are added together. If there are multiple occurrences in the same sub-array, the corresponding entry in <code>sweeps</code> is added multiple times.
+     * </p>
+     * 
+     * <p>
+     * If an entry in <code>results</code> has no corresponding entry in <code>sweeps</code>, it is not added to the returned Map.
+     * </p>
+     * 
+     * @param results the raw results of the event, as returned from {@link EventResults#getIndivHonorees()} or a similar method; must represent ties as entries within the same sub-array and should (but need not) correctly {@linkplain ArrayUtils#checkTies(Object[][]) skip places for ties}
+     * @param sweeps the sweepstakes to assign to each place, skipping places with no actual results, as if returned from {@link #assignPoints(int[], int[], TiePlaceAssignment, SweepstakesAssignment)}
+     * @return a Map linking <code>sweeps</code> from <code>results</code>, as described above
+     */
+    public static Map<String, Fraction> linkSweepstakes (String[][] results, Fraction[] sweeps) {
+        Map<String, Fraction> ret = new HashMap<String, Fraction>();
+
+        int r = 0; // declaring outside the loop for clarity in skipping logic
+        for (int s = 0; s < sweeps.length; s++) { // r is handled below
+            for (String x : results[r]) { // each string in the sub-array gets this many points
+                AdditiveMapUtils.addNumber(ret, x, sweeps[s]);
+            }
+
+            // Skip places until I hit the next ones; do...while skips the current entry
+            do {
+                r++;
+            } while (r < results.length && (results[r] == null || results[r].length == 0));
+
+            // Check for overrunning results array
+            if (r >= results.length) {
+                break;
+            }
         }
 
         return ret;
