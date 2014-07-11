@@ -23,7 +23,7 @@ public class Sweepstakes {
      * @param sweepsM the {@link SweepstakesAssignment} dictating the sweepstakes points that should be assigned to each competitor
      * @return an array where each entry is the number of points to assign to the tie in the corresponding index of <code>quantities</code>
      */
-    public Fraction[] assignPoints (int[] quantities, int[] spec, TiePlaceAssignment tiePlaceM, SweepstakesAssignment sweepsM) {
+    public static Fraction[] assignPoints (int[] quantities, int[] spec, TiePlaceAssignment tiePlaceM, SweepstakesAssignment sweepsM) {
         if (sweepsM == SweepstakesAssignment.CUSTOM) {
             return null; // the app should be prompting--leave that to the GUI code, not the back-end
         }
