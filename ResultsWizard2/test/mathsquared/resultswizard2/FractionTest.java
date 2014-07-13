@@ -200,7 +200,7 @@ public class FractionTest {
          * 
          * First: proper/improper: P = proper, I = improper
          * 
-         * Second: simplification: B = same denominator, S1 = one denominator is a factor of another, RP = both denominators are relatively prime [TODO add cases where both fractions need unsimplification, but are not relatively prime]
+         * Second: simplification: B = same denominator, S1 = one denominator is a factor of another, S2 = one denominator is not a factor of another, and they are not relatively prime; RP = both denominators are relatively prime
          * 
          * Third: sign: + = positive, - = negative
          */
