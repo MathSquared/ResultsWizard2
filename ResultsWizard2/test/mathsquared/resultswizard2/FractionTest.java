@@ -175,11 +175,16 @@ public class FractionTest {
     }
 
     /**
-     * Test method for {@link mathsquared.resultswizard2.Fraction#add(int)}.
+     * Test method for {@link mathsquared.resultswizard2.Fraction#add(int)}. Negative arguments to <code>add(int)</code> are tested in {@link #testSubtractInt()}.
      */
     @Test
     public void testAddInt () {
-        fail("Not yet implemented");
+        assertTrue("Proper", new Fraction(2, 3).add(1).equals(new Fraction(5, 3)));
+        assertTrue("Improper", new Fraction(7, 5).add(3).equals(new Fraction(7 + 15, 5)));
+        assertTrue("Perfect unit", new Fraction(3).add(1).equals(4));
+        assertTrue("Proper neg+pos", new Fraction(-3, 4).add(1).equals(new Fraction(1, 4)));
+        assertTrue("Improper neg+pos->neg", new Fraction(-9, 4).add(1).equals(new Fraction(-5, 4)));
+        assertTrue("Improper neg+pos->pos", new Fraction(-5, 3).add(3).equals(new Fraction(4, 3)));
     }
 
     /**
@@ -195,7 +200,12 @@ public class FractionTest {
      */
     @Test
     public void testSubtractInt () {
-        fail("Not yet implemented");
+        assertTrue("Proper neg+neg", new Fraction(-1, 4).subtract(3).equals(new Fraction(-13, 4)));
+        assertTrue("Improper neg+neg", new Fraction(-8, 5).subtract(1).equals(new Fraction(-13, 5)));
+        assertTrue("Perfect unit neg", new Fraction(-4).subtract(2).equals(new Fraction(-6)));
+        assertTrue("Proper pos+neg", new Fraction(5, 7).subtract(2).equals(new Fraction(-9, 7)));
+        assertTrue("Improper pos+neg->pos", new Fraction(13, 6).subtract(1).equals(new Fraction(7, 6)));
+        assertTrue("Improper pos+neg->neg", new Fraction(10, 7).subtract(4).equals(new Fraction(-18, 7)));
     }
 
     /**
