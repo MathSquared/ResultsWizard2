@@ -263,6 +263,22 @@ public class FractionTest {
         assertEquals("III, B, -+-", new Fraction(-41, 9).add(new Fraction(28, 9)), new Fraction(-13, 9));
 
         // These also have the effect of mimicking negation applied (compare the codes)
+
+        // SPECIAL CASES
+
+        // Perfect units
+        assertEquals("Perfect units, ++", new Fraction(4).add(new Fraction(3)), new Fraction(7));
+        assertEquals("Perfect units, +-+", new Fraction(5).add(new Fraction(-2)), new Fraction(3));
+        assertEquals("Perfect units, -++", new Fraction(-5).add(new Fraction(8)), new Fraction(3));
+        assertEquals("Perfect units, +--", new Fraction(3).add(new Fraction(-4)), new Fraction(-1));
+        assertEquals("Perfect units, -+-", new Fraction(-6).add(new Fraction(2)), new Fraction(-4));
+        assertEquals("Perfect units, --", new Fraction(-2).add(new Fraction(-6)), new Fraction(-8));
+
+        // Identity
+        assertEquals("+0", new Fraction(7, 5).add(new Fraction(0)), new Fraction(7, 5));
+        assertEquals("0+", new Fraction(0).add(new Fraction(8, 3)), new Fraction(8, 3));
+        assertEquals("-0", new Fraction(-6, 5).add(new Fraction(0)), new Fraction(-6, 5));
+        assertEquals("0-", new Fraction(0).add(new Fraction(-11, 4)), new Fraction(-11, 4));
     }
 
     /**
