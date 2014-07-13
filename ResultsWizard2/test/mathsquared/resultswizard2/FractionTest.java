@@ -196,7 +196,7 @@ public class FractionTest {
     }
 
     /**
-     * Test method for {@link mathsquared.resultswizard2.Fraction#subtract(int)}.
+     * Test method for {@link mathsquared.resultswizard2.Fraction#subtract(int)}. Negative arguments to <code>subtract(int)</code> are tested in {@link #testAddInt()}.
      */
     @Test
     public void testSubtractInt () {
