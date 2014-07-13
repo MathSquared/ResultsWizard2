@@ -200,66 +200,66 @@ public class FractionTest {
          * 
          * First: proper/improper: P = proper, I = improper
          * 
-         * Second: simplification: B = same denominator, S1 = one denominator is a factor of another, S2 = both denominators are relatively prime [TODO add cases where both fractions need unsimplification, but are not relatively prime]
+         * Second: simplification: B = same denominator, S1 = one denominator is a factor of another, RP = both denominators are relatively prime [TODO add cases where both fractions need unsimplification, but are not relatively prime]
          * 
          * Third: sign: + = positive, - = negative
          */
 
         assertEquals("PPP, B, ++", new Fraction(1, 5).add(new Fraction(2, 5)), new Fraction(3, 5));
         assertEquals("PPP, S1, ++", new Fraction(1, 4).add(new Fraction(1, 2)), new Fraction(3, 4));
-        assertEquals("PPP, S2, ++", new Fraction(2, 5).add(new Fraction(3, 7)), new Fraction(2 * 7 + 3 * 5, 5 * 7));
+        assertEquals("PPP, RP, ++", new Fraction(2, 5).add(new Fraction(3, 7)), new Fraction(2 * 7 + 3 * 5, 5 * 7));
         assertEquals("PPI, B, ++", new Fraction(5, 7).add(new Fraction(3, 7)), new Fraction(8, 7));
-        assertEquals("PPI, S2, ++", new Fraction(4, 5).add(new Fraction(3, 7)), new Fraction(4 * 7 + 5 * 3, 5 * 7));
+        assertEquals("PPI, RP, ++", new Fraction(4, 5).add(new Fraction(3, 7)), new Fraction(4 * 7 + 5 * 3, 5 * 7));
         assertEquals("IP, B, ++", new Fraction(6, 5).add(new Fraction(2, 5)), new Fraction(8, 5));
         assertEquals("PI, B, ++", new Fraction(2, 5).add(new Fraction(6, 5)), new Fraction(8, 5));
-        assertEquals("IP, S2, ++", new Fraction(7, 3).add(new Fraction(4, 5)), new Fraction(7 * 5 + 3 * 4, 3 * 5));
+        assertEquals("IP, RP, ++", new Fraction(7, 3).add(new Fraction(4, 5)), new Fraction(7 * 5 + 3 * 4, 3 * 5));
         assertEquals("II, B, ++", new Fraction(6, 5).add(new Fraction(7, 5)), new Fraction(13, 5));
-        assertEquals("II, S2, ++", new Fraction(7, 3).add(new Fraction(9, 4)), new Fraction(7 * 4 + 9 * 3, 3 * 4));
+        assertEquals("II, RP, ++", new Fraction(7, 3).add(new Fraction(9, 4)), new Fraction(7 * 4 + 9 * 3, 3 * 4));
 
         // Test neg+neg for differences from pos+pos (existing tests)
-        assertEquals("PPP, S2, --", new Fraction(-2, 5).add(new Fraction(-3, 7)), new Fraction(2 * 7 + 3 * 5, -5 * 7));
-        assertEquals("PPI, S2, --", new Fraction(-4, 5).add(new Fraction(-3, 7)), new Fraction(4 * 7 + 5 * 3, -5 * 7));
-        assertEquals("IP, S2, --", new Fraction(-7, 3).add(new Fraction(-4, 5)), new Fraction(7 * 5 + 3 * 4, -3 * 5));
-        assertEquals("II, S2, --", new Fraction(-7, 3).add(new Fraction(-9, 4)), new Fraction(7 * 4 + 9 * 3, -3 * 4));
+        assertEquals("PPP, RP, --", new Fraction(-2, 5).add(new Fraction(-3, 7)), new Fraction(2 * 7 + 3 * 5, -5 * 7));
+        assertEquals("PPI, RP, --", new Fraction(-4, 5).add(new Fraction(-3, 7)), new Fraction(4 * 7 + 5 * 3, -5 * 7));
+        assertEquals("IP, RP, --", new Fraction(-7, 3).add(new Fraction(-4, 5)), new Fraction(7 * 5 + 3 * 4, -3 * 5));
+        assertEquals("II, RP, --", new Fraction(-7, 3).add(new Fraction(-9, 4)), new Fraction(7 * 4 + 9 * 3, -3 * 4));
 
         // All right, time's up, let's do this. (mismatched signs PPP)
         assertEquals("PPP, B, +-+", new Fraction(4, 7).add(new Fraction(-3, 7)), new Fraction(1, 7));
-        assertEquals("PPP, S2, +-+", new Fraction(6, 7).add(new Fraction(-2, 3)), new Fraction(4, 21));
-        assertEquals("PPP, S2, -++", new Fraction(-2, 3).add(new Fraction(6, 7)), new Fraction(4, 21));
+        assertEquals("PPP, RP, +-+", new Fraction(6, 7).add(new Fraction(-2, 3)), new Fraction(4, 21));
+        assertEquals("PPP, RP, -++", new Fraction(-2, 3).add(new Fraction(6, 7)), new Fraction(4, 21));
         assertEquals("PPP, B, +--", new Fraction(1, 7).add(new Fraction(-4, 7)), new Fraction(-3, 7));
-        assertEquals("PPP, S2, +--", new Fraction(2, 5).add(new Fraction(-5, 6)), new Fraction(-13, 30));
-        assertEquals("PPP, S2, -+-", new Fraction(-5, 6).add(new Fraction(2, 5)), new Fraction(-13, 30));
+        assertEquals("PPP, RP, +--", new Fraction(2, 5).add(new Fraction(-5, 6)), new Fraction(-13, 30));
+        assertEquals("PPP, RP, -+-", new Fraction(-5, 6).add(new Fraction(2, 5)), new Fraction(-13, 30));
 
         // LEEROY JENKINS! (mismatched signs IP)
         assertEquals("IPI, B, +-+", new Fraction(13, 5).add(new Fraction(-2, 5)), new Fraction(11, 5));
-        assertEquals("IPI, S2, +-+", new Fraction(17, 8).add(new Fraction(-5, 6)), new Fraction(62, 48));
+        assertEquals("IPI, RP, +-+", new Fraction(17, 8).add(new Fraction(-5, 6)), new Fraction(62, 48));
         assertEquals("IPP, B, +-+", new Fraction(23, 7).add(new Fraction(-19, 7)), new Fraction(4, 7));
-        assertEquals("IPP, S2, +-+", new Fraction(8, 7).add(new Fraction(-1, 4)), new Fraction(25, 28));
+        assertEquals("IPP, RP, +-+", new Fraction(8, 7).add(new Fraction(-1, 4)), new Fraction(25, 28));
 
         // Existing IP +-+ tests with args swapped around
-        assertEquals("PII, S2, -++", new Fraction(-5, 6).add(new Fraction(17, 8)), new Fraction(62, 48));
-        assertEquals("PIP, S2, -++", new Fraction(-1, 4).add(new Fraction(8, 7)), new Fraction(25, 28));
+        assertEquals("PII, RP, -++", new Fraction(-5, 6).add(new Fraction(17, 8)), new Fraction(62, 48));
+        assertEquals("PIP, RP, -++", new Fraction(-1, 4).add(new Fraction(8, 7)), new Fraction(25, 28));
 
         // Existing IP +-+ and PI -++ tests with negation applied
-        assertEquals("IPI, S2, -+-", new Fraction(-17, 8).add(new Fraction(5, 6)), new Fraction(-62, 48));
-        assertEquals("IPP, S2, -+-", new Fraction(-8, 7).add(new Fraction(1, 4)), new Fraction(-25, 28));
-        assertEquals("PII, S2, +--", new Fraction(5, 6).add(new Fraction(-17, 8)), new Fraction(-62, 48));
-        assertEquals("PIP, S2, +--", new Fraction(1, 4).add(new Fraction(-8, 7)), new Fraction(-25, 28));
+        assertEquals("IPI, RP, -+-", new Fraction(-17, 8).add(new Fraction(5, 6)), new Fraction(-62, 48));
+        assertEquals("IPP, RP, -+-", new Fraction(-8, 7).add(new Fraction(1, 4)), new Fraction(-25, 28));
+        assertEquals("PII, RP, +--", new Fraction(5, 6).add(new Fraction(-17, 8)), new Fraction(-62, 48));
+        assertEquals("PIP, RP, +--", new Fraction(1, 4).add(new Fraction(-8, 7)), new Fraction(-25, 28));
 
-        // ...at least I got chicken. (mismatched signs II; letting up on S2 tests because I've probably stressed that logic enough)
+        // ...at least I got chicken. (mismatched signs II; letting up on RP tests because I've probably stressed that logic enough)
         assertEquals("III, B, +-+", new Fraction(25, 3).add(new Fraction(-17, 3)), new Fraction(8, 3));
-        assertEquals("III, S2, +-+", new Fraction(10, 3).add(new Fraction(-3, 2)), new Fraction(11, 6));
+        assertEquals("III, RP, +-+", new Fraction(10, 3).add(new Fraction(-3, 2)), new Fraction(11, 6));
         assertEquals("IIP, B, +-+", new Fraction(16, 5).add(new Fraction(-13, 5)), new Fraction(3, 5));
         assertEquals("IIP, B, +--", new Fraction(13, 7).add(new Fraction(-17, 7)), new Fraction(-4, 7));
-        assertEquals("IIP, S2, +--", new Fraction(7, 3).add(new Fraction(-20, 7)), new Fraction(-11, 21));
+        assertEquals("IIP, RP, +--", new Fraction(7, 3).add(new Fraction(-20, 7)), new Fraction(-11, 21));
         assertEquals("III, B, +--", new Fraction(28, 9).add(new Fraction(-41, 9)), new Fraction(-13, 9));
 
         // Selected existing II +- tests with args swapped
         assertEquals("III, B, -++", new Fraction(-17, 3).add(new Fraction(25, 3)), new Fraction(8, 3));
-        assertEquals("III, S2, -++", new Fraction(-3, 2).add(new Fraction(10, 3)), new Fraction(11, 6));
+        assertEquals("III, RP, -++", new Fraction(-3, 2).add(new Fraction(10, 3)), new Fraction(11, 6));
         assertEquals("IIP, B, -++", new Fraction(-13, 5).add(new Fraction(16, 5)), new Fraction(3, 5));
         assertEquals("IIP, B, -+-", new Fraction(-17, 7).add(new Fraction(13, 7)), new Fraction(-4, 7));
-        assertEquals("IIP, S2, -+-", new Fraction(-20, 7).add(new Fraction(7, 3)), new Fraction(-11, 21));
+        assertEquals("IIP, RP, -+-", new Fraction(-20, 7).add(new Fraction(7, 3)), new Fraction(-11, 21));
         assertEquals("III, B, -+-", new Fraction(-41, 9).add(new Fraction(28, 9)), new Fraction(-13, 9));
 
         // These also have the effect of mimicking negation applied (compare the codes)
