@@ -6,6 +6,7 @@ package mathsquared.resultswizard2;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import org.junit.Test;
 
@@ -79,5 +80,68 @@ public class ArrayUtilsTest {
 
         assertArrayEquals("Simple", ArrayUtils.lengthArray(test), testRes);
         assertArrayEquals("With null", ArrayUtils.lengthArray(tes2), tes2Res);
+    }
+
+    /**
+     * Test method for {@link mathsquared.resultswizard2.ArrayUtils#condensedLengthArray(int[])}.
+     */
+    @Test
+    public void testCondensedLengthArray () {
+        int[] simp = new int[] {1, 1, 1};
+        int[] simpRes = new int[] {1, 1, 1};
+        int[] skips = new int[] {1, 2, 0, 1, 1, 2, 0};
+        int[] skipsRes = new int[] {1, 2, 1, 1, 2};
+        int[] offEnd = new int[] {1, 1, 2, 0, 1, 4, 0, 0, 0, 3, 0};
+        int[] offEndRes = new int[] {1, 1, 2, 1, 4, 3};
+        int[] terminalOverOne = new int[] {1, 1, 3};
+        int[] terminalOverOneRes = new int[] {1, 1, 3};
+
+        assertArrayEquals("Ones", ArrayUtils.condensedLengthArray(simp), simpRes);
+        assertArrayEquals("Skips", ArrayUtils.condensedLengthArray(skips), skipsRes);
+        assertArrayEquals("Off the end", ArrayUtils.condensedLengthArray(offEnd), offEndRes);
+        assertArrayEquals("Terminal over one", ArrayUtils.condensedLengthArray(terminalOverOne), terminalOverOneRes);
+
+        // Check for erroneous arguments
+        int[] neg = new int[] {1, -1, 2};
+        boolean negCaught = false;
+        int[] initZero = new int[] {0, 1, 2, 0, 1};
+        boolean initZeroCaught = false;
+        int[] unSkip = new int[] {1, 2, 1};
+        boolean unSkipCaught = false;
+        int[] overSkip = new int[] {2, 0, 1, 3, 0, 0, 0};
+        boolean overSkipCaught = false;
+
+        try {
+            ArrayUtils.condensedLengthArray(neg);
+        } catch (IllegalArgumentException e) {
+            negCaught = true;
+        }
+        if (!negCaught) {
+            fail("Negative not caught");
+        }
+        try {
+            ArrayUtils.condensedLengthArray(initZero);
+        } catch (IllegalArgumentException e) {
+            initZeroCaught = true;
+        }
+        if (!initZeroCaught) {
+            fail("Initial zero not caught");
+        }
+        try {
+            ArrayUtils.condensedLengthArray(unSkip);
+        } catch (IllegalArgumentException e) {
+            unSkipCaught = true;
+        }
+        if (!unSkipCaught) {
+            fail("Missing skip not caught");
+        }
+        try {
+            ArrayUtils.condensedLengthArray(overSkip);
+        } catch (IllegalArgumentException e) {
+            overSkipCaught = true;
+        }
+        if (!overSkipCaught) {
+            fail("Extraneous skip not caught");
+        }
     }
 }
