@@ -229,7 +229,7 @@ public class ArrayUtils {
                 if (lengthArray[i] < 0) {
                     throw new IllegalArgumentException("Invalid length array: negative at " + i);
                 }
-                if (lengthArray[i] > 0) {
+                if (lengthArray[i] > 0 && i != initI) { // != initI check prevents complaining about the current entry (which SHOULD be nonzero)
                     throw new IllegalArgumentException("Improperly formatted length array: nonzero at " + i);
                 }
             }
