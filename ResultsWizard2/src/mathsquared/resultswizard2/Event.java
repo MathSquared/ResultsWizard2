@@ -48,7 +48,7 @@ public class Event {
      * @param tieAssign the {@link TiePlaceAssignment} used to award places in the event of ties
      * @param sweepsAssign the {@link SweepstakesAssignment} used to award sweepstakes points in the event of ties
      * @throws NullPointerException if any parameter is null or contains null as an element, key, or value
-     * @throws IllegalArgumentException if <code>primaryName</code> contains a character outside the allowable range, <code>(indivPlaces &lt; 0)</code>, <code>(teamPlaces &lt; 0)</code>, <code>(specialHonors.get(x) &lt;= 0)</code> for any <code>x</code> present in <code>specialHonors.keySet()</code>, <code>(indivSweeps.length != indivPlaces)</code>, <code>(teamSweeps.length != teamPlaces)</code>, or <code>(!specialHonors.keySet().equals(specialSweeps.keySet()))</code>
+     * @throws IllegalArgumentException if <code>primaryName</code> contains a character outside the allowable range, <code>(indivPlaces &lt; 0)</code>, <code>(teamPlaces &lt; 0)</code>, <code>(specialHonors.get(x) &lt;= 0)</code> for any <code>x</code> present in <code>specialHonors.keySet()</code>, <code>(indivSweeps.length != indivPlaces</code>, <code>(teamSweeps.length != teamPlaces)</code>, or <code>(!specialHonors.keySet().equals(specialSweeps.keySet()))</code>
      */
     public Event (String primaryName, String[] otherNames, int indivPlaces, int teamPlaces, Map<String, Integer> specialHonors, int[] indivSweeps, int[] teamSweeps, Map<String, int[]> specialSweeps, TiePlaceAssignment tieAssign, SweepstakesAssignment sweepsAssign) {
         // Null checks
