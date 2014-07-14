@@ -144,4 +144,45 @@ public class ArrayUtilsTest {
             fail("Extraneous skip not caught");
         }
     }
+
+    /**
+     * Test method for {@link mathsquared.resultswizard2.ArrayUtils#index(Object[], int[])}.
+     */
+    @Test
+    public void testIndex () {
+        String[] base = new String[] {"@", "A", "B", "C", "D", "E", "F"};
+        int[] test1 = new int[] {0, 3, 0, 6};
+        String[] res1 = new String[] {"@", "C", "@", "F"};
+        int[] test2 = new int[] {4, 1, 5, 2, 2};
+        String[] res2 = new String[] {"D", "A", "E", "B", "B"};
+
+        assertArrayEquals("0306->@C@F", ArrayUtils.index(base, test1), res1);
+        assertArrayEquals("41522->DAEBB", ArrayUtils.index(base, test2), res2);
+
+        String[] baseNull = new String[] {"0", "1", null, "3"};
+        int[] testNull = new int[] {3, 2, 3, 0, 2};
+        String[] resNull = new String[] {"3", null, "3", "0", null};
+
+        assertArrayEquals("Null", ArrayUtils.index(baseNull, testNull), resNull);
+
+        boolean negativeCaught = false;
+        try {
+            ArrayUtils.index(new String[] {"N", "E", "G", "I", "N", "D"}, new int[] {2, 3, -1});
+        } catch (ArrayIndexOutOfBoundsException e) {
+            negativeCaught = true;
+        }
+        if (!negativeCaught) {
+            fail("Negative index not caught");
+        }
+
+        boolean overIndCaught = false;
+        try {
+            ArrayUtils.index(new String[] {"O", "V", "R", "I", "N", "D"}, new int[] {3, 1, 6}); // boundary case for a reason!
+        } catch (ArrayIndexOutOfBoundsException e) {
+            overIndCaught = true;
+        }
+        if (!overIndCaught) {
+            fail("Over-bounds index not caught");
+        }
+    }
 }
