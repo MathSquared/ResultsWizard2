@@ -213,7 +213,7 @@ public class ArrayUtils {
             return null;
         }
         ArrayList<Integer> ret = new ArrayList<Integer>();
-        for (int i = 0; i < lengthArray.length; i++) {
+        for (int i = 0; i < lengthArray.length;) { // incremented by final loop
             int x = lengthArray[i];
             if (x == 0) { // there should be no zeroes except to skip places
                 throw new IllegalArgumentException("Improperly formatted length array: zero at " + i);
@@ -225,7 +225,8 @@ public class ArrayUtils {
             int initI = i;
 
             // Skip places, checking to ensure that each one is 0--intentionally updates the outer loop counter
-            for (; i < initI + x - 1 && i < lengthArray.length; i++) {
+            // The <= ensures that the final skip is checked--then increments i one more time. So the loop header does no incrementing.
+            for (; i <= initI + x - 1 && i < lengthArray.length; i++) {
                 if (lengthArray[i] < 0) {
                     throw new IllegalArgumentException("Invalid length array: negative at " + i);
                 }
