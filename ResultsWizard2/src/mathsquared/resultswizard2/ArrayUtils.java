@@ -224,13 +224,15 @@ public class ArrayUtils {
             ret.add(x);
             int initI = i;
 
+            i++; // prevents complaining about the current entry (which SHOULD be nonzero) by skipping it from loop below
+
             // Skip places, checking to ensure that each one is 0--intentionally updates the outer loop counter
             // The <= ensures that the final skip is checked--then increments i one more time. So the loop header does no incrementing.
             for (; i <= initI + x - 1 && i < lengthArray.length; i++) {
                 if (lengthArray[i] < 0) {
                     throw new IllegalArgumentException("Invalid length array: negative at " + i);
                 }
-                if (lengthArray[i] > 0 && i != initI) { // != initI check prevents complaining about the current entry (which SHOULD be nonzero)
+                if (lengthArray[i] > 0) {
                     throw new IllegalArgumentException("Improperly formatted length array: nonzero at " + i);
                 }
             }
