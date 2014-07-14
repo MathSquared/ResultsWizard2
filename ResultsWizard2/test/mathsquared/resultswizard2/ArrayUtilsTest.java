@@ -67,4 +67,17 @@ public class ArrayUtilsTest {
         assertFalse("Null and non-null", ArrayUtils.checkStructureSame(null, a));
     }
 
+    /**
+     * Test method for {@link mathsquared.resultswizard2.ArrayUtils#lengthArray(Object[][])}.
+     */
+    @Test
+    public void testLengthArray () {
+        Object[][] test = new Object[][] {new Object[3], new Object[4], new Object[0]};
+        int[] testRes = new int[] {3, 4, 0};
+        Object[][] tes2 = new Object[][] {new Object[4], null, new Object[1]};
+        int[] tes2Res = new int[] {4, 0, 1};
+
+        assertArrayEquals("Simple", ArrayUtils.lengthArray(test), testRes);
+        assertArrayEquals("With null", ArrayUtils.lengthArray(tes2), tes2Res);
+    }
 }
