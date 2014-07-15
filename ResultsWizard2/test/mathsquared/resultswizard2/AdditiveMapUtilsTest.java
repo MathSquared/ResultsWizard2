@@ -4,7 +4,6 @@
 package mathsquared.resultswizard2;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -72,7 +71,24 @@ public class AdditiveMapUtilsTest {
      */
     @Test
     public void testAddAllNumbersMapOfQsuperKIntegerMapOfKInteger () {
-        fail("Not yet implemented");
+        Map<String, Integer> one = new HashMap<String, Integer>();
+        one.put("a", 6);
+        one.put("b", 3);
+
+        Map<String, Integer> two = new HashMap<String, Integer>();
+        two.put("a", -4);
+        two.put("c", -7);
+
+        Map<String, Integer> res = new HashMap<String, Integer>();
+        res.put("a", 2);
+        res.put("b", 3);
+        res.put("c", -7);
+
+        Map<String, Integer> oldTwo = new HashMap<String, Integer>(two); // used to check that two doesn't change
+
+        AdditiveMapUtils.addAllNumbers(one, two);
+        assertEquals("Addition", one, res);
+        assertEquals("Two unchanged", two, oldTwo);
     }
 
     /**
@@ -80,7 +96,24 @@ public class AdditiveMapUtilsTest {
      */
     @Test
     public void testAddAllNumbersMapOfQsuperKFractionMapOfKFractionBoolean () {
-        fail("Not yet implemented");
+        Map<String, Fraction> one = new HashMap<String, Fraction>();
+        one.put("a", new Fraction(5, 3));
+        one.put("b", new Fraction(7, 4));
+
+        Map<String, Fraction> two = new HashMap<String, Fraction>();
+        two.put("a", new Fraction(-1, 3));
+        two.put("c", new Fraction(-6, 5));
+
+        Map<String, Fraction> res = new HashMap<String, Fraction>();
+        res.put("a", new Fraction(4, 3));
+        res.put("b", new Fraction(7, 4));
+        res.put("c", new Fraction(-6, 5));
+
+        Map<String, Fraction> oldTwo = new HashMap<String, Fraction>(two); // used to check that two doesn't change
+
+        AdditiveMapUtils.addAllNumbers(one, two, false);
+        assertEquals("Addition", one, res);
+        assertEquals("Two unchanged", two, oldTwo);
     }
 
 }
