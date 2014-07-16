@@ -40,19 +40,19 @@ public class Sweepstakes {
             Fraction sweeps = new Fraction(0);
             switch (sweepsM) {
             case TIE_PLACE:
-                sweeps = new Fraction(spec[tiePlaceM.assignPlace(currPlace, newPlace)]);
+                sweeps = new Fraction(intIndexOrZero(spec, tiePlaceM.assignPlace(currPlace, newPlace)));
                 break;
             case TOP:
-                sweeps = new Fraction(spec[currPlace]);
+                sweeps = new Fraction(intIndexOrZero(spec, currPlace));
                 break;
             case BOTTOM:
-                sweeps = new Fraction(spec[newPlace]);
+                sweeps = new Fraction(intIndexOrZero(spec, newPlace));
                 break;
             case MID_ROUND_BETTER:
-                sweeps = new Fraction(spec[currPlace + (newPlace - currPlace) / 2]); // division truncates, so this rounds toward adding less
+                sweeps = new Fraction(intIndexOrZero(spec, currPlace + (newPlace - currPlace) / 2)); // division truncates, so this rounds toward adding less
                 break;
             case MID_ROUND_WORSE:
-                sweeps = new Fraction(spec[newPlace - (newPlace - currPlace) / 2]);
+                sweeps = new Fraction(intIndexOrZero(spec, newPlace - (newPlace - currPlace) / 2));
                 break;
             case AVERAGE: // take the average of all teh things
                 int total = 0;
@@ -86,9 +86,9 @@ public class Sweepstakes {
                 int halfDiff = placeDiff / 2;
                 if (placeDiff % 2 != 0) { // even number of places, due to fenceposting (1 - 1 = 0, but is 1 place)
                     // average two middle ones
-                    sweeps = new Fraction(spec[currPlace + halfDiff] + spec[currPlace + halfDiff + 1], 2);
+                    sweeps = new Fraction(intIndexOrZero(spec, currPlace + halfDiff) + intIndexOrZero(spec, currPlace + halfDiff + 1), 2);
                 } else { // odd number of places
-                    sweeps = new Fraction(spec[currPlace + halfDiff]);
+                    sweeps = new Fraction(intIndexOrZero(spec, currPlace + halfDiff));
                 }
                 break;
             default:
