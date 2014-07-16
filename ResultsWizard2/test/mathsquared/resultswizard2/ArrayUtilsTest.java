@@ -23,11 +23,11 @@ public class ArrayUtilsTest {
     public void testDeepCopyOf () {
         // Initialize some arrays
 
-        String[][][] evil = new String[][][] { { {"a", "b"}, {"c"}}, {{"e", "f", "g"}}, { {"h", "i"}, {"j"}, {"k", "l", "m"}}};
+        String[][][] evil = new String[][][]{{{"a", "b"}, {"c"}}, {{"e", "f", "g"}}, {{"h", "i"}, {"j"}, {"k", "l", "m"}}};
         String[][][] result = ArrayUtils.deepCopyOf(evil);
         assertArrayEquals("3-D irregular String array", evil, result);
 
-        Integer[][] easier = new Integer[][] { {1, 2}, {3}, {4, 5, 6}};
+        Integer[][] easier = new Integer[][]{{1, 2}, {3}, {4, 5, 6}};
         Integer[][] easierResult = ArrayUtils.deepCopyOf(easier);
         assertArrayEquals("2-D irregular Integer array", easier, easierResult);
 
@@ -40,13 +40,13 @@ public class ArrayUtilsTest {
      */
     @Test
     public void testCheckTies () {
-        String[][] res = new String[][] { {"First"}, {"Second A", "Second B"}, null, {"Fourth A", "Fourth B", "Fourth C"}, null, null, {"Seventh A", "Seventh B"}};
+        String[][] res = new String[][]{{"First"}, {"Second A", "Second B"}, null, {"Fourth A", "Fourth B", "Fourth C"}, null, null, {"Seventh A", "Seventh B"}};
         assertTrue("Valid with several ties", ArrayUtils.checkTies(res));
 
-        String[][] bad = new String[][] { {"First A", "First B"}, {"Second"}};
+        String[][] bad = new String[][]{{"First A", "First B"}, {"Second"}};
         assertFalse("Invalid--missing skip", ArrayUtils.checkTies(bad));
 
-        String[][] nul = new String[][] { {"First A", "First B"}, null, null, {"Fourth A", "Fourth B"}};
+        String[][] nul = new String[][]{{"First A", "First B"}, null, null, {"Fourth A", "Fourth B"}};
         assertFalse("Invalid--extraneous null", ArrayUtils.checkTies(nul));
     }
 
@@ -55,11 +55,11 @@ public class ArrayUtilsTest {
      */
     @Test
     public void testCheckStructureSame () {
-        Integer[][] a = { {1, 2}, null, {}, {3}};
-        Integer[][] b = { {4, 5}, null, {}, {6}};
+        Integer[][] a = {{1, 2}, null, {}, {3}};
+        Integer[][] b = {{4, 5}, null, {}, {6}};
         assertTrue("Same structure including both null and empty subarray", ArrayUtils.checkStructureSame(a, b));
 
-        Integer[][] c = { {7, 8}, null, {}};
+        Integer[][] c = {{7, 8}, null, {}};
         assertFalse("Second array prefix of first", ArrayUtils.checkStructureSame(a, c));
         assertFalse("First array prefix of second", ArrayUtils.checkStructureSame(c, b));
 
