@@ -20,11 +20,15 @@ public class Sweepstakes {
      * Note that if <code>sweepsM</code> equals {@link SweepstakesAssignment.CUSTOM}, this method returns null, since assigning sweepstakes points with a custom scheme falls to the user, who should be prompted by the application.
      * </p>
      * 
+     * <p>
+     * Note also that the format of <code>quantities</code> is precisely that of a {@linkplain ArrayUtils#condensedLengthArray(int[]) condensed length array}.
+     * </p>
+     * 
      * @param quantities the number of competitors tied for each place; if there is a tie, the other places in the tie are skipped, so a two-way tie for first followed by a competitor in third is represented by passing in <code>[2, 1]</code>
      * @param spec the number of sweepstakes points assigned to competitors in each place
      * @param tiePlaceM the {@link TiePlaceAssignment} handling assigning one place to each competitor
      * @param sweepsM the {@link SweepstakesAssignment} dictating the sweepstakes points that should be assigned to each competitor
-     * @return an array where each entry is the number of points to assign to the tie in the corresponding index of <code>quantities</code>
+     * @return an array where each entry is the number of points to assign to the tie in the corresponding index of <code>quantities</code> (null if <code>sweepsM == SweepstakesAssignment.CUSTOM</code>); if <code>sweepsM != SweepstakesAssignment.CUSTOM</code>, the length of the returned array is equal to <code>quantities.length</code>
      */
     public static Fraction[] assignPoints (int[] quantities, int[] spec, TiePlaceAssignment tiePlaceM, SweepstakesAssignment sweepsM) {
         if (sweepsM == SweepstakesAssignment.CUSTOM) {
@@ -109,7 +113,7 @@ public class Sweepstakes {
      * 
      * @param toInd the array to index
      * @param index the index into the array
-     * @return the element at <code>toInd[index]</code>, or 0 if <code>index</code> is greater than or equal to <code>toInd.length</code> or less than 0
+     * @return the element at <code>toInd[index]</code>, or 0 if <code>index</code> is greater than or equal to <code>toInd.length</code> or is less than 0
      */
     private static int intIndexOrZero (int[] toInd, int index) {
         return (index >= toInd.length || index < 0) ? 0 : toInd[index];
@@ -132,11 +136,11 @@ public class Sweepstakes {
      * </ol>
      * 
      * <p>
-     * If a string occurs multiple times, the corresponding entries in <code>sweeps</code> are added together. If there are multiple occurrences in the same sub-array, the corresponding entry in <code>sweeps</code> is added multiple times.
+     * If a string occurs multiple times in <code>results</code>, the corresponding entries in <code>sweeps</code> are added together numerically. If there are multiple occurrences in the same sub-array, the corresponding entry in <code>sweeps</code> is added multiple times (i.e. multiplied numerically by the number of occurrences of the string in the <code>results</code> sub-array, then added numerically to the existing value in the Map for that string, if any).
      * </p>
      * 
      * <p>
-     * If an entry in <code>results</code> has no corresponding entry in <code>sweeps</code>, it is not added to the returned Map.
+     * If an entry in <code>results</code> has no corresponding entry in <code>sweeps</code> (e.g. if an entry in <code>results</code> has an ID greater than <code>sweeps.length</code>), it is not added to the returned Map.
      * </p>
      * 
      * @param results the raw results of the event, as returned from {@link EventResults#getIndivHonorees()} or a similar method; must represent ties as entries within the same sub-array and should (but need not) correctly {@linkplain ArrayUtils#checkTies(Object[][]) skip places for ties}
