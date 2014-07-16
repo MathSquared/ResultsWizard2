@@ -111,7 +111,7 @@ public class Sweepstakes {
      * @param index the index into the array
      * @return the element at <code>toInd[index]</code>, or 0 if <code>index</code> is greater than or equal to <code>toInd.length</code> or less than 0
      */
-    private int intIndexOrZero (int[] toInd, int index) {
+    private static int intIndexOrZero (int[] toInd, int index) {
         return (index >= toInd.length || index < 0) ? 0 : toInd[index];
     }
 
