@@ -27,11 +27,13 @@ public class SweepstakesTest {
 
         // CONDENSED LENGTH ARRAYS //
 
+        // Simplest cases
         int[] simple = new int[]{1, 1, 1, 1, 1, 1}; // six competitors, no ties
         int[] overrun = new int[]{1, 1, 1, 1, 1, 1, 1}; // seven competitors, no ties
 
         // RESULTS ARRAYS //
 
+        // Simplest cases
         Fraction[] simpleRes = new Fraction[]{new Fraction(243), new Fraction(81), new Fraction(27), new Fraction(9), new Fraction(3), new Fraction(1)};
         Fraction[] overrunRes = new Fraction[]{new Fraction(243), new Fraction(81), new Fraction(27), new Fraction(9), new Fraction(3), new Fraction(1), new Fraction(0)};
 
