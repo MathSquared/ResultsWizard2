@@ -37,6 +37,9 @@ public class SweepstakesTest {
         // My First Tie: two-way tie for first place
         int[] twoWayTie = new int[]{2};
 
+        // Test the different AVERAGEs (especially for off-the-end scenarios)
+        int[] avgTest = new int[]{1, 1, 1, 1, 3}; // seven places, which is important for AVERAGE_IGNORE vs AVERAGE
+
         // RESULTS ARRAYS //
 
         // Simplest cases
@@ -53,6 +56,11 @@ public class SweepstakesTest {
         Fraction[] twoWayTieResHigh = new Fraction[]{new Fraction(243)}; // for those that select the high place
         Fraction[] twoWayTieResLow = new Fraction[]{new Fraction(81)}; // for those that select the low place
         Fraction[] twoWayTieResAvg = new Fraction[]{new Fraction(243 + 81, 2)}; // for those that select the average of the assigned totals
+
+        // Test the different AVERAGEs
+        Fraction[] avgTestResNorm = new Fraction[]{new Fraction(243), new Fraction(81), new Fraction(27), new Fraction(9), new Fraction(3 + 1 + 0, 3)};
+        Fraction[] avgTestResIgn = new Fraction[]{new Fraction(243), new Fraction(81), new Fraction(27), new Fraction(9), new Fraction(3 + 1, 2)}; // _IGNORE ignores the unspecified place
+        Fraction[] avgTestResAdjMed = new Fraction[]{new Fraction(243), new Fraction(81), new Fraction(27), new Fraction(9), new Fraction(1)}; // also applies to MEDIAN
 
         // TEST CODE //
 
@@ -86,6 +94,12 @@ public class SweepstakesTest {
         assertArrayEquals("My First Tie AVI", Sweepstakes.assignPoints(twoWayTie, spec, tpaDefault, SweepstakesAssignment.AVERAGE_IGNORE), twoWayTieResAvg);
         assertArrayEquals("My First Tie AVJ", Sweepstakes.assignPoints(twoWayTie, spec, tpaDefault, SweepstakesAssignment.AVERAGE_ADJUSTED), twoWayTieResAvg);
         assertArrayEquals("My First Tie MED", Sweepstakes.assignPoints(twoWayTie, spec, tpaDefault, SweepstakesAssignment.MEDIAN), twoWayTieResAvg);
+
+        // Test the different AVERAGEs: check behavior of AVERAGE_* and MEDIAN
+        assertArrayEquals("Average Behavior AVG", Sweepstakes.assignPoints(avgTest, spec, tpaDefault, SweepstakesAssignment.AVERAGE), avgTestResNorm);
+        assertArrayEquals("Average Behavior AVI", Sweepstakes.assignPoints(avgTest, spec, tpaDefault, SweepstakesAssignment.AVERAGE_IGNORE), avgTestResIgn);
+        assertArrayEquals("Average Behavior AVJ", Sweepstakes.assignPoints(avgTest, spec, tpaDefault, SweepstakesAssignment.AVERAGE_ADJUSTED), avgTestResAdjMed);
+        assertArrayEquals("Average Behavior MED", Sweepstakes.assignPoints(avgTest, spec, tpaDefault, SweepstakesAssignment.MEDIAN), avgTestResAdjMed);
     }
 
     /**
