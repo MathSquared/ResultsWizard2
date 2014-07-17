@@ -31,11 +31,20 @@ public class SweepstakesTest {
         int[] simple = new int[]{1, 1, 1, 1, 1, 1}; // six competitors, no ties
         int[] overrun = new int[]{1, 1, 1, 1, 1, 1, 1}; // seven competitors, no ties
 
+        // TiePlaceAssignment comparison testing
+        int[] tpaTest = new int[]{4}; // Four places tied--each place in the range is selected by a different TPA
+
         // RESULTS ARRAYS //
 
         // Simplest cases
         Fraction[] simpleRes = new Fraction[]{new Fraction(243), new Fraction(81), new Fraction(27), new Fraction(9), new Fraction(3), new Fraction(1)};
         Fraction[] overrunRes = new Fraction[]{new Fraction(243), new Fraction(81), new Fraction(27), new Fraction(9), new Fraction(3), new Fraction(1), new Fraction(0)};
+
+        // TiePlaceAssignment comparison testing
+        Fraction[] tpaTestResTop = new Fraction[]{new Fraction(243)}; // 1 to 4 >-- TOP --> 1
+        Fraction[] tpaTestResBot = new Fraction[]{new Fraction(9)}; // 1 to 4 >-- BOT --> 4
+        Fraction[] tpaTestResMrb = new Fraction[]{new Fraction(81)}; // 1 to 4 >-- MID_ROUND_BETTER --> 2
+        Fraction[] tpaTestResMrw = new Fraction[]{new Fraction(27)}; // 1 to 4 >-- MID_ROUND_WORSE --> 3
 
         // TEST CODE //
 
@@ -47,6 +56,18 @@ public class SweepstakesTest {
         // Simple cases: simple, overrun
         assertArrayEquals("Simplest case", Sweepstakes.assignPoints(simple, spec, tpaDefault, SweepstakesAssignment.TOP), simpleRes);
         assertArrayEquals("Overrun by 1, no ties", Sweepstakes.assignPoints(overrun, spec, tpaDefault, SweepstakesAssignment.TOP), overrunRes);
+
+        // TiePlaceAssignment comparison testing: stage 1, compare with actual TIE_PLACE results
+        assertArrayEquals("TPA TOP stage 1", Sweepstakes.assignPoints(tpaTest, spec, TiePlaceAssignment.TOP, SweepstakesAssignment.TIE_PLACE), Sweepstakes.assignPoints(tpaTest, spec, tpaDefault, SweepstakesAssignment.TOP));
+        assertArrayEquals("TPA BOT stage 1", Sweepstakes.assignPoints(tpaTest, spec, TiePlaceAssignment.BOTTOM, SweepstakesAssignment.TIE_PLACE), Sweepstakes.assignPoints(tpaTest, spec, tpaDefault, SweepstakesAssignment.BOTTOM));
+        assertArrayEquals("TPA MRB stage 1", Sweepstakes.assignPoints(tpaTest, spec, TiePlaceAssignment.MID_ROUND_BETTER, SweepstakesAssignment.TIE_PLACE), Sweepstakes.assignPoints(tpaTest, spec, tpaDefault, SweepstakesAssignment.MID_ROUND_BETTER));
+        assertArrayEquals("TPA MRW stage 1", Sweepstakes.assignPoints(tpaTest, spec, TiePlaceAssignment.MID_ROUND_WORSE, SweepstakesAssignment.TIE_PLACE), Sweepstakes.assignPoints(tpaTest, spec, tpaDefault, SweepstakesAssignment.MID_ROUND_WORSE));
+
+        // TiePlaceAssignment comparison testing: stage 2, compare with expected by human computation
+        assertArrayEquals("TPA TOP stage 2", Sweepstakes.assignPoints(tpaTest, spec, TiePlaceAssignment.TOP, SweepstakesAssignment.TIE_PLACE), tpaTestResTop);
+        assertArrayEquals("TPA BOT stage 2", Sweepstakes.assignPoints(tpaTest, spec, TiePlaceAssignment.BOTTOM, SweepstakesAssignment.TIE_PLACE), tpaTestResBot);
+        assertArrayEquals("TPA MRB stage 2", Sweepstakes.assignPoints(tpaTest, spec, TiePlaceAssignment.MID_ROUND_BETTER, SweepstakesAssignment.TIE_PLACE), tpaTestResMrb);
+        assertArrayEquals("TPA MRW stage 2", Sweepstakes.assignPoints(tpaTest, spec, TiePlaceAssignment.MID_ROUND_WORSE, SweepstakesAssignment.TIE_PLACE), tpaTestResMrw);
     }
 
     /**
