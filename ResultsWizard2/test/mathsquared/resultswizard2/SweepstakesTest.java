@@ -23,7 +23,7 @@ public class SweepstakesTest {
      */
     @Test
     public void testAssignPoints () {
-        int[] spec = new int[]{243, 81, 27, 9, 3, 1}; // powers of 3 (averages of 2 or 3 will be whole, and sums of two elements are distinguished from lone elements)
+        int[] spec = new int[]{243, 81, 27, 9, 3, 1}; // powers of 3 (averages of 2 or 3 will be whole, and sums or averages of two elements are distinguished from lone elements)
 
         // CONDENSED LENGTH ARRAYS //
 
@@ -64,7 +64,7 @@ public class SweepstakesTest {
 
         // TEST CODE //
 
-        TiePlaceAssignment tpaDefault = TiePlaceAssignment.TOP; // this is tested with SweepstakesAssignment.TIE_PLACE
+        TiePlaceAssignment tpaDefault = TiePlaceAssignment.TOP; // behavior of TPA is tested with SweepstakesAssignment.TIE_PLACE; otherwise, we can afford to make this more compact
 
         // Sanity check: SweepstakesAssignment.CUSTOM
         assertTrue("Returns null for SweepstakesAssignment.CUSTOM", null == Sweepstakes.assignPoints(simple, spec, tpaDefault, SweepstakesAssignment.CUSTOM));
