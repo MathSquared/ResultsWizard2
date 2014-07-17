@@ -118,7 +118,7 @@ public class Sweepstakes {
     /**
      * Indexes an array and returns the result, or 0 if the index is invalid.
      * 
-     * This method returns a result equivalent to the expression <code>(index >= toInd.length || index < 0) ? 0 : toInd[index]</code>.
+     * This method returns a result equivalent to the expression <code>(index >= toInd.length || index &lt; 0) ? 0 : toInd[index]</code>.
      * 
      * @param toInd the array to index
      * @param index the index into the array
