@@ -34,6 +34,9 @@ public class SweepstakesTest {
         // TiePlaceAssignment comparison testing
         int[] tpaTest = new int[]{4}; // Four places tied--each place in the range is selected by a different TPA
 
+        // My First Tie: two-way tie for first place
+        int[] twoWayTie = new int[]{2};
+
         // RESULTS ARRAYS //
 
         // Simplest cases
@@ -45,6 +48,11 @@ public class SweepstakesTest {
         Fraction[] tpaTestResBot = new Fraction[]{new Fraction(9)}; // 1 to 4 >-- BOT --> 4
         Fraction[] tpaTestResMrb = new Fraction[]{new Fraction(81)}; // 1 to 4 >-- MID_ROUND_BETTER --> 2
         Fraction[] tpaTestResMrw = new Fraction[]{new Fraction(27)}; // 1 to 4 >-- MID_ROUND_WORSE --> 3
+
+        // My First Tie: two-way tie for first place
+        Fraction[] twoWayTieResHigh = new Fraction[]{new Fraction(243)}; // for those that select the high place
+        Fraction[] twoWayTieResLow = new Fraction[]{new Fraction(81)}; // for those that select the low place
+        Fraction[] twoWayTieResAvg = new Fraction[]{new Fraction(243 + 81, 2)}; // for those that select the average of the assigned totals
 
         // TEST CODE //
 
@@ -68,6 +76,16 @@ public class SweepstakesTest {
         assertArrayEquals("TPA BOT stage 2", Sweepstakes.assignPoints(tpaTest, spec, TiePlaceAssignment.BOTTOM, SweepstakesAssignment.TIE_PLACE), tpaTestResBot);
         assertArrayEquals("TPA MRB stage 2", Sweepstakes.assignPoints(tpaTest, spec, TiePlaceAssignment.MID_ROUND_BETTER, SweepstakesAssignment.TIE_PLACE), tpaTestResMrb);
         assertArrayEquals("TPA MRW stage 2", Sweepstakes.assignPoints(tpaTest, spec, TiePlaceAssignment.MID_ROUND_WORSE, SweepstakesAssignment.TIE_PLACE), tpaTestResMrw);
+
+        // My First Tie: two-way tie for first place
+        assertArrayEquals("My First Tie TOP", Sweepstakes.assignPoints(twoWayTie, spec, tpaDefault, SweepstakesAssignment.TOP), twoWayTieResHigh);
+        assertArrayEquals("My First Tie BOT", Sweepstakes.assignPoints(twoWayTie, spec, tpaDefault, SweepstakesAssignment.BOTTOM), twoWayTieResLow);
+        assertArrayEquals("My First Tie MRB", Sweepstakes.assignPoints(twoWayTie, spec, tpaDefault, SweepstakesAssignment.MID_ROUND_BETTER), twoWayTieResHigh);
+        assertArrayEquals("My First Tie MRW", Sweepstakes.assignPoints(twoWayTie, spec, tpaDefault, SweepstakesAssignment.MID_ROUND_WORSE), twoWayTieResLow);
+        assertArrayEquals("My First Tie AVG", Sweepstakes.assignPoints(twoWayTie, spec, tpaDefault, SweepstakesAssignment.AVERAGE), twoWayTieResAvg);
+        assertArrayEquals("My First Tie AVI", Sweepstakes.assignPoints(twoWayTie, spec, tpaDefault, SweepstakesAssignment.AVERAGE_IGNORE), twoWayTieResAvg);
+        assertArrayEquals("My First Tie AVJ", Sweepstakes.assignPoints(twoWayTie, spec, tpaDefault, SweepstakesAssignment.AVERAGE_ADJUSTED), twoWayTieResAvg);
+        assertArrayEquals("My First Tie MED", Sweepstakes.assignPoints(twoWayTie, spec, tpaDefault, SweepstakesAssignment.MEDIAN), twoWayTieResAvg);
     }
 
     /**
