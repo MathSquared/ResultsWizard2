@@ -79,9 +79,18 @@ public class Sweepstakes {
             case AVERAGE_ADJUSTED:
                 int total2 = 0;
                 int count2 = 0;
-                for (int j = currPlace + 1; j < newPlace; j++) { // less than in condition intentional to exclude last place
-                    total2 += (j < spec.length) ? spec[j] : 0;
-                    count2++;
+                if (quantities[i] <= 2) { // if there are only one or two places
+                    // Run like AVERAGE to avoid zero denominators
+                    for (int j = currPlace; j <= newPlace; j++) {
+                        total2 += (j < spec.length) ? spec[j] : 0;
+                        count2++;
+                    }
+                } else {
+                    // Omit first and last place only if there are enough places
+                    for (int j = currPlace + 1; j < newPlace; j++) { // less than in condition intentional to exclude last place
+                        total2 += (j < spec.length) ? spec[j] : 0;
+                        count2++;
+                    }
                 }
                 sweeps = new Fraction(total2, count2);
                 break;
