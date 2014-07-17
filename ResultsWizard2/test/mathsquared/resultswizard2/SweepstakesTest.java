@@ -3,8 +3,9 @@
  */
 package mathsquared.resultswizard2;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.assertTrue;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,7 +23,28 @@ public class SweepstakesTest {
      */
     @Test
     public void testAssignPoints () {
-        fail("Not yet implemented");
+        int[] spec = new int[]{243, 81, 27, 9, 3, 1}; // powers of 3 (averages of 2 or 3 will be whole, and sums of two elements are distinguished from lone elements)
+
+        // CONDENSED LENGTH ARRAYS //
+
+        int[] simple = new int[]{1, 1, 1, 1, 1, 1}; // six competitors, no ties
+        int[] overrun = new int[]{1, 1, 1, 1, 1, 1, 1}; // seven competitors, no ties
+
+        // RESULTS ARRAYS //
+
+        Fraction[] simpleRes = new Fraction[]{new Fraction(243), new Fraction(81), new Fraction(27), new Fraction(9), new Fraction(3), new Fraction(1)};
+        Fraction[] overrunRes = new Fraction[]{new Fraction(243), new Fraction(81), new Fraction(27), new Fraction(9), new Fraction(3), new Fraction(1), new Fraction(0)};
+
+        // TEST CODE //
+
+        TiePlaceAssignment tpaDefault = TiePlaceAssignment.TOP; // this is tested with SweepstakesAssignment.TIE_PLACE
+
+        // Sanity check: SweepstakesAssignment.CUSTOM
+        assertTrue("Returns null for SweepstakesAssignment.CUSTOM", null == Sweepstakes.assignPoints(simple, spec, tpaDefault, SweepstakesAssignment.CUSTOM));
+
+        // Simple cases: simple, overrun
+        assertArrayEquals("Simplest case", Sweepstakes.assignPoints(simple, spec, tpaDefault, SweepstakesAssignment.TOP), simpleRes);
+        assertArrayEquals("Overrun by 1, no ties", Sweepstakes.assignPoints(overrun, spec, tpaDefault, SweepstakesAssignment.TOP), overrunRes);
     }
 
     /**
