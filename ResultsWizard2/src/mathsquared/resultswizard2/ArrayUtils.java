@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
+ * Contains utility methods for working with arrays.
+ * 
  * @author MathSquared
  * 
  */
