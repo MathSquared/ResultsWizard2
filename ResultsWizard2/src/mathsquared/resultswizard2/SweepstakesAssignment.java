@@ -4,7 +4,7 @@
 package mathsquared.resultswizard2;
 
 /**
- * Represents a method for assigning sweepstakes points to multiple tied competitors. Responding to each of these instances is handled by another class.
+ * Represents a method for assigning sweepstakes points to multiple tied competitors. Responding to each of these instances is handled by another class (in this package, the {@link Sweepstakes} class).
  * 
  * @author MathSquared
  * 
