@@ -74,6 +74,7 @@ public class Fraction { // TODO write unit tests
      * @param unit the unit (integer portion) of the mixed number
      * @param num the numerator of the fraction portion of the mixed number
      * @param den the denominator of the fraction portion of the mixed number
+     * @throws ArithmeticException if <code>den == 0</code>
      */
     public Fraction (int unit, int num, int den) {
         this((unit * den) + num, den);
