@@ -58,6 +58,14 @@ public class FractionTest {
     }
 
     /**
+     * Test method for {@link mathsquared.resultswizard2.Fraction#Fraction(Fraction)}.
+     */
+    @Test
+    public void testFractionFraction () {
+        assertEquals("Works", new Fraction(new Fraction(5, 3)), new Fraction(5, 3));
+    }
+
+    /**
      * Test method for {@link mathsquared.resultswizard2.Fraction#getUnit()}.
      */
     @Test

@@ -80,6 +80,15 @@ public class Fraction { // TODO write unit tests
     }
 
     /**
+     * Constructs a copy of a given Fraction. This is equivalent to <code>new Fraction(cp.getImproperNumerator(), cp.getDenominator())</code> and is provided as a convenience method.
+     * 
+     * @param cp the Fraction to copy
+     */
+    public Fraction (Fraction cp) {
+        this(cp.getImproperNumerator(), cp.getDenominator());
+    }
+
+    /**
      * Canonicalizes this fraction according to the criteria {@linkplain #Fraction(int, int) noted above}. This method may be invoked at any time.
      */
     private void canonicalize () {
