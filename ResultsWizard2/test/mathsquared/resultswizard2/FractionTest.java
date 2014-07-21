@@ -4,7 +4,6 @@
 package mathsquared.resultswizard2;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
@@ -49,21 +48,14 @@ public class FractionTest {
     }
 
     /**
-     * Test method for {@link mathsquared.resultswizard2.Fraction#getUnit()}, {@link mathsquared.resultswizard2.Fraction#extractUnit()}, and {@link mathsquared.resultswizard2.Fraction#isUnitValid()}.
+     * Test method for {@link mathsquared.resultswizard2.Fraction#getUnit()}.
      */
     @Test
-    public void testExtractUnit () {
+    public void testGetUnit () {
         Fraction sevenThirds = new Fraction(7, 3);
-        int unit = sevenThirds.getUnit();
         assertTrue("Correctness", sevenThirds.getUnit() == 7 / 3);
         Fraction sevenNegativeThirds = new Fraction(7, -3);
         assertTrue("Negativity", sevenNegativeThirds.getUnit() == 7 / -3);
-        assertTrue("Correctly flagged", sevenThirds.isUnitValid());
-
-        int extract = sevenThirds.extractUnit();
-        assertTrue("Extracted is same", unit == extract);
-        assertFalse("Invalidation", sevenThirds.isUnitValid());
-        assertTrue("Zeroing", sevenThirds.getUnit() == 0);
     }
 
     /**

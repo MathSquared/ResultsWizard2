@@ -4,7 +4,7 @@
 package mathsquared.resultswizard2;
 
 /**
- * An immutable object that represents a proper fraction. Can support improper fractions intermittently as well.
+ * An immutable object that represents a proper or improper fraction.
  * 
  * <p>
  * Note that any post-conditions on any methods of this class only apply after the constructor has successfully completed, as several clean-up methods are required to ensure that a Fraction is represented in a canonical form.
@@ -19,7 +19,6 @@ package mathsquared.resultswizard2;
  */
 public class Fraction { // TODO write unit tests
     private int unit;
-    private boolean unitValid = false; // Turns true when a unit is calculated and false when it is extracted
     private int numerator;
     private int denominator;
 
@@ -127,8 +126,6 @@ public class Fraction { // TODO write unit tests
     private void calculateUnit () {
         unit += numerator / denominator; // += in case there are already any other units that we want to remain valid--5u3/2 is 6u1/2
         numerator %= denominator; // % picks sign based on numerator, so numerator keeps current sign
-
-        unitValid = true;
     }
 
     /**
@@ -143,7 +140,6 @@ public class Fraction { // TODO write unit tests
         // Simply convert to improper and back
         numerator = getImproperNumerator();
         unit = 0;
-        unitValid = false;
         calculateUnit();
     }
 
@@ -166,38 +162,12 @@ public class Fraction { // TODO write unit tests
     // Accessors //
 
     /**
-     * Returns the unit currently associated with this fraction. If the unit is {@linkplain #isUnitValid() invalid}, this method returns 0. If the fraction represents a negative quantity, the value returned by this method will be negative.
+     * Returns the unit currently associated with this fraction. If the fraction represents a negative quantity, the value returned by this method will be negative.
      * 
      * @return the unit of this fraction
      */
     public int getUnit () {
-        return (unitValid ? unit : 0);
-    }
-
-    /**
-     * Discards the unit of this fraction, returning the number discarded. After this method is called, {@link #getUnit()} returns 0 and {@link #isUnitValid()} returns false. If the fraction represents a negative quantity, the value returned by this method will be negative.
-     * 
-     * @return the unit of this fraction
-     */
-    public int extractUnit () {
-        int temp = unit;
-        unitValid = false;
-        unit = 0;
-
-        return temp;
-    }
-
-    /**
-     * Returns whether the unit of this fraction will be used in future arithmetic calculations.
-     * 
-     * <p>
-     * The {@linkplain #getUnit() unit} mechanism was created to facilitate chaining of operations, especially additions. Since units are factored into calculations as long as they are valid, the unit can be disabled by the user when it is no longer needed. This method returns whether the unit will still be used in mathematical calculations.
-     * </p>
-     * 
-     * @return whether the current unit is valid
-     */
-    public boolean isUnitValid () {
-        return unitValid;
+        return unit;
     }
 
     /**
@@ -210,13 +180,13 @@ public class Fraction { // TODO write unit tests
     }
 
     /**
-     * Returns the numerator of this fraction expressed as an improper fraction. If the unit is {@linkplain #isUnitValid() valid}, this is defined to be equal to <code>(numerator + unit*denominator)</code>; if the unit is invalid, this returns the same result as {@link #getNumerator()}.
+     * Returns the numerator of this fraction expressed as an improper fraction. Equivalent to <code>(numerator + unit*denominator)</code>.
      * 
      * @return the improper numerator
      */
     // USE THIS METHOD FOR ARITHMETIC TO SUPPORT OPERATION CHAINING; DO NOT DIRECTLY EMPLOY numerator
     public int getImproperNumerator () {
-        return numerator + (unitValid ? unit : 0) * denominator;
+        return numerator + unit * denominator;
     }
 
     /**
