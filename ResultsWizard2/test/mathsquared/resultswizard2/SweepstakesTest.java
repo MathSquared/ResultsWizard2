@@ -40,6 +40,9 @@ public class SweepstakesTest {
         // Test the different AVERAGEs (especially for off-the-end scenarios)
         int[] avgTest = new int[]{1, 1, 1, 1, 3}; // seven places, which is important for AVERAGE_IGNORE vs AVERAGE
 
+        // Seven-way tie: final test of ridiculousness
+        int[] sevenWay = new int[]{7};
+
         // RESULTS ARRAYS //
 
         // Simplest cases
@@ -61,6 +64,16 @@ public class SweepstakesTest {
         Fraction[] avgTestResNorm = new Fraction[]{new Fraction(243), new Fraction(81), new Fraction(27), new Fraction(9), new Fraction(3 + 1 + 0, 3)};
         Fraction[] avgTestResIgn = new Fraction[]{new Fraction(243), new Fraction(81), new Fraction(27), new Fraction(9), new Fraction(3 + 1, 2)}; // _IGNORE ignores the unspecified place
         Fraction[] avgTestResAdjMed = new Fraction[]{new Fraction(243), new Fraction(81), new Fraction(27), new Fraction(9), new Fraction(1)}; // also applies to MEDIAN
+
+        // Seven-way tie
+        Fraction[] sevenWayResTop = new Fraction[]{new Fraction(243)};
+        Fraction[] sevenWayResBot = new Fraction[]{new Fraction(0)};
+        Fraction[] sevenWayResMrb = new Fraction[]{new Fraction(9)};
+        Fraction[] sevenWayResMrw = new Fraction[]{new Fraction(9)};
+        Fraction[] sevenWayResAvg = new Fraction[]{new Fraction(243 + 81 + 27 + 9 + 3 + 1 + 0, 7)};
+        Fraction[] sevenWayResAvi = new Fraction[]{new Fraction(243 + 81 + 27 + 9 + 3 + 1, 6)};
+        Fraction[] sevenWayResAvj = new Fraction[]{new Fraction(81 + 27 + 9 + 3 + 1, 5)};
+        Fraction[] sevenWayResMed = new Fraction[]{new Fraction(9)};
 
         // TEST CODE //
 
@@ -100,6 +113,16 @@ public class SweepstakesTest {
         assertArrayEquals("Average Behavior AVI", Sweepstakes.assignPoints(avgTest, spec, tpaDefault, SweepstakesAssignment.AVERAGE_IGNORE), avgTestResIgn);
         assertArrayEquals("Average Behavior AVJ", Sweepstakes.assignPoints(avgTest, spec, tpaDefault, SweepstakesAssignment.AVERAGE_ADJUSTED), avgTestResAdjMed);
         assertArrayEquals("Average Behavior MED", Sweepstakes.assignPoints(avgTest, spec, tpaDefault, SweepstakesAssignment.MEDIAN), avgTestResAdjMed);
+
+        // Seven-way tie: final test
+        assertArrayEquals("Seven Way TOP", Sweepstakes.assignPoints(sevenWay, spec, tpaDefault, SweepstakesAssignment.TOP), sevenWayResTop);
+        assertArrayEquals("Seven Way BOT", Sweepstakes.assignPoints(sevenWay, spec, tpaDefault, SweepstakesAssignment.BOTTOM), sevenWayResBot);
+        assertArrayEquals("Seven Way MRB", Sweepstakes.assignPoints(sevenWay, spec, tpaDefault, SweepstakesAssignment.MID_ROUND_BETTER), sevenWayResMrb);
+        assertArrayEquals("Seven Way MRW", Sweepstakes.assignPoints(sevenWay, spec, tpaDefault, SweepstakesAssignment.MID_ROUND_WORSE), sevenWayResMrw);
+        assertArrayEquals("Seven Way AVG", Sweepstakes.assignPoints(sevenWay, spec, tpaDefault, SweepstakesAssignment.AVERAGE), sevenWayResAvg);
+        assertArrayEquals("Seven Way AVI", Sweepstakes.assignPoints(sevenWay, spec, tpaDefault, SweepstakesAssignment.AVERAGE_IGNORE), sevenWayResAvi);
+        assertArrayEquals("Seven Way AVJ", Sweepstakes.assignPoints(sevenWay, spec, tpaDefault, SweepstakesAssignment.AVERAGE_ADJUSTED), sevenWayResAvj);
+        assertArrayEquals("Seven Way MED", Sweepstakes.assignPoints(sevenWay, spec, tpaDefault, SweepstakesAssignment.MEDIAN), sevenWayResMed);
     }
 
     /**
