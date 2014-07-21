@@ -396,6 +396,10 @@ public class Fraction { // TODO write unit tests
      * <li><code>other</code> is a <code>Float</code> or <code>Double</code> and <code>this.toDouble()</code> precisely equals the value represented by <code>other</code></li>
      * <li><code>other</code> is another <code>Fraction</code> and both fractions' {@linkplain #getImproperNumerator() improper numerators} and {@linkplain #getDenominator() denominators} are equal to each other when both fractions are in lowest terms</li>
      * </ul>
+     * 
+     * <p>
+     * This method {@linkplain #canonicalize() canonicalizes} this fraction, as well as <code>other</code> if it is itself a Fraction.
+     * </p>
      */
     public boolean equals (Object other) {
         canonicalize();
