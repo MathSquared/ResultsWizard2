@@ -48,6 +48,16 @@ public class FractionTest {
     }
 
     /**
+     * Test method for {@link mathsquared.resultswizard2.Fraction#Fraction(int, int, int)}.
+     */
+    @Test
+    public void testFractionIntIntInt () {
+        assertEquals("Positive", new Fraction(1, 2, 3), new Fraction(5, 3));
+        assertEquals("Negative", new Fraction(-3, -1, 2), new Fraction(-7, 2));
+        assertEquals("Perfect integer", new Fraction(3, 0, 5), new Fraction(3));
+    }
+
+    /**
      * Test method for {@link mathsquared.resultswizard2.Fraction#getUnit()}.
      */
     @Test

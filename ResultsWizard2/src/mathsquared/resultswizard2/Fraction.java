@@ -65,6 +65,21 @@ public class Fraction { // TODO write unit tests
     }
 
     /**
+     * Constructs a Fraction representing a mixed number. This is equivalent to <code>new Fraction((unit * den) + num, den)</code> and is provided as a convenience method.
+     * 
+     * <p>
+     * For a positive fraction, all parameters should be positive. For a negative fraction, <code>unit</code> and <code>num</code> should be negative; <code>den</code> should remain positive.
+     * </p>
+     * 
+     * @param unit the unit (integer portion) of the mixed number
+     * @param num the numerator of the fraction portion of the mixed number
+     * @param den the denominator of the fraction portion of the mixed number
+     */
+    public Fraction (int unit, int num, int den) {
+        this((unit * den) + num, den);
+    }
+
+    /**
      * Canonicalizes this fraction according to the criteria {@linkplain #Fraction(int, int) noted above}. This method may be invoked at any time.
      */
     private void canonicalize () {
