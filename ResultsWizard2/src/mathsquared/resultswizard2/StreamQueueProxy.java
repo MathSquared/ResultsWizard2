@@ -93,7 +93,7 @@ public class StreamQueueProxy implements Runnable {
                                     throw new UnsupportedOperationException("This message does not carry a String payload");
                                 }
 
-                                public Map<String, Slide[]> getStringSlidesPayload () {
+                                public Map<String, SlideList> getStringSlideListPayload () {
                                     throw new UnsupportedOperationException("This message does not carry a Map<String, Slide[]> payload");
                                 }
                             }; // if an exception is thrown; this queue chokes on null

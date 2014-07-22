@@ -29,10 +29,10 @@ public interface Command extends Serializable {
     public String getStringPayload ();
 
     /**
-     * Returns the Map<String, Slide[]> parameter to this Message, if applicable.
+     * Returns the Map<String, SlideList> parameter to this Message, if applicable.
      * 
-     * @return the Map<String, Slide[]> parameter to this Command, if supported by the {@linkplain #getType() relevant} {@link Message}
-     * @throws UnsupportedOperationException if this Message does not {@linkplain ParamType support} a Map<String, Slide[]> parameter
+     * @return the Map<String, SlideList> parameter to this Command, if supported by the {@linkplain #getType() relevant} {@link Message}
+     * @throws UnsupportedOperationException if this Message does not {@linkplain ParamType support} a Map<String, SlideList> parameter
      */
-    public Map<String, Slide[]> getStringSlidesPayload ();
+    public Map<String, SlideList> getStringSlideListPayload ();
 }

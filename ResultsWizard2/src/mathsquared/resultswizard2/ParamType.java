@@ -10,5 +10,5 @@ package mathsquared.resultswizard2;
  * 
  */
 public enum ParamType {
-    NONE, STRING, MAP_STRING_SLIDES;
+    NONE, STRING, MAP_STRING_SLIDELIST;
 }
