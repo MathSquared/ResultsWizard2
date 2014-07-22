@@ -94,7 +94,7 @@ public class StreamQueueProxy implements Runnable {
                                 }
 
                                 public Map<String, SlideList> getStringSlideListPayload () {
-                                    throw new UnsupportedOperationException("This message does not carry a Map<String, Slide[]> payload");
+                                    throw new UnsupportedOperationException("This message does not carry a Map<String, SlideList> payload");
                                 }
                             }; // if an exception is thrown; this queue chokes on null
                         }
