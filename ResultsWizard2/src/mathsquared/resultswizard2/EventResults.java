@@ -181,6 +181,15 @@ public class EventResults {
     }
 
     /**
+     * Returns the event whose results are represented by this EventResults.
+     * 
+     * @return the {@link Event} assigned to this EventResults object
+     */
+    public Event getEvent () {
+        return ev;
+    }
+
+    /**
      * Returns an array of the names of those placing individually, in rank order where index 0 is first place.
      * 
      * @return the indivHonorees, or null if this {@linkplain Event event} does not award individual results
