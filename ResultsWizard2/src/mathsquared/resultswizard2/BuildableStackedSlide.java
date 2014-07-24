@@ -427,6 +427,9 @@ public class BuildableStackedSlide implements Slide {
         toAdd.str2 = str2;
         toAdd.font2 = font2;
         toAdd.color2 = color2;
+        toAdd.str3 = str3;
+        toAdd.font3 = font3;
+        toAdd.color3 = color3;
         toAdd.str4 = str4;
         toAdd.font4 = font4;
         toAdd.color4 = color4;
