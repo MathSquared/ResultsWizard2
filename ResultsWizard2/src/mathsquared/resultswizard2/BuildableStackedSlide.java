@@ -28,8 +28,8 @@ public class BuildableStackedSlide implements Slide {
     private ArrayList<Chunk> head;
     private ArrayList<Chunk> index;
 
-    public static final int SIDE_MARGIN = 10; // side margin in pixels
-    public static final int HORIZ_SPACER = 10; // how far apart to space elements horizontally
+    public static final int SIDE_MARGIN = 30; // side margin in pixels
+    public static final int HORIZ_SPACER = 15; // how far apart to space elements horizontally
 
     // CHUNK CLASSES //
 
