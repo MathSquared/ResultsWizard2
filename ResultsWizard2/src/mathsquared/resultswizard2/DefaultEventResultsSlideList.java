@@ -3,6 +3,7 @@
  */
 package mathsquared.resultswizard2;
 
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -27,6 +28,26 @@ public class DefaultEventResultsSlideList implements EventResultsSlideList {
 
     ArrayList<Slide> slides; // holds the slides
 
+    // Define the fonts
+    public static final String FONT_FACE = "SansSerif";
+    Font base; // used for most text--competitor names, etc.
+    Font head; // used for the heading
+    public static final int HEAD_MULT = 3; // evaluate baseFont * HEAD_MULT / HEAD_DIV for the head font size
+    public static final int HEAD_DIV = 2;
+    public static final int HEAD_STYLE = Font.BOLD;
+    Font subhead; // used for subheadings, e.g. subsections within the larger results
+    public static final int SUBHEAD_MULT = 1;
+    public static final int SUBHEAD_DIV = 1;
+    public static final int SUBHEAD_STYLE = Font.BOLD;
+    Font number; // used for numbers (places, sweeps)
+    public static final int NUMBER_MULT = 1;
+    public static final int NUMBER_DIV = 1;
+    public static final int NUMBER_STYLE = Font.BOLD | Font.ITALIC;
+    Font smalltext; // used for things like "page _ of _ for this event"
+    public static final int SMALLTEXT_MULT = 1;
+    public static final int SMALLTEXT_DIV = 2;
+    public static final int SMALLTEXT_STYLE = Font.PLAIN;
+
     public DefaultEventResultsSlideList (Graphics2D g, int width, int height, ColorScheme color, int baseFont, EventResults evr) {
         this.g = g;
         this.width = width;
@@ -36,6 +57,13 @@ public class DefaultEventResultsSlideList implements EventResultsSlideList {
         this.evr = evr;
 
         slides = new ArrayList<Slide>();
+
+        // Initialize the fonts
+        base = new Font(FONT_FACE, baseFont, Font.PLAIN);
+        head = new Font(FONT_FACE, baseFont * HEAD_MULT / HEAD_DIV, HEAD_STYLE);
+        subhead = new Font(FONT_FACE, baseFont * SUBHEAD_MULT / SUBHEAD_DIV, SUBHEAD_STYLE);
+        number = new Font(FONT_FACE, baseFont * NUMBER_MULT / NUMBER_DIV, NUMBER_STYLE);
+        smalltext = new Font(FONT_FACE, baseFont * SMALLTEXT_MULT / SMALLTEXT_DIV, SMALLTEXT_STYLE);
     }
 
     public EventResults getEventResults () {
