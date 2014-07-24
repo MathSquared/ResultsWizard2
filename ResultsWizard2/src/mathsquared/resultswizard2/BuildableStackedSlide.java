@@ -29,6 +29,9 @@ public class BuildableStackedSlide implements Slide {
     private ArrayList<Chunk> head;
     private ArrayList<Chunk> index;
 
+    // Allows the user to update chunks later.
+    private ArrayList<TextChunk> update;
+
     public static final int SIDE_MARGIN = 30; // side margin in pixels
     public static final int HORIZ_SPACER = 15; // how far apart to space elements horizontally
     public static final int BOTTOM_MARGIN = 40; // threshhold for "this slide is full"
@@ -428,5 +431,43 @@ public class BuildableStackedSlide implements Slide {
         toAdd.font4 = font4;
         toAdd.color4 = color4;
         return addChunk(toAdd);
+    }
+
+    /**
+     * Allows the user to update a unit previously added to the buffer. Specifically, allows the text content of this chunk to be changed in the future, and returns a number to be used for this purpose.
+     * 
+     * <p>
+     * This method must be called immediately after adding a unit, and the unit must be in the first buffer. If the first buffer is empty, this method throws an {@link IllegalStateException}.
+     * </p>
+     * 
+     * <p>
+     * The update process is only allowed for {@linkplain #addText(String, Font, Color, boolean) one-column text units}. Attempting to call this method after adding another type of unit throws an {@link UnsupportedOperationException}.
+     * </p>
+     * 
+     * @return the number which should be used to update the unit in the future
+     * @throws IllegalStateException if the first buffer is empty (i.e. has been {@linkplain #reset() reset} or {@linkplain #commit() committed})
+     * @throws UnsupportedOperationException if this method is called when the last element of the first buffer is anything but a one-column text unit
+     */
+    public int updatable () {
+        if (index.isEmpty()) {
+            throw new IllegalStateException("Must call updatable immediately after adding a unit");
+        }
+        if (!(index.get(index.size() - 1) instanceof TextChunk)) {
+            throw new UnsupportedOperationException("Updatable is only supported for text units");
+        }
+        assert index.get(index.size() - 1) instanceof TextChunk;
+        update.add((TextChunk) index.get(index.size() - 1)); // add the last (most recent) element of index
+        return update.size() - 1;
+    }
+
+    /**
+     * Updates the text of a text unit. Specifically, given an ID obtained from {@link #updatable()}, updates the text of the corresponding unit so that it will now display <code>newText</code>.
+     * 
+     * @param updatableId the ID to update
+     * @param newText the new text of the text unit
+     * @throws IndexOutOfBoundsException if <code>updatableId</code> does not represent an ID validly obtained from <code>updatable()</code>
+     */
+    public void update (int updatableId, String newText) {
+        update.get(updatableId).str = newText;
     }
 }
