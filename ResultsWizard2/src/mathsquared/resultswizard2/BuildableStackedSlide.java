@@ -266,7 +266,10 @@ public class BuildableStackedSlide implements Slide {
     }
 
     public void draw (Graphics g) {
-        // TODO
+        int cursor = 0; // Start at the top (users should add a spacer at the top for a top margin)
+        for (Chunk x : remote) {
+            cursor = x.draw(g, cursor);
+        }
     }
 
     public void reset () {
