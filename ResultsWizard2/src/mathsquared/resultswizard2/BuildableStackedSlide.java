@@ -260,11 +260,18 @@ public class BuildableStackedSlide implements Slide {
 
     // LOGIC //
 
+    /**
+     * Constructs a new BuildableStackedSlide that renders with the given height and width.
+     * 
+     * @param width the width available for this slide's rendering, in pixels
+     * @param height the height available for this slide's rendering, in pixels
+     */
     public BuildableStackedSlide (int width, int height) {
         this.width = width;
         this.height = height;
     }
 
+    @Override
     public void draw (Graphics g) {
         int cursor = 0; // Start at the top (users should add a spacer at the top for a top margin)
         for (Chunk x : remote) {
@@ -272,24 +279,42 @@ public class BuildableStackedSlide implements Slide {
         }
     }
 
+    /**
+     * Clears the first buffer.
+     */
     public void reset () {
         index.clear();
     }
 
+    /**
+     * Copies the first buffer to the second buffer, then clears the first buffer.
+     */
     public void commit () {
         head.addAll(index);
         index.clear(); // we've already added these, we can get rid of them now
     }
 
+    /**
+     * Clears the second buffer.
+     */
     public void revert () {
         head.clear();
     }
 
+    /**
+     * Copies the second buffer to the third buffer (allowing its elements to be rendered), then clears the second buffer.
+     */
     public void push () {
         remote.addAll(head);
         head.clear(); // we've already added these, we can get rid of them now
     }
 
+    /**
+     * Computes the total vertical space taken up by the chunks in one or more lists, in pixels.
+     * 
+     * @param chunks one or more lists of chunks whose vertical size to compute
+     * @return the sum of {@link Chunk#getMaxVertSize()} for each element of each passed-in list
+     */
     @SafeVarargs
     private static int findTotalVertSize (ArrayList<Chunk>... chunks) {
         int ret = 0;
@@ -301,6 +326,12 @@ public class BuildableStackedSlide implements Slide {
         return ret;
     }
 
+    /**
+     * Adds the given chunk to the first buffer. Note that it must be propagated to the third buffer using {@link #commit()} and {@link #push()} before it is rendered.
+     * 
+     * @param toAdd the chunk to add
+     * @return false if the elements in all three buffers take up more room than is available on the slide
+     */
     private boolean addChunk (Chunk toAdd) {
         index.add(toAdd); // always add
         int sizeToDate = findTotalVertSize(remote, head, index);
@@ -308,12 +339,26 @@ public class BuildableStackedSlide implements Slide {
         return sizeToDate <= width - BOTTOM_MARGIN;
     }
 
+    /**
+     * Adds a spacer of the given vertical pixel size to the first buffer. Note that it must be propagated to the third buffer using {@link #commit()} and {@link #push()} before it is rendered.
+     * 
+     * @param px the amount of vertical space that this spacer should occupy, in pixels
+     * @return false if the elements in all three buffers take up more room than is available on the slide
+     */
     public boolean addSpacer (int px) {
         SpacerChunk toAdd = new SpacerChunk();
         toAdd.px = px;
         return addChunk(toAdd);
     }
 
+    /**
+     * Adds a text string to the first buffer. Note that it must be propagated to the third buffer using {@link #commit()} and {@link #push()} before it is rendered.
+     * 
+     * @param str the string to display
+     * @param font the font with which to display the string
+     * @param color the color in which to display the string
+     * @return false if the elements in all three buffers take up more room than is available on the slide
+     */
     public boolean addText (String str, Font font, Color color, boolean center) {
         TextChunk toAdd = new TextChunk();
         toAdd.str = str;
@@ -323,6 +368,20 @@ public class BuildableStackedSlide implements Slide {
         return addChunk(toAdd);
     }
 
+    /**
+     * Adds a unit containing three columns of text to the first buffer. Note that it must be propagated to the third buffer using {@link #commit()} and {@link #push()} before it is rendered.
+     * 
+     * @param str1 the string to display on the left
+     * @param font1 the font with which to display the string on the left
+     * @param color1 the color in which to display the string on the left
+     * @param str2 the string to display in the center
+     * @param font2 the font with which to display the string in the center
+     * @param color2 the color in which to display the string in the center
+     * @param str3 the string to display on the right
+     * @param font3 the font with which to display the string on the right
+     * @param color3 the color in which to display the string on the right
+     * @return false if the elements in all three buffers take up more room than is available on the slide
+     */
     public boolean addThreeText (String str1, Font font1, Color color1, String str2, Font font2, Color color2, String str3, Font font3, Color color3) {
         ThreeTextChunk toAdd = new ThreeTextChunk();
         toAdd.str1 = str1;
@@ -337,6 +396,23 @@ public class BuildableStackedSlide implements Slide {
         return addChunk(toAdd);
     }
 
+    /**
+     * Adds a unit containing four columns of text to the first buffer. Note that it must be propagated to the third buffer using {@link #commit()} and {@link #push()} before it is rendered.
+     * 
+     * @param str1 the string to display on the left
+     * @param font1 the font with which to display the string on the left
+     * @param color1 the color in which to display the string on the left
+     * @param str2 the string to display in the left center
+     * @param font2 the font with which to display the string in the left center
+     * @param color2 the color in which to display the string in the left center
+     * @param str3 the string to display in the right center
+     * @param font3 the font with which to display the string in the right center
+     * @param color3 the color in which to display the string in the right center
+     * @param str4 the string to display on the right
+     * @param font4 the font with which to display the string on the right
+     * @param color4 the color in which to display the string on the right
+     * @return false if the elements in all three buffers take up more room than is available on the slide
+     */
     public boolean addFourText (String str1, Font font1, Color color1, String str2, Font font2, Color color2, String str3, Font font3, Color color3, String str4, Font font4, Color color4) {
         FourTextChunk toAdd = new FourTextChunk();
         toAdd.str1 = str1;
