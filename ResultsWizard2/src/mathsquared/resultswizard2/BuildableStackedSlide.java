@@ -20,6 +20,8 @@ public class BuildableStackedSlide implements Slide {
     private ColorScheme color;
 
     // This will use a "commit" system: the client will add chunks to a buffer list and periodically either "commit" or "revert" the buffer. Totally not Git-inspired.
+    // There are two layers of "undo": only what is superCommitted is actually rendered. You can superCommit from c. to s.C., superRevert clear c., commit from i. to c., or revert clear i.
+    private ArrayList<Chunk> superCommitted;
     private ArrayList<Chunk> committed;
     private ArrayList<Chunk> index;
 
