@@ -3,6 +3,7 @@
  */
 package mathsquared.resultswizard2;
 
+import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -15,7 +16,6 @@ import java.util.ArrayList;
  * 
  */
 public class BuildableStackedSlide implements Slide {
-    private Graphics g;
     private int width;
     private int height;
     private ColorScheme color;
@@ -54,7 +54,8 @@ public class BuildableStackedSlide implements Slide {
         public Color color;
 
         public int getMaxVertSize () {
-            return g.getFontMetrics(font).getHeight();
+            Canvas c = new Canvas();
+            return c.getFontMetrics(font).getHeight();
         }
     }
 
@@ -70,9 +71,10 @@ public class BuildableStackedSlide implements Slide {
         public Color color3;
 
         public int getMaxVertSize () {
-            int h1 = g.getFontMetrics(font1).getHeight();
-            int h2 = g.getFontMetrics(font2).getHeight();
-            int h3 = g.getFontMetrics(font3).getHeight();
+            Canvas c = new Canvas();
+            int h1 = c.getFontMetrics(font1).getHeight();
+            int h2 = c.getFontMetrics(font2).getHeight();
+            int h3 = c.getFontMetrics(font3).getHeight();
 
             int mx = h1;
             mx = (h2 > mx) ? h2 : mx;
@@ -97,10 +99,11 @@ public class BuildableStackedSlide implements Slide {
         public Color color4;
 
         public int getMaxVertSize () {
-            int h1 = g.getFontMetrics(font1).getHeight();
-            int h2 = g.getFontMetrics(font2).getHeight();
-            int h3 = g.getFontMetrics(font3).getHeight();
-            int h4 = g.getFontMetrics(font4).getHeight();
+            Canvas c = new Canvas();
+            int h1 = c.getFontMetrics(font1).getHeight();
+            int h2 = c.getFontMetrics(font2).getHeight();
+            int h3 = c.getFontMetrics(font3).getHeight();
+            int h4 = c.getFontMetrics(font4).getHeight();
 
             int mx = h1;
             mx = (h2 > mx) ? h2 : mx;
@@ -113,8 +116,7 @@ public class BuildableStackedSlide implements Slide {
 
     // LOGIC //
 
-    public BuildableStackedSlide (Graphics g, int width, int height) {
-        this.g = g;
+    public BuildableStackedSlide (int width, int height) {
         this.width = width;
         this.height = height;
     }
