@@ -303,4 +303,47 @@ public class BuildableStackedSlide implements Slide {
         // Return false if we've overflowed
         return sizeToDate <= width - BOTTOM_MARGIN;
     }
+
+    public boolean addSpacer (int px) {
+        SpacerChunk toAdd = new SpacerChunk();
+        toAdd.px = px;
+        return addChunk(toAdd);
+    }
+
+    public boolean addText (String str, Font font, Color color, boolean center) {
+        TextChunk toAdd = new TextChunk();
+        toAdd.str = str;
+        toAdd.font = font;
+        toAdd.color = color;
+        toAdd.center = center;
+        return addChunk(toAdd);
+    }
+
+    public boolean addThreeText (String str1, Font font1, Color color1, String str2, Font font2, Color color2, String str3, Font font3, Color color3) {
+        ThreeTextChunk toAdd = new ThreeTextChunk();
+        toAdd.str1 = str1;
+        toAdd.font1 = font1;
+        toAdd.color1 = color1;
+        toAdd.str2 = str2;
+        toAdd.font2 = font2;
+        toAdd.color2 = color2;
+        toAdd.str3 = str3;
+        toAdd.font3 = font3;
+        toAdd.color3 = color3;
+        return addChunk(toAdd);
+    }
+
+    public boolean addFourText (String str1, Font font1, Color color1, String str2, Font font2, Color color2, String str3, Font font3, Color color3, String str4, Font font4, Color color4) {
+        FourTextChunk toAdd = new FourTextChunk();
+        toAdd.str1 = str1;
+        toAdd.font1 = font1;
+        toAdd.color1 = color1;
+        toAdd.str2 = str2;
+        toAdd.font2 = font2;
+        toAdd.color2 = color2;
+        toAdd.str4 = str4;
+        toAdd.font4 = font4;
+        toAdd.color4 = color4;
+        return addChunk(toAdd);
+    }
 }
