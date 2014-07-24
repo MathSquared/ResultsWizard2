@@ -287,7 +287,8 @@ public class BuildableStackedSlide implements Slide {
         head.clear(); // we've already added these, we can get rid of them now
     }
 
-    private int findTotalVertSize (ArrayList<Chunk>... chunks) {
+    @SafeVarargs
+    private static int findTotalVertSize (ArrayList<Chunk>... chunks) {
         int ret = 0;
         for (ArrayList<Chunk> x : chunks) {
             for (Chunk y : x) {
