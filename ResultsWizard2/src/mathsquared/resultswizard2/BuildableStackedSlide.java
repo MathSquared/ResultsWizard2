@@ -296,4 +296,11 @@ public class BuildableStackedSlide implements Slide {
         }
         return ret;
     }
+
+    private boolean addChunk (Chunk toAdd) {
+        index.add(toAdd); // always add
+        int sizeToDate = findTotalVertSize(remote, head, index);
+        // Return false if we've overflowed
+        return sizeToDate <= width - BOTTOM_MARGIN;
+    }
 }
