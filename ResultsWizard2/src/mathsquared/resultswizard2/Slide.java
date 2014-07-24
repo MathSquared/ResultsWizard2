@@ -3,7 +3,7 @@
  */
 package mathsquared.resultswizard2;
 
-import java.awt.Graphics2D;
+import java.awt.Graphics;
 import java.io.Serializable;
 
 /**
@@ -16,9 +16,9 @@ import java.io.Serializable;
  */
 public interface Slide extends Serializable {
     /**
-     * Draws this Slide's data to the given <code>Graphics2D</code> object.
+     * Draws this Slide's data to the given <code>Graphics</code> object.
      * 
-     * @param g the {@link Graphics2D} to which to draw this Slide
+     * @param g the {@link Graphics} to which to draw this Slide
      */
-    public void draw (Graphics2D g);
+    public void draw (Graphics g);
 }
