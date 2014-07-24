@@ -14,7 +14,7 @@ import java.awt.Graphics;
  * 
  */
 public class FontUtils {
-    public Font shrinkFontForWidth (Font base, String text, int desiredWidth, Graphics getMetrics) {
+    public static Font shrinkFontForWidth (Font base, String text, int desiredWidth, Graphics getMetrics) {
         FontMetrics metrics = getMetrics.getFontMetrics(base);
         while (metrics.stringWidth(text) > desiredWidth) {
             base = base.deriveFont((float) base.getSize() - 1);
