@@ -126,4 +126,22 @@ public class BuildableStackedSlide implements Slide {
     public void draw (Graphics g) {
         // TODO
     }
+
+    public void reset () {
+        index.clear();
+    }
+
+    public void commit () {
+        head.addAll(index);
+        index.clear(); // we've already added these, we can get rid of them now
+    }
+
+    public void revert () {
+        head.clear();
+    }
+
+    public void push () {
+        remote.addAll(head);
+        head.clear(); // we've already added these, we can get rid of them now
+    }
 }
