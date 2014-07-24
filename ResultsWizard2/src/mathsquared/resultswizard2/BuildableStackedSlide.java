@@ -27,6 +27,8 @@ public class BuildableStackedSlide implements Slide {
     private ArrayList<Chunk> head;
     private ArrayList<Chunk> index;
 
+    public static final int SIDE_MARGIN = 10; // side margin in pixels
+
     // CHUNK CLASSES //
 
     // These represent the different elements that can be created. //
