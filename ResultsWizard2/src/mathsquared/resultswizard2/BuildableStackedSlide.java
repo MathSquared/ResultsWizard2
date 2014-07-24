@@ -286,4 +286,14 @@ public class BuildableStackedSlide implements Slide {
         remote.addAll(head);
         head.clear(); // we've already added these, we can get rid of them now
     }
+
+    private int findTotalVertSize (ArrayList<Chunk>... chunks) {
+        int ret = 0;
+        for (ArrayList<Chunk> x : chunks) {
+            for (Chunk y : x) {
+                ret += y.getMaxVertSize();
+            }
+        }
+        return ret;
+    }
 }
