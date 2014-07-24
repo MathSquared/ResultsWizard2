@@ -52,6 +52,7 @@ public class BuildableStackedSlide implements Slide {
         public String str;
         public Font font;
         public Color color;
+        public boolean center; // whether to center-align the text
 
         public int getMaxVertSize () {
             Canvas c = new Canvas();
@@ -69,6 +70,7 @@ public class BuildableStackedSlide implements Slide {
         public String str3;
         public Font font3;
         public Color color3;
+        public boolean wideThird; // whether to make the third column wider than normal
 
         public int getMaxVertSize () {
             Canvas c = new Canvas();
