@@ -9,6 +9,7 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Represents a Slide that can be built up with several elements until it is full.
@@ -318,9 +319,9 @@ public class BuildableStackedSlide implements Slide {
      * @return the sum of {@link Chunk#getMaxVertSize()} for each element of each passed-in list
      */
     @SafeVarargs
-    private static int findTotalVertSize (ArrayList<Chunk>... chunks) {
+    private static int findTotalVertSize (List<Chunk>... chunks) {
         int ret = 0;
-        for (ArrayList<Chunk> x : chunks) {
+        for (List<Chunk> x : chunks) {
             for (Chunk y : x) {
                 ret += y.getMaxVertSize();
             }
