@@ -30,6 +30,7 @@ public class BuildableStackedSlide implements Slide {
 
     public static final int SIDE_MARGIN = 30; // side margin in pixels
     public static final int HORIZ_SPACER = 15; // how far apart to space elements horizontally
+    public static final int BOTTOM_MARGIN = 40; // threshhold for "this slide is full"
 
     // CHUNK CLASSES //
 
