@@ -91,7 +91,9 @@ public class BuildableStackedSlide implements Slide {
 
             // Draw the String
             g.setFont(shrunk);
-            g.drawString(str, SIDE_MARGIN, baselineLoc);
+            // The offset at which to draw the String
+            int textOffset = center ? (width / 2 - g.getFontMetrics(shrunk).stringWidth(str) / 2) : SIDE_MARGIN;
+            g.drawString(str, textOffset, baselineLoc);
 
             return cursor + totalHeight;
         }
