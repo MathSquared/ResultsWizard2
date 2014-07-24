@@ -125,6 +125,15 @@ public class EventResults {
     }
 
     /**
+     * Constructs a new object representing the same results as the parameter. The constructed EventResults will be semantically equivalent to the passed-in EventResults (that is, all of its methods will return the same results, with the exception that the references will be different but will represent the same data), but will be independent of the parameter EventResults.
+     * 
+     * @param cp the EventResults whose data to copy
+     */
+    public EventResults (EventResults cp) {
+        this(cp.getEvent(), cp.getIndivHonorees(), cp.getIndivSchools(), cp.getTeamHonorees(), cp.getSpecialHonorees(), cp.getSpecialSchools());
+    }
+
+    /**
      * Returns the sweepstakes points for individual winners in this event. Specifically, returns a Map from names of honorees to amount of sweeps points received.
      * 
      * @param studentNames if true, the returned Map has student names as keys; if false, school names are used as keys
