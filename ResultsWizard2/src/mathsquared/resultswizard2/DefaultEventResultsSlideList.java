@@ -4,7 +4,7 @@
 package mathsquared.resultswizard2;
 
 import java.awt.Font;
-import java.awt.Graphics2D;
+import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -19,7 +19,7 @@ import java.util.ListIterator;
  * 
  */
 public class DefaultEventResultsSlideList implements EventResultsSlideList {
-    private Graphics2D g;
+    private Graphics g;
     private int width;
     private int height;
     private ColorScheme color;
@@ -48,7 +48,7 @@ public class DefaultEventResultsSlideList implements EventResultsSlideList {
     public static final int SMALLTEXT_DIV = 2;
     public static final int SMALLTEXT_STYLE = Font.PLAIN;
 
-    public DefaultEventResultsSlideList (Graphics2D g, int width, int height, ColorScheme color, int baseFont, EventResults evr) {
+    public DefaultEventResultsSlideList (Graphics g, int width, int height, ColorScheme color, int baseFont, EventResults evr) {
         this.g = g;
         this.width = width;
         this.height = height;
