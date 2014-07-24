@@ -19,31 +19,31 @@ import java.util.ListIterator;
  * 
  */
 public class DefaultEventResultsSlideList implements EventResultsSlideList {
-    Graphics2D g;
-    int width;
-    int height;
-    ColorScheme color;
-    int baseFont; // the base font size
-    EventResults evr;
+    private Graphics2D g;
+    private int width;
+    private int height;
+    private ColorScheme color;
+    private int baseFont; // the base font size
+    private EventResults evr;
 
-    ArrayList<Slide> slides; // holds the slides
+    private ArrayList<Slide> slides; // holds the slides
 
     // Define the fonts
     public static final String FONT_FACE = "SansSerif";
-    Font base; // used for most text--competitor names, etc.
-    Font head; // used for the heading
+    private Font base; // used for most text--competitor names, etc.
+    private Font head; // used for the heading
     public static final int HEAD_MULT = 3; // evaluate baseFont * HEAD_MULT / HEAD_DIV for the head font size
     public static final int HEAD_DIV = 2;
     public static final int HEAD_STYLE = Font.BOLD;
-    Font subhead; // used for subheadings, e.g. subsections within the larger results
+    private Font subhead; // used for subheadings, e.g. subsections within the larger results
     public static final int SUBHEAD_MULT = 1;
     public static final int SUBHEAD_DIV = 1;
     public static final int SUBHEAD_STYLE = Font.BOLD;
-    Font number; // used for numbers (places, sweeps)
+    private Font number; // used for numbers (places, sweeps)
     public static final int NUMBER_MULT = 1;
     public static final int NUMBER_DIV = 1;
     public static final int NUMBER_STYLE = Font.BOLD | Font.ITALIC;
-    Font smalltext; // used for things like "page _ of _ for this event"
+    private Font smalltext; // used for things like "page _ of _ for this event"
     public static final int SMALLTEXT_MULT = 1;
     public static final int SMALLTEXT_DIV = 2;
     public static final int SMALLTEXT_STYLE = Font.PLAIN;
