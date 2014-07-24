@@ -5,6 +5,7 @@ package mathsquared.resultswizard2;
 
 import java.awt.Font;
 import java.awt.Graphics;
+import java.util.ArrayList;
 
 /**
  * Represents a Slide that can be built up with several elements until it is full.
@@ -17,6 +18,10 @@ public class BuildableStackedSlide implements Slide {
     private int width;
     private int height;
     private ColorScheme color;
+
+    // This will use a "commit" system: the client will add chunks to a buffer list and periodically either "commit" or "revert" the buffer. Totally not Git-inspired.
+    private ArrayList<Chunk> committed;
+    private ArrayList<Chunk> index;
 
     // CHUNK CLASSES //
 
