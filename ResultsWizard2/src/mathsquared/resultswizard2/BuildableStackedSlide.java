@@ -3,6 +3,7 @@
  */
 package mathsquared.resultswizard2;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.util.ArrayList;
@@ -50,6 +51,7 @@ public class BuildableStackedSlide implements Slide {
     private class TextChunk implements Chunk {
         public String str;
         public Font font;
+        public Color color;
 
         public int getMaxVertSize () {
             return g.getFontMetrics(font).getHeight();
@@ -59,10 +61,13 @@ public class BuildableStackedSlide implements Slide {
     private class ThreeTextChunk implements Chunk {
         public String str1;
         public Font font1;
+        public Color color1;
         public String str2;
         public Font font2;
+        public Color color2;
         public String str3;
         public Font font3;
+        public Color color3;
 
         public int getMaxVertSize () {
             int h1 = g.getFontMetrics(font1).getHeight();
@@ -80,12 +85,16 @@ public class BuildableStackedSlide implements Slide {
     private class FourTextChunk implements Chunk {
         public String str1;
         public Font font1;
+        public Color color1;
         public String str2;
         public Font font2;
+        public Color color2;
         public String str3;
         public Font font3;
+        public Color color3;
         public String str4;
         public Font font4;
+        public Color color4;
 
         public int getMaxVertSize () {
             int h1 = g.getFontMetrics(font1).getHeight();
