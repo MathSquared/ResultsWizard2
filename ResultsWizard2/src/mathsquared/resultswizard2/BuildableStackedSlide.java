@@ -113,11 +113,10 @@ public class BuildableStackedSlide implements Slide {
 
     // LOGIC //
 
-    public BuildableStackedSlide (Graphics g, int width, int height, ColorScheme color) {
+    public BuildableStackedSlide (Graphics g, int width, int height) {
         this.g = g;
         this.width = width;
         this.height = height;
-        this.color = color;
     }
 
     public void draw (Graphics g) {
