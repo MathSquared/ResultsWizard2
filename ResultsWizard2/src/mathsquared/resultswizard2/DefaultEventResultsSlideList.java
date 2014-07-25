@@ -22,6 +22,7 @@ import java.util.ListIterator;
  * 
  * <ul>
  * <li><code>evtTitle</code> for the title of the event (default: black)</li>
+ * <li><code>timestamp</code> for the line containing the page number and last updated time (default: #666666)</li>
  * <li><code>resType</code> for the type of results (e.g. "INDIVIDUAL RESULTS") (default: black)</li>
  * <li><code>honorName</code> for the names of special honors (default: #222222)</li>
  * <li><code>placeNum</code> for the place number (default: #444444)</li>
@@ -101,6 +102,10 @@ public class DefaultEventResultsSlideList implements EventResultsSlideList {
 
         Color evtTitleColor = (color.containsKey("evtTitle")) ? color.get("evtTitle") : Color.black;
         ret.addText(evr.getEvent().getPrimaryName().toUpperCase(), head, evtTitleColor, false);
+
+        Color timestampColor = (color.containsKey("timestamp")) ? color.get("timestamp") : new Color(0x666666);
+        ret.addText("page _ of _ for this event; last updated ___ __:__p", smalltext, timestampColor, false);
+        ret.updatable(); // this will always be 0; see updatable Javadoc
 
         ret.commit(); // Propagate to top buffer
         ret.push();
