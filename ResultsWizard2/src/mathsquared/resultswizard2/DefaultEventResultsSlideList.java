@@ -44,6 +44,8 @@ public class DefaultEventResultsSlideList implements EventResultsSlideList {
     public static final int BEFORE_RES_TYPE = 10; // before/after the "INDIVIDUAL RESULTS" etc. headers
     public static final int AFTER_RES_TYPE = 10; // also used after a special honor name
 
+    public static final Color transparent = new Color(0, 0, 0, 0);
+
     // Define the fonts
     public static final String FONT_FACE = "SansSerif";
     private Font base; // used for most text--competitor names, etc.
