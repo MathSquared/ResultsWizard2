@@ -12,6 +12,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Map;
 
 /**
  * A simple implementation of {@link EventResultsSlideList}.
@@ -259,6 +260,82 @@ public class DefaultEventResultsSlideList implements EventResultsSlideList {
         sl.addSpacer(BETWEEN_TIES); // we don't really care if this works
         sl.commit();
         sl.push(); // we know for certain we want what we just authored on the slide
+        return ret;
+    }
+
+    private boolean tryAddList (BuildableStackedSlide sl, String[][] honorees, String[][] schools, Map<String, Fraction> sweeps) {
+        if (honorees == null) {
+            throw new NullPointerException("honorees must not be null");
+        }
+        if (schools == null) {
+            throw new NullPointerException("schools must not be null");
+        }
+        if (honorees.length != schools.length) {
+            throw new IllegalArgumentException("Length of honorees (" + honorees.length + ") must match length of schools (" + schools.length + ")");
+        }
+
+        for (int i = 0; i < honorees.length; i++) {
+            if (honorees[i] != null && honorees[i].length != 0) { // null or empty is a place skipped for ties
+                boolean addSucceeded = tryAddTie(sl, i + 1, honorees[i], schools[i], sweeps.get(honorees[i][0]));
+                if (!addSucceeded) {
+                    sl.revert();
+                    return false;
+                }
+            }
+        }
+
+        // All is well in the universe
+        sl.commit();
+        sl.push();
+        return true;
+    }
+
+    private List<BuildableStackedSlide> forceAddList (BuildableStackedSlide sl, String newSlideResType, String newSlideHonorName, String[][] honorees, String[][] schools, Map<String, Fraction> sweeps) {
+        if (honorees == null) {
+            throw new NullPointerException("honorees must not be null");
+        }
+        if (schools == null) {
+            throw new NullPointerException("schools must not be null");
+        }
+        if (honorees.length != schools.length) {
+            throw new IllegalArgumentException("Length of honorees (" + honorees.length + ") must match length of schools (" + schools.length + ")");
+        }
+
+        // this holds a list of all slides used
+        ArrayList<BuildableStackedSlide> ret = new ArrayList<BuildableStackedSlide>();
+        ret.add(sl);
+
+        for (int i = 0; i < honorees.length; i++) {
+            if (honorees[i] != null && honorees[i].length != 0) { // null or empty is a place skipped for ties
+                boolean addSucceeded = tryAddTie(sl, i + 1, honorees[i], schools[i], sweeps.get(honorees[i][0]));
+                if (!addSucceeded) {
+                    // The tryAddTie method leaves no trace if it fails, so we start a new slide
+                    sl.commit();
+                    sl.push();
+                    sl = createNewSkeletalSlide();
+                    ret.add(sl);
+                    if (newSlideResType != null) {
+                        addResType(sl, newSlideResType);
+                    }
+                    if (newSlideHonorName != null) {
+                        addHonorName(sl, newSlideHonorName);
+                    }
+
+                    // Force the add this time
+                    List<BuildableStackedSlide> forced = forceAddTie(sl, newSlideResType, newSlideHonorName, i + 1, honorees[i], schools[i], sweeps.get(honorees[i][0]));
+
+                    // Mess with sl so that it represents the most recent slide
+                    if (forced.size() > 1) { // if forceAddTie generated new slides
+                        ret.addAll(forced.subList(1, forced.size())); // add the generated slides to ret
+                        sl = forced.get(forced.size() - 1); // the most recent slide is what we're now working on
+                    }
+                }
+            }
+        }
+
+        // All is well in the universe
+        sl.commit();
+        sl.push();
         return ret;
     }
 
