@@ -6,6 +6,10 @@ package mathsquared.resultswizard2;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 /**
  * Contains utility methods for working with arrays.
@@ -291,6 +295,69 @@ public class ArrayUtils {
                 throw new ArrayIndexOutOfBoundsException("Invalid index " + indices[i] + " at indices[" + i + "]");
             }
             ret[i] = toIndex[indices[i]];
+        }
+
+        return ret;
+    }
+
+    /**
+     * Sorts multiple arrays by the quantities in one of them. This is similar to sorting a database, where the first column represents the sort key.
+     * 
+     * <p>
+     * If <code>i</code> is an integer less than <code>toSort[0].length</code>, and <code>ret</code> is the result of calling <code>multiSort(toSort)</code>, then:
+     * </p>
+     * 
+     * <ul>
+     * <li>there exists an integer <code>j</code> less than <code>toSort[0].length</code> such that for all integers <code>k</code> less than <code>toSort.length</code>, <code>toSort[k][i] == ret[k][j]</code></li>
+     * <li>if <code>i > 0</code>, <code>ret[0][i-1]</code> compares as less than <code>ret[0][i]</code></li>
+     * </ul>
+     * 
+     * @param toSort the arrays to sort; all of the arrays will be sorted according to the values in <code>toSort[0]</code>
+     * @return all of the arrays sorted by the keys in the first column
+     */
+    // HASHTAG UNCHECKED CASTS
+    @SuppressWarnings("unchecked")
+    public static <T extends Comparable<? super T>> T[][] multiSort (T[]... toSort) { // TODO unit test
+        // Null handling
+        if (toSort == null) {
+            return null;
+        }
+        if (toSort.length == 0) {
+            return deepCopyOf(toSort);
+        }
+
+        // Check lengths all the same
+        int expLength = toSort[0].length;
+        for (int i = 1; i < toSort.length; i++) {
+            if (toSort[i].length != expLength) {
+                throw new IllegalArgumentException("Array " + i + " (zero-based) does not match the length of array 0 (observed: " + toSort[i].length + ", expected: " + expLength + ")");
+            }
+        }
+
+        // Logic below is HEAVILY based on a StackOverflow post by Jherico; http://stackoverflow.com/a/951910/1979005
+        SortedMap<T, List<Integer>> sortedIndices = new TreeMap<T, List<Integer>>();
+        for (int i = 0; i < toSort[0].length; i++) {
+            T key = toSort[0][i];
+            if (!sortedIndices.containsKey(key)) {
+                sortedIndices.put(key, new ArrayList<Integer>());
+            }
+            sortedIndices.get(key).add(i);
+        }
+        Collection<List<Integer>> indices = sortedIndices.values(); // indices sorted by their corresponding keys (and thus in order of insertion into new array)
+
+        // Instantiate a generic array
+        Class<T[]> type = (Class<T[]>) toSort.getClass().getComponentType();
+        T[][] ret = (T[][]) Array.newInstance(type, toSort.length);
+
+        int arrayInsertionIndex = 0; // used to track where to insert array elements so we don't have to use Lists
+        for (List<Integer> x : indices) {
+            for (int y : x) {
+                // Add to each of the arrays that we're sorting
+                for (int i = 0; i < toSort.length; i++) {
+                    ret[i][arrayInsertionIndex] = toSort[i][y];
+                }
+                arrayInsertionIndex++;
+            }
         }
 
         return ret;
