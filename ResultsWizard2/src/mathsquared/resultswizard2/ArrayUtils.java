@@ -313,7 +313,8 @@ public class ArrayUtils {
      * </ul>
      * 
      * @param toSort the arrays to sort; all of the arrays will be sorted according to the values in <code>toSort[0]</code>
-     * @return all of the arrays sorted by the keys in the first column
+     * @return all of the arrays sorted by the keys in the first column (null if <code>toSort == null</code>, and a {@linkplain #deepCopyOf(Object[][]) deep copy} of <code>toSort</code> if its length is 0)
+     * @throws IllegalArgumentException if the lengths of the subarrays of <code>toSort</code> do not all match
      */
     // HASHTAG UNCHECKED CASTS
     @SuppressWarnings("unchecked")
