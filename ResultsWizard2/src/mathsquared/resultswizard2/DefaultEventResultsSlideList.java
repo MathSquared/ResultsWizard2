@@ -22,6 +22,7 @@ import java.util.ListIterator;
  * 
  * <ul>
  * <li><code>evtTitle</code> for the title of the event (default: black)</li>
+ * <li><code>resType</code> for the type of results (e.g. "INDIVIDUAL RESULTS") (default: black)</li>
  * </ul>
  * 
  * @author MathSquared
@@ -39,6 +40,8 @@ public class DefaultEventResultsSlideList implements EventResultsSlideList {
 
     // Layout constants
     public static final int TOP_MARGIN = 20;
+    public static final int BEFORE_RES_TYPE = 10; // before/after the "INDIVIDUAL RESULTS" etc. headers
+    public static final int AFTER_RES_TYPE = 10;
 
     // Define the fonts
     public static final String FONT_FACE = "SansSerif";
@@ -95,6 +98,18 @@ public class DefaultEventResultsSlideList implements EventResultsSlideList {
         ret.push();
 
         return ret;
+    }
+
+    private void addResType (BuildableStackedSlide sl, String resType) {
+        sl.addSpacer(BEFORE_RES_TYPE);
+
+        Color resTypeColor = (color.containsKey("resType")) ? color.get("resType") : Color.black;
+        sl.addText(resType.toUpperCase(), subhead, resTypeColor, true);
+
+        sl.addSpacer(AFTER_RES_TYPE);
+
+        sl.commit();
+        sl.push();
     }
 
     // IMPLEMENT LIST //
