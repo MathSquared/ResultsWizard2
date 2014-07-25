@@ -154,12 +154,17 @@ public class DefaultEventResultsSlideList implements EventResultsSlideList {
             swStr = swStr.substring(0, swStr.length() - ".00".length());
         }
 
+        // Sort the honorees and schools (keeping honorees associated with their schools) TODO: sort by last name
+        String[][] multiSortBundle = ArrayUtils.multiSort(tiedHonorees, tiedSchools);
+        String[] sortedHonorees = multiSortBundle[0];
+        String[] sortedSchools = multiSortBundle[1];
+
         for (int i = 0; i < tiedHonorees.length; i++) {
             boolean addSucceeded = false;
             if (threeCol) {
-                addSucceeded = sl.addThreeText(plStr, number, placeNumColor, tiedHonorees[i], base, honoreeColor, swStr, number, sweepsColor);
+                addSucceeded = sl.addThreeText(plStr, number, placeNumColor, sortedHonorees[i], base, honoreeColor, swStr, number, sweepsColor);
             } else {
-                addSucceeded = sl.addFourText(plStr, number, placeNumColor, tiedHonorees[i], base, honoreeColor, tiedSchools[i], base, schoolColor, swStr, number, sweepsColor);
+                addSucceeded = sl.addFourText(plStr, number, placeNumColor, sortedHonorees[i], base, honoreeColor, sortedSchools[i], base, schoolColor, swStr, number, sweepsColor);
             }
 
             if (!addSucceeded) {
@@ -202,15 +207,20 @@ public class DefaultEventResultsSlideList implements EventResultsSlideList {
             swStr = swStr.substring(0, swStr.length() - ".00".length());
         }
 
+        // Sort the honorees and schools (keeping honorees associated with their schools) TODO: sort by last name
+        String[][] multiSortBundle = ArrayUtils.multiSort(tiedHonorees, tiedSchools);
+        String[] sortedHonorees = multiSortBundle[0];
+        String[] sortedSchools = multiSortBundle[1];
+
         Color placeNumColorCur = placeNumColor; // assigned to transparent if we want the place num. to be invisible on a certain line
         // we don't simply overwrite placeNumColor as in tryAddTie because we might need to reenable the place number if we start a new slide
 
         for (int i = 0; i < tiedHonorees.length; i++) {
             boolean addSucceeded = false;
             if (threeCol) {
-                addSucceeded = sl.addThreeText(plStr, number, placeNumColorCur, tiedHonorees[i], base, honoreeColor, swStr, number, sweepsColor);
+                addSucceeded = sl.addThreeText(plStr, number, placeNumColorCur, sortedHonorees[i], base, honoreeColor, swStr, number, sweepsColor);
             } else {
-                addSucceeded = sl.addFourText(plStr, number, placeNumColorCur, tiedHonorees[i], base, honoreeColor, tiedSchools[i], base, schoolColor, swStr, number, sweepsColor);
+                addSucceeded = sl.addFourText(plStr, number, placeNumColorCur, sortedHonorees[i], base, honoreeColor, sortedSchools[i], base, schoolColor, swStr, number, sweepsColor);
             }
 
             if (!addSucceeded) {
@@ -229,9 +239,9 @@ public class DefaultEventResultsSlideList implements EventResultsSlideList {
 
                 // Add it again (placeNumColor instead of placeNumColorCur because this is the first row of the new slide)
                 if (threeCol) {
-                    sl.addThreeText(plStr, number, placeNumColor, tiedHonorees[i], base, honoreeColor, swStr, number, sweepsColor);
+                    sl.addThreeText(plStr, number, placeNumColor, sortedHonorees[i], base, honoreeColor, swStr, number, sweepsColor);
                 } else {
-                    sl.addFourText(plStr, number, placeNumColor, tiedHonorees[i], base, honoreeColor, tiedSchools[i], base, schoolColor, swStr, number, sweepsColor);
+                    sl.addFourText(plStr, number, placeNumColor, sortedHonorees[i], base, honoreeColor, sortedSchools[i], base, schoolColor, swStr, number, sweepsColor);
                 }
             }
 
