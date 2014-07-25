@@ -456,6 +456,10 @@ public class BuildableStackedSlide implements Slide {
      * The update process is only allowed for {@linkplain #addText(String, Font, Color, boolean) one-column text units}. Attempting to call this method after adding another type of unit throws an {@link UnsupportedOperationException}.
      * </p>
      * 
+     * <p>
+     * Note that the first call to this method for a given slide will return 0, the second will return 1, etc. This can be used to simplify program logic.
+     * </p>
+     * 
      * @return the number which should be used to update the unit in the future
      * @throws IllegalStateException if the first buffer is empty (i.e. has been {@linkplain #reset() reset} or {@linkplain #commit() committed})
      * @throws UnsupportedOperationException if this method is called when the last element of the first buffer is anything but a one-column text unit
