@@ -100,16 +100,18 @@ public class DefaultEventResultsSlideList implements EventResultsSlideList {
         return ret;
     }
 
-    private void addResType (BuildableStackedSlide sl, String resType) {
-        sl.addSpacer(BEFORE_RES_TYPE);
+    private boolean addResType (BuildableStackedSlide sl, String resType) {
+        boolean ret = sl.addSpacer(BEFORE_RES_TYPE);
 
         Color resTypeColor = (color.containsKey("resType")) ? color.get("resType") : Color.black;
-        sl.addText(resType.toUpperCase(), subhead, resTypeColor, true);
+        ret &= sl.addText(resType.toUpperCase(), subhead, resTypeColor, true);
 
-        sl.addSpacer(AFTER_RES_TYPE);
+        ret &= sl.addSpacer(AFTER_RES_TYPE);
 
         sl.commit();
         sl.push();
+        
+        return ret;
     }
 
     // IMPLEMENT LIST //
