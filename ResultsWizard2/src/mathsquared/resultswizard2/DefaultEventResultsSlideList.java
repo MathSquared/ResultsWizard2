@@ -177,6 +177,76 @@ public class DefaultEventResultsSlideList implements EventResultsSlideList {
         return true;
     }
 
+    private List<BuildableStackedSlide> forceAddTie (BuildableStackedSlide sl, String newSlideResType, String newSlideHonorName, int placeNum, String[] tiedHonorees, String[] tiedSchools, Fraction sweeps) {
+        if (tiedHonorees == null) {
+            throw new NullPointerException("tiedHonorees must not be null");
+        }
+        if (tiedSchools != null && tiedHonorees.length != tiedSchools.length) { // tiedSchools can be null for team awards
+            throw new IllegalArgumentException("Length of tiedHonorees (" + tiedHonorees.length + ") must match length of tiedSchools (" + tiedSchools.length + ")");
+        }
+
+        // this holds a list of all slides used
+        ArrayList<BuildableStackedSlide> ret = new ArrayList<BuildableStackedSlide>();
+        ret.add(sl);
+
+        boolean threeCol = (tiedSchools == null); // whether to use three columns instead of four (tiedSchools is the fourth column)
+
+        Color placeNumColor = (color.containsKey("placeNum")) ? color.get("placeNum") : new Color(0x444444);
+        Color honoreeColor = (color.containsKey("honoree")) ? color.get("honoree") : new Color(0x222222);
+        Color schoolColor = (color.containsKey("school")) ? color.get("school") : new Color(0x333333);
+        Color sweepsColor = (color.containsKey("sweeps")) ? color.get("sweeps") : new Color(0x666666);
+
+        String plStr = Integer.toString(placeNum);
+        String swStr = String.format("%.2f", sweeps.toDouble()); // Two decimals
+        if (swStr.endsWith(".00")) { // Chop off the last two digits if they're .00
+            swStr = swStr.substring(0, swStr.length() - ".00".length());
+        }
+
+        Color placeNumColorCur = placeNumColor; // assigned to transparent if we want the place num. to be invisible on a certain line
+        // we don't simply overwrite placeNumColor as in tryAddTie because we might need to reenable the place number if we start a new slide
+
+        for (int i = 0; i < tiedHonorees.length; i++) {
+            boolean addSucceeded = false;
+            if (threeCol) {
+                addSucceeded = sl.addThreeText(plStr, number, placeNumColorCur, tiedHonorees[i], base, honoreeColor, swStr, number, sweepsColor);
+            } else {
+                addSucceeded = sl.addFourText(plStr, number, placeNumColorCur, tiedHonorees[i], base, honoreeColor, tiedSchools[i], base, schoolColor, swStr, number, sweepsColor);
+            }
+
+            if (!addSucceeded) {
+                // Undo and restart on a new slide
+                sl.undo();
+                sl.commit();
+                sl.push(); // ensure that the partial sequence actually renders on the previous slide
+                sl = createNewSkeletalSlide();
+                ret.add(sl);
+                if (newSlideResType != null) {
+                    addResType(sl, newSlideResType);
+                }
+                if (newSlideHonorName != null) {
+                    addHonorName(sl, newSlideHonorName);
+                }
+
+                // Add it again (placeNumColor instead of placeNumColorCur because this is the first row of the new slide)
+                if (threeCol) {
+                    sl.addThreeText(plStr, number, placeNumColor, tiedHonorees[i], base, honoreeColor, swStr, number, sweepsColor);
+                } else {
+                    sl.addFourText(plStr, number, placeNumColor, tiedHonorees[i], base, honoreeColor, tiedSchools[i], base, schoolColor, swStr, number, sweepsColor);
+                }
+            }
+
+            // Only add the place number once; overwrite the color for subsequent iterations (transparent so that subsequent entries still line up)
+            // (if we just started a new slide, it would have been taken care of above)
+            placeNumColorCur = transparent;
+        }
+
+        // All is well in the universe
+        sl.addSpacer(BETWEEN_TIES); // we don't really care if this works
+        sl.commit();
+        sl.push(); // we know for certain we want what we just authored on the slide
+        return ret;
+    }
+
     // IMPLEMENT LIST //
 
     // These methods make this an immutable List<Slide> backed by slides.
