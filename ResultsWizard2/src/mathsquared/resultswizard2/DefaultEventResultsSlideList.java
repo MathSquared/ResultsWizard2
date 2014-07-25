@@ -20,6 +20,10 @@ import java.util.ListIterator;
  * The {@link ColorScheme} keys used by this Slide are:
  * </p>
  * 
+ * <ul>
+ * <li><code>evtTitle</code> for the title of the event (default: black)</li>
+ * </ul>
+ * 
  * @author MathSquared
  * 
  */
