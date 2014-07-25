@@ -168,9 +168,9 @@ public class DefaultEventResultsSlideList implements EventResultsSlideList {
         for (int i = 0; i < tiedHonorees.length; i++) {
             boolean addSucceeded = false;
             if (threeCol) {
-                addSucceeded = sl.addThreeText(plStr, number, placeNumColor, sortedHonorees[i], base, honoreeColor, swStr, number, sweepsColor);
+                addSucceeded = sl.addThreeText(plStr, number, placeNumColor, processStudentName(sortedHonorees[i]), base, honoreeColor, swStr, number, sweepsColor);
             } else {
-                addSucceeded = sl.addFourText(plStr, number, placeNumColor, sortedHonorees[i], base, honoreeColor, sortedSchools[i], base, schoolColor, swStr, number, sweepsColor);
+                addSucceeded = sl.addFourText(plStr, number, placeNumColor, processStudentName(sortedHonorees[i]), base, honoreeColor, sortedSchools[i], base, schoolColor, swStr, number, sweepsColor);
             }
 
             if (!addSucceeded) {
@@ -224,9 +224,9 @@ public class DefaultEventResultsSlideList implements EventResultsSlideList {
         for (int i = 0; i < tiedHonorees.length; i++) {
             boolean addSucceeded = false;
             if (threeCol) {
-                addSucceeded = sl.addThreeText(plStr, number, placeNumColorCur, sortedHonorees[i], base, honoreeColor, swStr, number, sweepsColor);
+                addSucceeded = sl.addThreeText(plStr, number, placeNumColorCur, processStudentName(sortedHonorees[i]), base, honoreeColor, swStr, number, sweepsColor);
             } else {
-                addSucceeded = sl.addFourText(plStr, number, placeNumColorCur, sortedHonorees[i], base, honoreeColor, sortedSchools[i], base, schoolColor, swStr, number, sweepsColor);
+                addSucceeded = sl.addFourText(plStr, number, placeNumColorCur, processStudentName(sortedHonorees[i]), base, honoreeColor, sortedSchools[i], base, schoolColor, swStr, number, sweepsColor);
             }
 
             if (!addSucceeded) {
@@ -245,9 +245,9 @@ public class DefaultEventResultsSlideList implements EventResultsSlideList {
 
                 // Add it again (placeNumColor instead of placeNumColorCur because this is the first row of the new slide)
                 if (threeCol) {
-                    sl.addThreeText(plStr, number, placeNumColor, sortedHonorees[i], base, honoreeColor, swStr, number, sweepsColor);
+                    sl.addThreeText(plStr, number, placeNumColor, processStudentName(sortedHonorees[i]), base, honoreeColor, swStr, number, sweepsColor);
                 } else {
-                    sl.addFourText(plStr, number, placeNumColor, sortedHonorees[i], base, honoreeColor, sortedSchools[i], base, schoolColor, swStr, number, sweepsColor);
+                    sl.addFourText(plStr, number, placeNumColor, processStudentName(sortedHonorees[i]), base, honoreeColor, sortedSchools[i], base, schoolColor, swStr, number, sweepsColor);
                 }
             }
 
@@ -337,6 +337,11 @@ public class DefaultEventResultsSlideList implements EventResultsSlideList {
         sl.commit();
         sl.push();
         return ret;
+    }
+
+    private String processStudentName (String raw) {
+        // Splice off anything that occurs after a grave character and trim whitespace
+        return raw.substring(0, raw.indexOf("`")).trim();
     }
 
     // IMPLEMENT LIST //
