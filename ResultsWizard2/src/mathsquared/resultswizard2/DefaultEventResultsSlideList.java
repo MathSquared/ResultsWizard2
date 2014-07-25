@@ -24,6 +24,10 @@ import java.util.ListIterator;
  * <li><code>evtTitle</code> for the title of the event (default: black)</li>
  * <li><code>resType</code> for the type of results (e.g. "INDIVIDUAL RESULTS") (default: black)</li>
  * <li><code>honorName</code> for the names of special honors (default: #222222)</li>
+ * <li><code>placeNum</code> for the place number (default: #444444)</li>
+ * <li><code>honoree</code> for the names of recognized individuals (for team awards, schools get this color as well) (default: #222222)</li>
+ * <li><code>school</code> for the names of the schools of individual award winners (default: #333333)</li>
+ * <li><code>sweeps</code> for the amount of sweepstakes points earned for a given placing (default: #666666)</li>
  * </ul>
  * 
  * @author MathSquared
@@ -43,6 +47,7 @@ public class DefaultEventResultsSlideList implements EventResultsSlideList {
     public static final int TOP_MARGIN = 20;
     public static final int BEFORE_RES_TYPE = 10; // before/after the "INDIVIDUAL RESULTS" etc. headers
     public static final int AFTER_RES_TYPE = 10; // also used after a special honor name
+    public static final int BETWEEN_TIES = 2;
 
     public static final Color transparent = new Color(0, 0, 0, 0);
 
@@ -126,6 +131,50 @@ public class DefaultEventResultsSlideList implements EventResultsSlideList {
         sl.commit();
 
         return ret;
+    }
+
+    private boolean tryAddTie (BuildableStackedSlide sl, int placeNum, String[] tiedHonorees, String[] tiedSchools, Fraction sweeps) {
+        if (tiedHonorees == null) {
+            throw new NullPointerException("tiedHonorees must not be null");
+        }
+        if (tiedSchools != null && tiedHonorees.length != tiedSchools.length) { // tiedSchools can be null for team awards
+            throw new IllegalArgumentException("Length of tiedHonorees (" + tiedHonorees.length + ") must match length of tiedSchools (" + tiedSchools.length + ")");
+        }
+
+        boolean threeCol = (tiedSchools == null); // whether to use three columns instead of four (tiedSchools is the fourth column)
+
+        Color placeNumColor = (color.containsKey("placeNum")) ? color.get("placeNum") : new Color(0x444444);
+        Color honoreeColor = (color.containsKey("honoree")) ? color.get("honoree") : new Color(0x222222);
+        Color schoolColor = (color.containsKey("school")) ? color.get("school") : new Color(0x333333);
+        Color sweepsColor = (color.containsKey("sweeps")) ? color.get("sweeps") : new Color(0x666666);
+
+        String plStr = Integer.toString(placeNum);
+        String swStr = String.format("%.2f", sweeps.toDouble()); // Two decimals
+        if (swStr.endsWith(".00")) { // Chop off the last two digits if they're .00
+            swStr = swStr.substring(0, swStr.length() - ".00".length());
+        }
+
+        for (int i = 0; i < tiedHonorees.length; i++) {
+            boolean addSucceeded = false;
+            if (threeCol) {
+                addSucceeded = sl.addThreeText(plStr, number, placeNumColor, tiedHonorees[i], base, honoreeColor, swStr, number, sweepsColor);
+            } else {
+                addSucceeded = sl.addFourText(plStr, number, placeNumColor, tiedHonorees[i], base, honoreeColor, tiedSchools[i], base, schoolColor, swStr, number, sweepsColor);
+            }
+
+            if (!addSucceeded) {
+                sl.reset();
+                return false;
+            }
+
+            // Only add the place number once; overwrite the color for subsequent iterations (transparent so that subsequent entries still line up)
+            placeNumColor = transparent;
+        }
+
+        // All is well in the universe
+        sl.addSpacer(BETWEEN_TIES); // we don't really care if this works
+        sl.commit();
+        return true;
     }
 
     // IMPLEMENT LIST //
