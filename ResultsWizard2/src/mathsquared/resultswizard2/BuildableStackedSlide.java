@@ -293,6 +293,15 @@ public class BuildableStackedSlide implements Slide {
     }
 
     /**
+     * Removes the most recently-added element of the first buffer. If the first buffer is empty, this method has no effect.
+     */
+    public void undo () {
+        if (!index.isEmpty()) {
+            index.remove(index.size() - 1);
+        }
+    }
+
+    /**
      * Copies the first buffer to the second buffer, then clears the first buffer.
      */
     public void commit () {
