@@ -23,6 +23,7 @@ import java.util.ListIterator;
  * <ul>
  * <li><code>evtTitle</code> for the title of the event (default: black)</li>
  * <li><code>resType</code> for the type of results (e.g. "INDIVIDUAL RESULTS") (default: black)</li>
+ * <li><code>honorName</code> for the names of special honors (default: #222222)</li>
  * </ul>
  * 
  * @author MathSquared
@@ -41,7 +42,7 @@ public class DefaultEventResultsSlideList implements EventResultsSlideList {
     // Layout constants
     public static final int TOP_MARGIN = 20;
     public static final int BEFORE_RES_TYPE = 10; // before/after the "INDIVIDUAL RESULTS" etc. headers
-    public static final int AFTER_RES_TYPE = 10;
+    public static final int AFTER_RES_TYPE = 10; // also used after a special honor name
 
     // Define the fonts
     public static final String FONT_FACE = "SansSerif";
@@ -110,7 +111,18 @@ public class DefaultEventResultsSlideList implements EventResultsSlideList {
 
         sl.commit();
         sl.push();
-        
+
+        return ret;
+    }
+
+    private boolean addHonorName (BuildableStackedSlide sl, String honorName) {
+        Color honorNameColor = (color.containsKey("honorName")) ? color.get("honorName") : new Color(0x222222);
+        boolean ret = sl.addText(honorName, subhead, honorNameColor, false);
+
+        ret &= sl.addSpacer(AFTER_RES_TYPE);
+
+        sl.commit();
+
         return ret;
     }
 
