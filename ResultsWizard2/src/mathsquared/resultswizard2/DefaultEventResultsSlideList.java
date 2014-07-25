@@ -15,6 +15,10 @@ import java.util.ListIterator;
 /**
  * A simple implementation of {@link EventResultsSlideList}.
  * 
+ * <p>
+ * The {@link ColorScheme} keys used by this Slide are:
+ * </p>
+ * 
  * @author MathSquared
  * 
  */
