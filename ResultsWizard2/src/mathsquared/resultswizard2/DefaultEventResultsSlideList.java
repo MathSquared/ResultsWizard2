@@ -3,6 +3,7 @@
  */
 package mathsquared.resultswizard2;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.util.ArrayList;
@@ -31,6 +32,9 @@ public class DefaultEventResultsSlideList implements EventResultsSlideList {
     private EventResults evr;
 
     private ArrayList<Slide> slides; // holds the slides
+
+    // Layout constants
+    public static final int TOP_MARGIN = 20;
 
     // Define the fonts
     public static final String FONT_FACE = "SansSerif";
@@ -72,6 +76,21 @@ public class DefaultEventResultsSlideList implements EventResultsSlideList {
 
     public EventResults getEventResults () {
         return new EventResults(evr);
+    }
+
+    // SLIDE GENERATION METHODS //
+
+    private BuildableStackedSlide createNewSkeletalSlide () {
+        BuildableStackedSlide ret = new BuildableStackedSlide(width, height);
+        ret.addSpacer(TOP_MARGIN);
+
+        Color evtTitleColor = (color.containsKey("evtTitle")) ? color.get("evtTitle") : Color.black;
+        ret.addText(evr.getEvent().getPrimaryName().toUpperCase(), head, evtTitleColor, false);
+
+        ret.commit(); // Propagate to top buffer
+        ret.push();
+
+        return ret;
     }
 
     // IMPLEMENT LIST //
