@@ -3,6 +3,7 @@
  */
 package mathsquared.resultswizard2;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -14,15 +15,15 @@ import java.util.Set;
  * @author MathSquared
  * 
  */
-public class Event {
+public class Event implements Serializable {
     private String primaryName; // The official name of the event, used for all postings
     private String[] otherNames; // Alternative names for the event
     private int indivPlaces; // The amount of individual places to be recognized
     private int teamPlaces; // The amount of team places to be recognized
-    private Map<String, Integer> specialHonors; // Any special honors (top scorer, top speaker, etc.) that may be awarded to students in this event, mapped to the number of places to recognize
+    private HashMap<String, Integer> specialHonors; // Any special honors (top scorer, top speaker, etc.) that may be awarded to students in this event, mapped to the number of places to recognize
     private int[] indivSweeps; // The amount of sweepstakes points to award to each place in this event (0 being first, 1 second, etc.)
     private int[] teamSweeps; // The amount of sweepstakes points to award to each team place in this event (0 being first, 1 second, etc.)
-    private Map<String, int[]> specialSweeps; // The amount of sweepstakes points to award to each special honor (indices correspond with specialHonors); the array is the points to award for each place
+    private HashMap<String, int[]> specialSweeps; // The amount of sweepstakes points to award to each special honor (indices correspond with specialHonors); the array is the points to award for each place
     private TiePlaceAssignment tieAssign; // How this event assigns places in the event of ties
     private SweepstakesAssignment sweepsAssign; // How this event assigns sweepstakes points in the event of ties
 
