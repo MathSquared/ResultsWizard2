@@ -83,7 +83,7 @@ public class DefaultEventResultsSlideList implements EventResultsSlideList {
         this.height = height;
         this.color = color;
         this.baseFont = baseFont;
-        this.evr = evr;
+        this.evr = new EventResults(evr);
 
         slides = new ArrayList<Slide>();
 
