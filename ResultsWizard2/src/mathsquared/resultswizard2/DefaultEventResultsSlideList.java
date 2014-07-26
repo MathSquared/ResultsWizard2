@@ -109,6 +109,7 @@ public class DefaultEventResultsSlideList implements EventResultsSlideList {
         slides.clear();
 
         // Since slides is an ArrayList<Slide> and not <BuildableStackedSlide>...
+        // (this is so we can make the slides returned to the client immutable with SlideEncapsulator)
         ArrayList<BuildableStackedSlide> workingSlides = new ArrayList<BuildableStackedSlide>();
 
         // Generate the first slide and initialize it for individual results
