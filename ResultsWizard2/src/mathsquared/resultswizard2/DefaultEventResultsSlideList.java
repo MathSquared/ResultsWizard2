@@ -5,7 +5,6 @@ package mathsquared.resultswizard2;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Graphics;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -40,7 +39,6 @@ import java.util.TreeSet;
  * 
  */
 public class DefaultEventResultsSlideList implements EventResultsSlideList {
-    private Graphics g;
     private int width;
     private int height;
     private ColorScheme color;
@@ -79,8 +77,7 @@ public class DefaultEventResultsSlideList implements EventResultsSlideList {
     public static final int SMALLTEXT_DIV = 2;
     public static final int SMALLTEXT_STYLE = Font.PLAIN;
 
-    public DefaultEventResultsSlideList (Graphics g, int width, int height, ColorScheme color, int baseFont, EventResults evr) {
-        this.g = g;
+    public DefaultEventResultsSlideList (int width, int height, ColorScheme color, int baseFont, EventResults evr) {
         this.width = width;
         this.height = height;
         this.color = color;
