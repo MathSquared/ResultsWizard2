@@ -6,6 +6,7 @@ package mathsquared.resultswizard2;
 import java.awt.Color;
 import java.io.IOException;
 import java.io.Reader;
+import java.io.Serializable;
 import java.util.AbstractMap;
 import java.util.Collections;
 import java.util.HashSet;
@@ -22,7 +23,7 @@ import java.util.Set;
  * @author MathSquared
  * 
  */
-public class ColorScheme extends AbstractMap<String, Color> {
+public class ColorScheme extends AbstractMap<String, Color> implements Serializable {
     private Set<Entry<String, Color>> ent;
 
     /**
