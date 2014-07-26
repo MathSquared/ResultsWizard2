@@ -56,6 +56,7 @@ public class DefaultEventResultsSlideList implements EventResultsSlideList {
     public static final Color transparent = new Color(0, 0, 0, 0);
 
     public static final String DATE_FORMAT = "E M/d 'at' h:mm a z"; // Definitely not intended for long-term usage.
+    private String date; // initialized in the constructor to the time of generation, formatted according to DATE_FORMAT
 
     // Define the fonts
     public static final String FONT_FACE = "SansSerif";
@@ -92,6 +93,12 @@ public class DefaultEventResultsSlideList implements EventResultsSlideList {
         subhead = new Font(FONT_FACE, baseFont * SUBHEAD_MULT / SUBHEAD_DIV, SUBHEAD_STYLE);
         number = new Font(FONT_FACE, baseFont * NUMBER_MULT / NUMBER_DIV, NUMBER_STYLE);
         smalltext = new Font(FONT_FACE, baseFont * SMALLTEXT_MULT / SMALLTEXT_DIV, SMALLTEXT_STYLE);
+
+        // Get the update timestamp
+        Calendar rightNow = Calendar.getInstance(); // default timezone
+        SimpleDateFormat fmt = new SimpleDateFormat(DATE_FORMAT);
+        fmt.setCalendar(rightNow); // overwrites values such as time zone
+        date = fmt.format(rightNow.getTime()); // getTime converts to Date, since SDF doesn't recognize Calendar properly
 
         renderSlides(width, height);
     }
@@ -184,10 +191,6 @@ public class DefaultEventResultsSlideList implements EventResultsSlideList {
         }
         // Update the slides
         int totNumSlides = workingSlides.size();
-        Calendar rightNow = Calendar.getInstance(); // default timezone
-        SimpleDateFormat fmt = new SimpleDateFormat(DATE_FORMAT);
-        fmt.setCalendar(rightNow); // overwrites values such as time zone
-        String date = fmt.format(rightNow.getTime()); // getTime converts to Date, since SDF doesn't recognize Calendar properly
 
         for (int i = 0; i < workingSlides.size(); i++) {
             String toUpdate = String.format("page %d of %d for this event; last updated %s", i + 1, totNumSlides, date);
