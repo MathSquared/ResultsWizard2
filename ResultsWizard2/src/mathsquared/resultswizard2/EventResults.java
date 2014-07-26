@@ -3,6 +3,7 @@
  */
 package mathsquared.resultswizard2;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,15 +19,15 @@ import java.util.Map;
  * @author MathSquared
  * 
  */
-public class EventResults {
+public class EventResults implements Serializable {
     private Event ev;
 
     // May be null if there are zero honorees in the corresponding category
     private String[][] indivHonorees;
     private String[][] indivSchools;
     private String[][] teamHonorees;
-    private Map<String, String[][]> specialHonorees;
-    private Map<String, String[][]> specialSchools;
+    private HashMap<String, String[][]> specialHonorees;
+    private HashMap<String, String[][]> specialSchools;
 
     /**
      * Constructs a new object representing results in the given event.
@@ -389,7 +390,7 @@ public class EventResults {
         }
 
         // Copy everything
-        Map<String, String[][]> ret = new HashMap<String, String[][]>();
+        HashMap<String, String[][]> ret = new HashMap<String, String[][]>();
         for (Map.Entry<String, String[][]> x : specialHonorees.entrySet()) {
             String k = x.getKey();
             String[][] v = x.getValue();
@@ -464,7 +465,7 @@ public class EventResults {
         }
 
         // Copy everything
-        Map<String, String[][]> ret = new HashMap<String, String[][]>();
+        HashMap<String, String[][]> ret = new HashMap<String, String[][]>();
         for (Map.Entry<String, String[][]> x : specialSchools.entrySet()) {
             String k = x.getKey();
             String[][] v = x.getValue();
