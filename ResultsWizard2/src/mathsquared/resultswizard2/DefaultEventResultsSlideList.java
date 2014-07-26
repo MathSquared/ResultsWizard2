@@ -78,6 +78,23 @@ public class DefaultEventResultsSlideList implements EventResultsSlideList {
     public static final int SMALLTEXT_DIV = 2;
     public static final int SMALLTEXT_STYLE = Font.PLAIN;
 
+    /**
+     * Initializes a new DefaultEventResultsSlideList with the given data.
+     * 
+     * <p>
+     * After calling this method, the slides are initialized as if by calling <code>{@link #renderSlides(int, int) renderSlides}(width, height)</code>.
+     * </p>
+     * 
+     * <p>
+     * This implementation exposes Slides that carry a timestamp. This timestamp is set by this constructor.
+     * </p>
+     * 
+     * @param width the width of the slides, in pixels
+     * @param height the height of the slides, in pixels
+     * @param color a {@link ColorScheme} with the colors to use (see the class description for which keys are used)
+     * @param baseFont the base font size, in points (this is the size of normal text; some fonts multiply this base size by fixed constants)
+     * @param evr the {@link EventResults} that this DefaultEventResultsSlideList should represent
+     */
     public DefaultEventResultsSlideList (int width, int height, ColorScheme color, int baseFont, EventResults evr) {
         this.width = width;
         this.height = height;
@@ -104,6 +121,16 @@ public class DefaultEventResultsSlideList implements EventResultsSlideList {
     }
 
     // public in case the screen size changes
+    /**
+     * Changes this DefaultEventResultsSlideList to expose Slides that display using the given width and height.
+     * 
+     * <p>
+     * Note that the slides represented by this DefaultEventResultsSlideList may completely change after calling this method. In particular, this implementation completely regenerates all of its Slides according to the new dimensions.
+     * </p>
+     * 
+     * @param width the new width of the slides, in pixels
+     * @param height the new height of the slides, in pixels
+     */
     public void renderSlides (int width, int height) {
         // Update instance variables
         this.width = width;
@@ -210,6 +237,15 @@ public class DefaultEventResultsSlideList implements EventResultsSlideList {
 
     // SLIDE GENERATION METHODS //
 
+    /**
+     * Creates a new {@link BuildableStackedSlide} that carries the event title and a default timestamp in the headers. The default timestamp is assigned {@linkplain BuildableStackedSlide#updatable() update} ID 0.
+     * 
+     * <p>
+     * The headers are committed and pushed.
+     * </p>
+     * 
+     * @return the newly generated slide
+     */
     private BuildableStackedSlide createNewSkeletalSlide () {
         BuildableStackedSlide ret = new BuildableStackedSlide(width, height);
         ret.addSpacer(TOP_MARGIN);
@@ -227,6 +263,17 @@ public class DefaultEventResultsSlideList implements EventResultsSlideList {
         return ret;
     }
 
+    /**
+     * Adds a block of text representing the type of results represented on a given slide.
+     * 
+     * <p>
+     * The header is committed and pushed.
+     * </p>
+     * 
+     * @param sl the {@link BuildableStackedSlide} to which the header should be added
+     * @param resType the header that should be added
+     * @return false if the addition overflowed the slide (the headers are still added)
+     */
     private boolean addResType (BuildableStackedSlide sl, String resType) {
         boolean ret = sl.addSpacer(BEFORE_RES_TYPE);
 
@@ -241,6 +288,17 @@ public class DefaultEventResultsSlideList implements EventResultsSlideList {
         return ret;
     }
 
+    /**
+     * Adds a block of text representing the name of a special honor to a given slide.
+     * 
+     * <p>
+     * The header is committed.
+     * </p>
+     * 
+     * @param sl the {@link BuildableStackedSlide} to which the header should be added
+     * @param honorName the header that should be added
+     * @return false if the addition overflowed the slide (the header is still added)
+     */
     private boolean addHonorName (BuildableStackedSlide sl, String honorName) {
         Color honorNameColor = (color.containsKey("honorName")) ? color.get("honorName") : new Color(0x222222);
         boolean ret = sl.addText(honorName, subhead, honorNameColor, false);
@@ -252,6 +310,22 @@ public class DefaultEventResultsSlideList implements EventResultsSlideList {
         return ret;
     }
 
+    /**
+     * Attempts to add a series of lines representing multiple individuals tied for the same place to a given slide.
+     * 
+     * <p>
+     * The text is committed. If an addition overflows the slide, the slide is reset (this affects the first buffer).
+     * </p>
+     * 
+     * @param sl the {@link BuildableStackedSlide} to which the text should be added
+     * @param placeNum the numeric place assigned to each tied competitor
+     * @param tiedHonorees the names of those tied for the given place
+     * @param tiedSchools the names of the schools tied for the given place (if this is a school award, this array should be null)
+     * @param sweeps the amount of sweepstakes points assigned to each tied competitor
+     * @return false if the operation failed
+     * @throws NullPointerException if tiedHonorees is null
+     * @throws IllegalArgumentException if tiedSchools is not null and <code>tiedHonorees.length != tiedSchools.length</code>
+     */
     private boolean tryAddTie (BuildableStackedSlide sl, int placeNum, String[] tiedHonorees, String[] tiedSchools, Fraction sweeps) {
         if (tiedHonorees == null) {
             throw new NullPointerException("tiedHonorees must not be null");
@@ -301,6 +375,24 @@ public class DefaultEventResultsSlideList implements EventResultsSlideList {
         return true;
     }
 
+    /**
+     * Adds a series of lines representing multiple individuals tied for the same place to a given slide, overflowing onto new slides if necessary.
+     * 
+     * <p>
+     * All generated slides are committed and pushed.
+     * </p>
+     * 
+     * @param sl the first {@link BuildableStackedSlide} to which the text should be added
+     * @param newSlideResType the {@linkplain #addResType(BuildableStackedSlide, String) result type} for any new slides
+     * @param newSlideHonorName the {@linkplain #addHonorName(BuildableStackedSlide, String) honor name} for any new slides
+     * @param placeNum the numeric place assigned to each tied competitor
+     * @param tiedHonorees the names of those tied for the given place
+     * @param tiedSchools the names of the schools tied for the given place (if this is a school award, this array should be null)
+     * @param sweeps the amount of sweepstakes points assigned to each tied competitor
+     * @return all of the slides to which elements were added, including <code>sl</code>
+     * @throws NullPointerException if tiedHonorees is null
+     * @throws IllegalArgumentException if tiedSchools is not null and <code>tiedHonorees.length != tiedSchools.length</code>
+     */
     private List<BuildableStackedSlide> forceAddTie (BuildableStackedSlide sl, String newSlideResType, String newSlideHonorName, int placeNum, String[] tiedHonorees, String[] tiedSchools, Fraction sweeps) {
         if (tiedHonorees == null) {
             throw new NullPointerException("tiedHonorees must not be null");
@@ -376,6 +468,25 @@ public class DefaultEventResultsSlideList implements EventResultsSlideList {
         return ret;
     }
 
+    /**
+     * Attempts to add a series of lines representing a complete set of results to a given slide.
+     * 
+     * <p>
+     * The text is committed and pushed. If an addition overflows the slide, the slide is reverted (this affects the second buffer).
+     * </p>
+     * 
+     * <p>
+     * For each integer <code>i</code> where <code>0 &lt;= i &lt; honorees.length</code>, the place assigned to the competitors in subarray <code>honorees[i]</code> is that given by <code>tieAssign.assignPlace(i + 1, i + honorees[i].length)</code>, where <code>tieAssign</code> is the {@link TiePlaceAssignment} assigned to the {@link Event} assigned to the <code>EventResults</code> represented by this DefaultEventResultsSlideList.
+     * </p>
+     * 
+     * @param sl the {@link BuildableStackedSlide} to which the text should be added
+     * @param honorees the results of the event, as if returned by {@link EventResults#getIndivHonorees()} or similar; should, but need not, correctly skip places for ties; also, each String entry should only appear once in the array
+     * @param schools the schools corresponding to each element of <code>honorees</code>
+     * @param sweeps a mapping from names of honorees to the amount of sweepstakes points earned by each
+     * @return false if the operation failed
+     * @throws NullPointerException if <code>honorees</code> or <code>schools</code> are null
+     * @throws IllegalArgumentException of the lengths of <code>honorees</code> and <code>schools</code> do not match
+     */
     private boolean tryAddList (BuildableStackedSlide sl, String[][] honorees, String[][] schools, Map<String, Fraction> sweeps) {
         if (honorees == null) {
             throw new NullPointerException("honorees must not be null");
@@ -406,6 +517,27 @@ public class DefaultEventResultsSlideList implements EventResultsSlideList {
         return true;
     }
 
+    /**
+     * Adds a series of lines representing a complete set of results to a given slide, overflowing onto new slides if necessary.
+     * 
+     * <p>
+     * All generated slides are committed and pushed.
+     * </p>
+     * 
+     * <p>
+     * For each integer <code>i</code> where <code>0 &lt;= i &lt; honorees.length</code>, the place assigned to the competitors in subarray <code>honorees[i]</code> is that given by <code>tieAssign.assignPlace(i + 1, i + honorees[i].length)</code>, where <code>tieAssign</code> is the {@link TiePlaceAssignment} assigned to the {@link Event} assigned to the <code>EventResults</code> represented by this DefaultEventResultsSlideList.
+     * </p>
+     * 
+     * @param sl the first {@link BuildableStackedSlide} to which the text should be added
+     * @param newSlideResType the {@linkplain #addResType(BuildableStackedSlide, String) result type} for any new slides
+     * @param newSlideHonorName the {@linkplain #addHonorName(BuildableStackedSlide, String) honor name} for any new slides
+     * @param honorees the results of the event, as if returned by {@link EventResults#getIndivHonorees()} or similar; should, but need not, correctly skip places for ties; also, each String entry should only appear once in the array
+     * @param schools the schools corresponding to each element of <code>honorees</code>
+     * @param sweeps a mapping from names of honorees to the amount of sweepstakes points earned by each
+     * @return all of the slides to which elements were added, including <code>sl</code>
+     * @throws NullPointerException if <code>honorees</code> or <code>schools</code> are null
+     * @throws IllegalArgumentException of the lengths of <code>honorees</code> and <code>schools</code> do not match
+     */
     private List<BuildableStackedSlide> forceAddList (BuildableStackedSlide sl, String newSlideResType, String newSlideHonorName, String[][] honorees, String[][] schools, Map<String, Fraction> sweeps) {
         if (honorees == null) {
             throw new NullPointerException("honorees must not be null");
@@ -461,6 +593,12 @@ public class DefaultEventResultsSlideList implements EventResultsSlideList {
         return ret;
     }
 
+    /**
+     * Processes a student name for display by removing any characters after a ` character and trimming whitespace.
+     * 
+     * @param raw the unprocessed name of the student
+     * @return the processed name of the student, with all characters after the first ` removed and whitespace on either end of the truncated string removed
+     */
     private String processStudentName (String raw) {
         // Splice off anything that occurs after a grave character and trim whitespace
         return raw.substring(0, raw.indexOf("`")).trim();
