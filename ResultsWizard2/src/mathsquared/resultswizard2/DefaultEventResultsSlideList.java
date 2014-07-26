@@ -105,7 +105,7 @@ public class DefaultEventResultsSlideList implements EventResultsSlideList {
         ret.addText(evr.getEvent().getPrimaryName().toUpperCase(), head, evtTitleColor, false);
 
         Color timestampColor = (color.containsKey("timestamp")) ? color.get("timestamp") : new Color(0x666666);
-        ret.addText("page _ of _ for this event; last updated ___ __:__p", smalltext, timestampColor, false);
+        ret.addText("partial event results", smalltext, timestampColor, false);
         ret.updatable(); // this will always be 0; see updatable Javadoc
 
         ret.commit(); // Propagate to top buffer
