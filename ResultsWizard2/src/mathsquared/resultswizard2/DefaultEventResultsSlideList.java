@@ -6,13 +6,17 @@ package mathsquared.resultswizard2;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 /**
  * A simple implementation of {@link EventResultsSlideList}.
@@ -53,6 +57,8 @@ public class DefaultEventResultsSlideList implements EventResultsSlideList {
 
     public static final Color transparent = new Color(0, 0, 0, 0);
 
+    public static final String DATE_FORMAT = "E M/d 'at' h:mm z"; // Definitely not intended for long-term usage.
+
     // Define the fonts
     public static final String FONT_FACE = "SansSerif";
     private Font base; // used for most text--competitor names, etc.
@@ -89,6 +95,104 @@ public class DefaultEventResultsSlideList implements EventResultsSlideList {
         subhead = new Font(FONT_FACE, baseFont * SUBHEAD_MULT / SUBHEAD_DIV, SUBHEAD_STYLE);
         number = new Font(FONT_FACE, baseFont * NUMBER_MULT / NUMBER_DIV, NUMBER_STYLE);
         smalltext = new Font(FONT_FACE, baseFont * SMALLTEXT_MULT / SMALLTEXT_DIV, SMALLTEXT_STYLE);
+
+        renderSlides(width, height);
+    }
+
+    // public in case the screen size changes
+    public void renderSlides (int width, int height) {
+        // Update instance variables
+        this.width = width;
+        this.height = height;
+
+        // Discard old slides
+        slides.clear();
+
+        // Since slides is an ArrayList<Slide> and not <BuildableStackedSlide>...
+        ArrayList<BuildableStackedSlide> workingSlides = new ArrayList<BuildableStackedSlide>();
+
+        // Generate the first slide and initialize it for individual results
+        BuildableStackedSlide sl = createNewSkeletalSlide();
+        workingSlides.add(sl);
+        addResType(sl, "INDIVIDUAL RESULTS");
+
+        // Populate the slide (and possibly generate new ones)
+        List<BuildableStackedSlide> surplus = forceAddList(sl, "INDIVIDUAL RESULTS CONT.", null, evr.getIndivHonorees(), evr.getIndivSchools(), evr.computeIndivSweeps(true));
+        if (surplus.size() > 1) { // extra slides generated
+            workingSlides.addAll(surplus.subList(1, surplus.size()));
+        }
+
+        // Generate a team results slide
+        sl = createNewSkeletalSlide();
+        workingSlides.add(sl);
+        addResType(sl, "TEAM RESULTS");
+
+        // Populate
+        surplus = forceAddList(sl, "TEAM RESULTS CONT.", null, evr.getTeamHonorees(), null, evr.computeTeamSweeps());
+        if (surplus.size() > 1) { // extra slides generated
+            workingSlides.addAll(surplus.subList(1, surplus.size()));
+        }
+
+        // Special honors will be more complicated.
+
+        // Generate a special honors slide
+        sl = createNewSkeletalSlide();
+        workingSlides.add(sl);
+        addResType(sl, "SPECIAL HONORS");
+
+        // Find a sorted set of special honors
+        SortedSet<String> honors = new TreeSet<String>(evr.getEvent().getSpecialHonors().keySet());
+
+        // Iterate through the special honors and add them
+        for (String hon : honors) {
+            String[][] honorees = evr.getSpecialHonorees().get(hon);
+            String[][] schools = evr.getSpecialSchools().get(hon);
+
+            // Add an honor name, and commit but don't push (that way, the header will be reverted by tryAddList if it doesn't fit)
+            addHonorName(sl, hon);
+            sl.commit();
+
+            // Try; if that doesn't work, commit, push, create new, and force
+            boolean addSucceeded = tryAddList(sl, honorees, schools, evr.computeSpecialSweeps(hon, true));
+            if (!addSucceeded) {
+                // Already reverted; just commit/push and then make a new slide
+                sl.commit();
+                sl.push();
+
+                sl = createNewSkeletalSlide();
+                workingSlides.add(sl);
+                addResType(sl, "SPECIAL HONORS CONT.");
+                addHonorName(sl, hon + " cont.");
+                sl.commit();
+
+                // Add the new stuff
+                surplus = forceAddList(sl, "SPECIAL HONORS CONT.", hon + " cont.", honorees, schools, evr.computeSpecialSweeps(hon, true));
+                if (surplus.size() > 1) { // extra slides generated
+                    workingSlides.addAll(surplus.subList(1, surplus.size()));
+
+                    // Ensure sl always points to the most recent slide
+                    sl = surplus.get(surplus.size() - 1);
+                }
+            }
+        }
+
+        // Update the slides
+        int totNumSlides = workingSlides.size();
+        Calendar rightNow = Calendar.getInstance(); // default timezone
+        SimpleDateFormat fmt = new SimpleDateFormat(DATE_FORMAT);
+        fmt.setCalendar(rightNow); // overwrites values such as time zone
+        String date = fmt.format(rightNow.getTime()); // getTime converts to Date, since SDF doesn't recognize Calendar properly
+
+        for (int i = 0; i < workingSlides.size(); i++) {
+            String toUpdate = String.format("page %d of %d for this event; last updated %s", i + 1, totNumSlides, date);
+            workingSlides.get(i).update(0, toUpdate); // first updatable request for each slide, so we know it's 0 (see Javadoc)
+        }
+
+        // Update the slides list; make the contained slides immutable (this is where SlideEncapsulator comes in)
+        // slides is already cleared
+        for (Slide x : workingSlides) {
+            slides.add(new SlideEncapsulator(x));
+        }
     }
 
     public EventResults getEventResults () {
