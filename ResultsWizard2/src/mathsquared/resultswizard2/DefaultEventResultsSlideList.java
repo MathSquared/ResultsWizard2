@@ -55,7 +55,7 @@ public class DefaultEventResultsSlideList implements EventResultsSlideList {
 
     public static final Color transparent = new Color(0, 0, 0, 0);
 
-    public static final String DATE_FORMAT = "E M/d 'at' h:mm z"; // Definitely not intended for long-term usage.
+    public static final String DATE_FORMAT = "E M/d 'at' h:mm a z"; // Definitely not intended for long-term usage.
 
     // Define the fonts
     public static final String FONT_FACE = "SansSerif";
