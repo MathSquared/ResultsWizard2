@@ -109,71 +109,79 @@ public class DefaultEventResultsSlideList implements EventResultsSlideList {
         // (this is so we can make the slides returned to the client immutable with SlideEncapsulator)
         ArrayList<BuildableStackedSlide> workingSlides = new ArrayList<BuildableStackedSlide>();
 
-        // Generate the first slide and initialize it for individual results
-        BuildableStackedSlide sl = createNewSkeletalSlide();
-        workingSlides.add(sl);
-        addResType(sl, "INDIVIDUAL RESULTS");
+        // For each slide, we only generate it if there are actually results to display.
+        // This avoids generating empty slides that waste projection time.
 
-        // Populate the slide (and possibly generate new ones)
-        List<BuildableStackedSlide> surplus = forceAddList(sl, "INDIVIDUAL RESULTS CONT.", null, evr.getIndivHonorees(), evr.getIndivSchools(), evr.computeIndivSweeps(true));
-        if (surplus.size() > 1) { // extra slides generated
-            workingSlides.addAll(surplus.subList(1, surplus.size()));
+        // Define these upfront (we can't define them at first use in the individual results block, lest they go out of scope)
+        BuildableStackedSlide sl;
+        List<BuildableStackedSlide> surplus;
+
+        if (evr.getEvent().getIndivPlaces() > 0) {
+            // Generate the first slide and initialize it for individual results
+            sl = createNewSkeletalSlide();
+            workingSlides.add(sl);
+            addResType(sl, "INDIVIDUAL RESULTS");
+            // Populate the slide (and possibly generate new ones)
+            surplus = forceAddList(sl, "INDIVIDUAL RESULTS CONT.", null, evr.getIndivHonorees(), evr.getIndivSchools(), evr.computeIndivSweeps(true));
+            if (surplus.size() > 1) { // extra slides generated
+                workingSlides.addAll(surplus.subList(1, surplus.size()));
+            }
         }
 
-        // Generate a team results slide
-        sl = createNewSkeletalSlide();
-        workingSlides.add(sl);
-        addResType(sl, "TEAM RESULTS");
-
-        // Populate
-        surplus = forceAddList(sl, "TEAM RESULTS CONT.", null, evr.getTeamHonorees(), null, evr.computeTeamSweeps());
-        if (surplus.size() > 1) { // extra slides generated
-            workingSlides.addAll(surplus.subList(1, surplus.size()));
+        if (evr.getEvent().getTeamPlaces() > 0) {
+            // Generate a team results slide
+            sl = createNewSkeletalSlide();
+            workingSlides.add(sl);
+            addResType(sl, "TEAM RESULTS");
+            // Populate
+            surplus = forceAddList(sl, "TEAM RESULTS CONT.", null, evr.getTeamHonorees(), null, evr.computeTeamSweeps());
+            if (surplus.size() > 1) { // extra slides generated
+                workingSlides.addAll(surplus.subList(1, surplus.size()));
+            }
         }
 
         // Special honors will be more complicated.
 
-        // Generate a special honors slide
-        sl = createNewSkeletalSlide();
-        workingSlides.add(sl);
-        addResType(sl, "SPECIAL HONORS");
+        if (evr.getEvent().getSpecialHonors().size() > 0) {
+            // Generate a special honors slide
+            sl = createNewSkeletalSlide();
+            workingSlides.add(sl);
+            addResType(sl, "SPECIAL HONORS");
+            // Find a sorted set of special honors
+            SortedSet<String> honors = new TreeSet<String>(evr.getEvent().getSpecialHonors().keySet());
+            // Iterate through the special honors and add them
+            for (String hon : honors) {
+                String[][] honorees = evr.getSpecialHonorees().get(hon);
+                String[][] schools = evr.getSpecialSchools().get(hon);
 
-        // Find a sorted set of special honors
-        SortedSet<String> honors = new TreeSet<String>(evr.getEvent().getSpecialHonors().keySet());
-
-        // Iterate through the special honors and add them
-        for (String hon : honors) {
-            String[][] honorees = evr.getSpecialHonorees().get(hon);
-            String[][] schools = evr.getSpecialSchools().get(hon);
-
-            // Add an honor name, and commit but don't push (that way, the header will be reverted by tryAddList if it doesn't fit)
-            addHonorName(sl, hon);
-            sl.commit();
-
-            // Try; if that doesn't work, commit, push, create new, and force
-            boolean addSucceeded = tryAddList(sl, honorees, schools, evr.computeSpecialSweeps(hon, true));
-            if (!addSucceeded) {
-                // Already reverted; just commit/push and then make a new slide
-                sl.commit();
-                sl.push();
-
-                sl = createNewSkeletalSlide();
-                workingSlides.add(sl);
-                addResType(sl, "SPECIAL HONORS CONT.");
-                addHonorName(sl, hon + " cont.");
+                // Add an honor name, and commit but don't push (that way, the header will be reverted by tryAddList if it doesn't fit)
+                addHonorName(sl, hon);
                 sl.commit();
 
-                // Add the new stuff
-                surplus = forceAddList(sl, "SPECIAL HONORS CONT.", hon + " cont.", honorees, schools, evr.computeSpecialSweeps(hon, true));
-                if (surplus.size() > 1) { // extra slides generated
-                    workingSlides.addAll(surplus.subList(1, surplus.size()));
+                // Try; if that doesn't work, commit, push, create new, and force
+                boolean addSucceeded = tryAddList(sl, honorees, schools, evr.computeSpecialSweeps(hon, true));
+                if (!addSucceeded) {
+                    // Already reverted; just commit/push and then make a new slide
+                    sl.commit();
+                    sl.push();
 
-                    // Ensure sl always points to the most recent slide
-                    sl = surplus.get(surplus.size() - 1);
+                    sl = createNewSkeletalSlide();
+                    workingSlides.add(sl);
+                    addResType(sl, "SPECIAL HONORS CONT.");
+                    addHonorName(sl, hon + " cont.");
+                    sl.commit();
+
+                    // Add the new stuff
+                    surplus = forceAddList(sl, "SPECIAL HONORS CONT.", hon + " cont.", honorees, schools, evr.computeSpecialSweeps(hon, true));
+                    if (surplus.size() > 1) { // extra slides generated
+                        workingSlides.addAll(surplus.subList(1, surplus.size()));
+
+                        // Ensure sl always points to the most recent slide
+                        sl = surplus.get(surplus.size() - 1);
+                    }
                 }
             }
         }
-
         // Update the slides
         int totNumSlides = workingSlides.size();
         Calendar rightNow = Calendar.getInstance(); // default timezone
