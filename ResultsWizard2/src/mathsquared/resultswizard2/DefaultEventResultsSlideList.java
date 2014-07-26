@@ -485,7 +485,7 @@ public class DefaultEventResultsSlideList implements EventResultsSlideList {
      * @param sweeps a mapping from names of honorees to the amount of sweepstakes points earned by each
      * @return false if the operation failed
      * @throws NullPointerException if <code>honorees</code> or <code>schools</code> are null
-     * @throws IllegalArgumentException of the lengths of <code>honorees</code> and <code>schools</code> do not match
+     * @throws IllegalArgumentException of the lengths of <code>honorees</code> and <code>schools</code> do not match, or <code>honorees</code> and <code>schools</code> do not have the same {@linkplain ArrayUtils#checkStructureSame(Object[], Object[]) structure}
      */
     private boolean tryAddList (BuildableStackedSlide sl, String[][] honorees, String[][] schools, Map<String, Fraction> sweeps) {
         if (honorees == null) {
@@ -496,6 +496,9 @@ public class DefaultEventResultsSlideList implements EventResultsSlideList {
         }
         if (honorees.length != schools.length) {
             throw new IllegalArgumentException("Length of honorees (" + honorees.length + ") must match length of schools (" + schools.length + ")");
+        }
+        if (!ArrayUtils.checkStructureSame(honorees, schools)) {
+            throw new IllegalArgumentException("Structure of honorees and schools must match");
         }
 
         for (int i = 0; i < honorees.length; i++) {
@@ -536,7 +539,7 @@ public class DefaultEventResultsSlideList implements EventResultsSlideList {
      * @param sweeps a mapping from names of honorees to the amount of sweepstakes points earned by each
      * @return all of the slides to which elements were added, including <code>sl</code>
      * @throws NullPointerException if <code>honorees</code> or <code>schools</code> are null
-     * @throws IllegalArgumentException of the lengths of <code>honorees</code> and <code>schools</code> do not match
+     * @throws IllegalArgumentException of the lengths of <code>honorees</code> and <code>schools</code> do not match, or <code>honorees</code> and <code>schools</code> do not have the same {@linkplain ArrayUtils#checkStructureSame(Object[], Object[]) structure}
      */
     private List<BuildableStackedSlide> forceAddList (BuildableStackedSlide sl, String newSlideResType, String newSlideHonorName, String[][] honorees, String[][] schools, Map<String, Fraction> sweeps) {
         if (honorees == null) {
@@ -547,6 +550,9 @@ public class DefaultEventResultsSlideList implements EventResultsSlideList {
         }
         if (honorees.length != schools.length) {
             throw new IllegalArgumentException("Length of honorees (" + honorees.length + ") must match length of schools (" + schools.length + ")");
+        }
+        if (!ArrayUtils.checkStructureSame(honorees, schools)) {
+            throw new IllegalArgumentException("Structure of honorees and schools must match");
         }
 
         // this holds a list of all slides used
