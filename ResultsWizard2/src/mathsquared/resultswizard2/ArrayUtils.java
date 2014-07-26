@@ -304,16 +304,20 @@ public class ArrayUtils {
      * Sorts multiple arrays by the quantities in one of them. This is similar to sorting a database, where the first column represents the sort key.
      * 
      * <p>
+     * Note that this sort is not guaranteed to be stable; elements which compare as equal might be reordered relative to each other in the resulting array.
+     * </p>
+     * 
+     * <p>
      * It is required that the lengths of all of the subarrays of <code>toSort</code> be equal. Failure to assure this throws an IllegalArgumentException.</code>
      * </p>
      * 
      * <p>
-     * If <code>i</code> is an integer less than <code>toSort[0].length</code>, and <code>ret</code> is the result of calling <code>multiSort(toSort)</code>, then:
+     * If <code>i</code> is a non-negative integer less than <code>toSort[0].length</code>, and <code>ret</code> is the result of calling <code>multiSort(toSort)</code>, then:
      * </p>
      * 
      * <ul>
-     * <li>there exists an integer <code>j</code> less than <code>toSort[0].length</code> such that for all integers <code>k</code> less than <code>toSort.length</code>, <code>toSort[k][i] == ret[k][j]</code></li>
-     * <li>if <code>i > 0</code>, <code>ret[0][i-1]</code> compares as less than <code>ret[0][i]</code></li>
+     * <li>there exists a non-negative integer <code>j</code> less than <code>toSort[0].length</code> such that for all non-negative integers <code>k</code> less than <code>toSort.length</code>, <code>toSort[k][i] == ret[k][j]</code> (that is, all elements which share the same index in the subarrays of <code>toSort</code> will continue to share an index in the subarrays of <code>ret</code>, but the shared index might change)</li>
+     * <li>if <code>i > 0</code>, <code>ret[0][i-1]</code> compares as less than <code>ret[0][i]</code> (that is, <code>ret[0]</code> will have its elements sorted in their natural order)</li>
      * </ul>
      * 
      * <p>
@@ -322,7 +326,7 @@ public class ArrayUtils {
      * 
      * <ul>
      * <li><code>ret.length == toSort.length</code></li>
-     * <li>for all integers <code>n</code> less than <code>toSort.length</code>, <code>ret[n].length == toSort[n].length</code>
+     * <li>for all non-negative integers <code>n</code> less than <code>toSort.length</code>, <code>ret[n].length == toSort[n].length</code>
      * </ul>
      * 
      * @param toSort the arrays to sort; all of the arrays will be sorted according to the values in <code>toSort[0]</code>
