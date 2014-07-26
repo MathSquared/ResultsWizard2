@@ -276,7 +276,10 @@ public class DefaultEventResultsSlideList implements EventResultsSlideList {
 
         for (int i = 0; i < honorees.length; i++) {
             if (honorees[i] != null && honorees[i].length != 0) { // null or empty is a place skipped for ties
-                boolean addSucceeded = tryAddTie(sl, i + 1, honorees[i], schools[i], sweeps.get(honorees[i][0]));
+                int placeOne = i + 1;
+                int placeTwo = i + honorees[i].length;
+                int placeAssign = evr.getEvent().getTieAssign().assignPlace(placeOne, placeTwo);
+                boolean addSucceeded = tryAddTie(sl, placeAssign, honorees[i], schools[i], sweeps.get(honorees[i][0]));
                 if (!addSucceeded) {
                     sl.revert();
                     return false;
@@ -307,7 +310,10 @@ public class DefaultEventResultsSlideList implements EventResultsSlideList {
 
         for (int i = 0; i < honorees.length; i++) {
             if (honorees[i] != null && honorees[i].length != 0) { // null or empty is a place skipped for ties
-                boolean addSucceeded = tryAddTie(sl, i + 1, honorees[i], schools[i], sweeps.get(honorees[i][0]));
+                int placeOne = i + 1;
+                int placeTwo = i + honorees[i].length;
+                int placeAssign = evr.getEvent().getTieAssign().assignPlace(placeOne, placeTwo);
+                boolean addSucceeded = tryAddTie(sl, placeAssign, honorees[i], schools[i], sweeps.get(honorees[i][0]));
                 if (!addSucceeded) {
                     // The tryAddTie method leaves no trace if it fails, so we start a new slide
                     sl.commit();
@@ -322,7 +328,10 @@ public class DefaultEventResultsSlideList implements EventResultsSlideList {
                     }
 
                     // Force the add this time
-                    List<BuildableStackedSlide> forced = forceAddTie(sl, newSlideResType, newSlideHonorName, i + 1, honorees[i], schools[i], sweeps.get(honorees[i][0]));
+                    int placeOneAgain = i + 1;
+                    int placeTwoAgain = i + honorees[i].length;
+                    int placeAssignAgain = evr.getEvent().getTieAssign().assignPlace(placeOneAgain, placeTwoAgain);
+                    List<BuildableStackedSlide> forced = forceAddTie(sl, newSlideResType, newSlideHonorName, placeAssignAgain, honorees[i], schools[i], sweeps.get(honorees[i][0]));
 
                     // Mess with sl so that it represents the most recent slide
                     if (forced.size() > 1) { // if forceAddTie generated new slides
