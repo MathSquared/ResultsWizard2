@@ -601,7 +601,10 @@ public class DefaultEventResultsSlideList implements EventResultsSlideList {
      */
     private String processStudentName (String raw) {
         // Splice off anything that occurs after a grave character and trim whitespace
-        return raw.substring(0, raw.indexOf("`")).trim();
+        if (raw.indexOf("`") >= 0) {
+            raw = raw.substring(0, raw.indexOf("`"));
+        }
+        return raw.trim();
     }
 
     // IMPLEMENT LIST //
