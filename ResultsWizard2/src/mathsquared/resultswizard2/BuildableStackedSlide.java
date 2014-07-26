@@ -8,6 +8,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,7 +41,7 @@ public class BuildableStackedSlide implements Slide {
 
     // These represent the different elements that can be created. //
 
-    private interface Chunk {
+    private interface Chunk extends Serializable {
         /**
          * Returns the maximum possible vertical size that a chunk of this type can take up with the given parameters. Maximum possible means that none of the fonts are shrunk due to lack of horizontal space.
          * 
