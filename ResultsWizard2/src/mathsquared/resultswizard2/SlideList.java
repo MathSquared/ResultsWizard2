@@ -3,6 +3,7 @@
  */
 package mathsquared.resultswizard2;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -11,6 +12,6 @@ import java.util.List;
  * @author MathSquared
  * 
  */
-public interface SlideList extends List<Slide> {
+public interface SlideList extends List<Slide>, Serializable {
 
 }
