@@ -229,8 +229,14 @@ public class EventResults implements Serializable {
 
         for (String x : uncapped.keySet()) {
             Fraction rawSweeps = uncapped.get(x);
-            // TODO Make Fraction comparable and test for != 0
-            ret.put(x, rawSweeps);
+            // Ignore values equal to 0
+            if (!rawSweeps.equals(new Fraction(0))) {
+                Fraction cappedSweeps = rawSweeps;
+                if (cappedSweeps.compareTo(cap) > 0) {
+                    cappedSweeps = new Fraction(cap);
+                }
+                ret.put(x, rawSweeps);
+            }
         }
 
         return ret;
