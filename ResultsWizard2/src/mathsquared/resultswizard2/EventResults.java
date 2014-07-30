@@ -29,7 +29,7 @@ public class EventResults implements Serializable {
     private HashMap<String, String[][]> specialHonorees;
     private HashMap<String, String[][]> specialSchools;
 
-    // Cached raw sweeps results; TODO: allow different sweeps for different honorees in the same tie
+    // Cached raw sweeps results
     private Fraction[][] indivSweeps;
     private Fraction[][] teamSweeps;
     private HashMap<String, Fraction[][]> specialSweeps;
