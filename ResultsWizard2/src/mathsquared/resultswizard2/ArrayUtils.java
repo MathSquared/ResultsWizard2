@@ -411,7 +411,7 @@ public class ArrayUtils {
      * @param toExpand the array to expand; not modified
      * @param lengths the lengths of the sub-arrays of the resultant array; not modified
      * @return an array expanded as indicated above
-     * @throws IllegalArgumentException if <code>(toExpand.length != lengths.length)</code>
+     * @throws IllegalArgumentException if <code>(toExpand.length != lengths.length)</code>, or any entry of <code>lengths</code> is strictly less than 0
      */
     // HASHTAG UNCHECKED CASTS
     @SuppressWarnings("unchecked")
@@ -419,6 +419,11 @@ public class ArrayUtils {
         // Sanity checks
         if (toExpand.length != lengths.length) {
             throw new IllegalArgumentException("Length of toExpand (" + toExpand.length + ") and lengths (" + lengths.length + ") must match");
+        }
+        for (int i = 0; i < lengths.length; i++) {
+            if (lengths[i] < 0) {
+                throw new IllegalArgumentException("lengths[" + i + "] contains negative entry: " + lengths[i]);
+            }
         }
 
         // Instantiate a generic array
