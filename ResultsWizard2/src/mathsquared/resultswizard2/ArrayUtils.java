@@ -304,7 +304,7 @@ public class ArrayUtils {
      * Sorts multiple arrays by the quantities in one of them. This is similar to sorting a database, where the first column represents the sort key.
      * 
      * <p>
-     * Note that this sort is not guaranteed to be stable; elements which compare as equal might be reordered relative to each other in the resulting array.
+     * This sort is stable; groups of data associated with entries in <code>toSort[0]</code> which compare as equal will maintain their relative ordering in the returned array.
      * </p>
      * 
      * <p>
@@ -353,6 +353,7 @@ public class ArrayUtils {
         }
 
         // Logic below is HEAVILY based on a StackOverflow post by Jherico; http://stackoverflow.com/a/951910/1979005
+        // Sort is stable, since indices are added to the Lists in numeric order
         SortedMap<T, List<Integer>> sortedIndices = new TreeMap<T, List<Integer>>();
         for (int i = 0; i < toSort[0].length; i++) {
             T key = toSort[0][i];
