@@ -185,4 +185,71 @@ public class ArrayUtilsTest {
             fail("Over-bounds index not caught");
         }
     }
+
+    /**
+     * Test method for {@link mathsquared.resultswizard2.ArrayUtils#multiSort(Comparable[]...)}.
+     */
+    @Test
+    public void testMultiSort () {
+        // Some initial arrays (note: Integer because int is not a valid type argument)
+        Integer[] sorted6 = new Integer[]{1, 2, 3, 4, 5, 6};
+        Integer[] highValueSorted6 = new Integer[]{16, 17, 18, 19, 20, 21}; // chosen to not possibly be valid array indices
+        Integer[] reversed6 = new Integer[]{6, 5, 4, 3, 2, 1};
+        Integer[] perm1arr6 = new Integer[]{2, 1, 4, 3, 6, 5};
+        Integer[] perm2arr6 = new Integer[]{1, 5, 3, 4, 2, 6};
+        Integer[] duplicate6 = new Integer[]{1, 2, 3, 2, 4, 2};
+
+        // Test: identity if first array is sorted
+        Integer[][] identityTest = new Integer[][]{highValueSorted6, perm1arr6};
+        Integer[][] identityRes = ArrayUtils.multiSort(identityTest);
+        assertTrue("Identity: conservation of matter", identityRes.length == identityTest.length);
+        assertTrue("Identity: array length for res[0]", identityRes[0].length == identityTest[0].length);
+        assertTrue("Identity: equality of result array size (0, 1)", identityRes[0].length == identityRes[1].length);
+        assertArrayEquals("Identity: correct result (0)", identityRes[0], highValueSorted6);
+        assertArrayEquals("Identity: correct result (1)", identityRes[1], perm1arr6);
+
+        // Test: reversal ("reversi")
+        Integer[][] reversiTest = new Integer[][]{reversed6, perm2arr6};
+        Integer[][] reversiRes = ArrayUtils.multiSort(reversiTest);
+        Integer[] reversiExpected = new Integer[]{6, 2, 4, 3, 5, 1};
+        assertTrue("Reversi: conservation of matter", reversiRes.length == reversiTest.length);
+        assertTrue("Reversi: array length for res[0]", reversiRes[0].length == reversiTest[0].length);
+        assertTrue("Reversi: equality of result array size (0, 1)", reversiRes[0].length == reversiRes[1].length);
+        assertArrayEquals("Reversi: correct result (0)", reversiRes[0], sorted6);
+        assertArrayEquals("Reversi: correct result (1)", reversiRes[1], reversiExpected);
+
+        // Test: slightly more crazy
+        Integer[][] crazyTest = new Integer[][]{perm1arr6, reversed6};
+        Integer[][] crazyRes = ArrayUtils.multiSort(crazyTest);
+        Integer[] crazyExpected = new Integer[]{5, 6, 3, 4, 1, 2};
+        assertTrue("Crazy: conservation of matter", crazyRes.length == crazyTest.length);
+        assertTrue("Crazy: array length for res[0]", crazyRes[0].length == crazyTest[0].length);
+        assertTrue("Crazy: equality of result array size (0, 1)", crazyRes[0].length == crazyRes[1].length);
+        assertArrayEquals("Crazy: correct result (0)", crazyRes[0], sorted6);
+        assertArrayEquals("Crazy: correct result (1)", crazyRes[1], crazyExpected);
+
+        // Test: duplicates in column 0 and stability
+        Integer[][] dupesTest = new Integer[][]{duplicate6, reversed6};
+        Integer[][] dupesRes = ArrayUtils.multiSort(dupesTest);
+        Integer[] dupesExpected0 = new Integer[]{1, 2, 2, 2, 3, 4};
+        Integer[] dupesExpected1 = new Integer[]{6, 5, 3, 1, 4, 2};
+        assertTrue("Dupes: conservation of matter", dupesRes.length == dupesTest.length);
+        assertTrue("Dupes: array length for res[0]", dupesRes[0].length == dupesTest[0].length);
+        assertTrue("Dupes: equality of result array size (0, 1)", dupesRes[0].length == dupesRes[1].length);
+        assertArrayEquals("Dupes: correct result (0)", dupesRes[0], dupesExpected0);
+        assertArrayEquals("Dupes: correct result (1) and stability", dupesRes[1], dupesExpected1);
+
+        // Test: three-column
+        Integer[][] threeTest = new Integer[][]{perm2arr6, highValueSorted6, perm1arr6};
+        Integer[][] threeRes = ArrayUtils.multiSort(threeTest);
+        Integer[] threeExpected1 = new Integer[]{16, 20, 18, 19, 17, 21};
+        Integer[] threeExpected2 = new Integer[]{2, 6, 4, 3, 1, 5};
+        assertTrue("Three: conservation of matter", threeRes.length == threeRes.length);
+        assertTrue("Three: array length for res[0]", threeRes[0].length == threeTest[0].length);
+        assertTrue("Three: equality of result array size (0, 1)", threeRes[0].length == threeRes[1].length);
+        assertTrue("Three: equality of result array size (0, 2)", threeRes[0].length == threeRes[2].length);
+        assertArrayEquals("Three: correct result (0)", threeRes[0], sorted6);
+        assertArrayEquals("Three: correct result (1)", threeRes[1], threeExpected1);
+        assertArrayEquals("Three: correct result (2)", threeRes[2], threeExpected2);
+    }
 }
