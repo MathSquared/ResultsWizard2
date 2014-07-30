@@ -321,12 +321,12 @@ public class DefaultEventResultsSlideList implements EventResultsSlideList {
      * @param placeNum the numeric place assigned to each tied competitor
      * @param tiedHonorees the names of those tied for the given place
      * @param tiedSchools the names of the schools tied for the given place (if this is a school award, this array should be null)
-     * @param sweeps the amount of sweepstakes points assigned to each tied competitor
+     * @param sweeps a mapping from competitor names to the amount of sweepstakes points awarded to them
      * @return false if the operation failed
      * @throws NullPointerException if tiedHonorees is null
      * @throws IllegalArgumentException if tiedSchools is not null and <code>tiedHonorees.length != tiedSchools.length</code>
      */
-    private boolean tryAddTie (BuildableStackedSlide sl, int placeNum, String[] tiedHonorees, String[] tiedSchools, Fraction sweeps) {
+    private boolean tryAddTie (BuildableStackedSlide sl, int placeNum, String[] tiedHonorees, String[] tiedSchools, Map<String, Fraction> sweeps) {
         if (tiedHonorees == null) {
             throw new NullPointerException("tiedHonorees must not be null");
         }
@@ -342,10 +342,6 @@ public class DefaultEventResultsSlideList implements EventResultsSlideList {
         Color sweepsColor = (color.containsKey("sweeps")) ? color.get("sweeps") : new Color(0x666666);
 
         String plStr = Integer.toString(placeNum);
-        String swStr = String.format("%.2f", sweeps.toDouble()); // Two decimals
-        if (swStr.endsWith(".00")) { // Chop off the last two digits if they're .00
-            swStr = swStr.substring(0, swStr.length() - ".00".length());
-        }
 
         // Sort the honorees and schools (keeping honorees associated with their schools) TODO: sort by last name
         String[][] multiSortBundle = ArrayUtils.multiSort(tiedHonorees, tiedSchools);
@@ -353,6 +349,12 @@ public class DefaultEventResultsSlideList implements EventResultsSlideList {
         String[] sortedSchools = multiSortBundle[1];
 
         for (int i = 0; i < tiedHonorees.length; i++) {
+            // Generate a sweeps string for this competitor
+            String swStr = String.format("%.2f", sweeps.get(sortedHonorees[i]).toDouble()); // Two decimals
+            if (swStr.endsWith(".00")) { // Chop off the last two digits if they're .00
+                swStr = swStr.substring(0, swStr.length() - ".00".length());
+            }
+
             boolean addSucceeded = false;
             if (threeCol) {
                 addSucceeded = sl.addThreeText(plStr, number, placeNumColor, sortedHonorees[i], base, honoreeColor, swStr, number, sweepsColor);
@@ -390,12 +392,12 @@ public class DefaultEventResultsSlideList implements EventResultsSlideList {
      * @param placeNum the numeric place assigned to each tied competitor
      * @param tiedHonorees the names of those tied for the given place
      * @param tiedSchools the names of the schools tied for the given place (if this is a school award, this array should be null)
-     * @param sweeps the amount of sweepstakes points assigned to each tied competitor
+     * @param sweeps a mapping from competitor names to the amount of sweepstakes points awarded to them
      * @return all of the slides to which elements were added, including <code>sl</code>
      * @throws NullPointerException if tiedHonorees is null
      * @throws IllegalArgumentException if tiedSchools is not null and <code>tiedHonorees.length != tiedSchools.length</code>
      */
-    private List<BuildableStackedSlide> forceAddTie (BuildableStackedSlide sl, String newSlideResType, String newSlideHonorName, int placeNum, String[] tiedHonorees, String[] tiedSchools, Fraction sweeps) {
+    private List<BuildableStackedSlide> forceAddTie (BuildableStackedSlide sl, String newSlideResType, String newSlideHonorName, int placeNum, String[] tiedHonorees, String[] tiedSchools, Map<String, Fraction> sweeps) {
         if (tiedHonorees == null) {
             throw new NullPointerException("tiedHonorees must not be null");
         }
@@ -415,10 +417,6 @@ public class DefaultEventResultsSlideList implements EventResultsSlideList {
         Color sweepsColor = (color.containsKey("sweeps")) ? color.get("sweeps") : new Color(0x666666);
 
         String plStr = Integer.toString(placeNum);
-        String swStr = String.format("%.2f", sweeps.toDouble()); // Two decimals
-        if (swStr.endsWith(".00")) { // Chop off the last two digits if they're .00
-            swStr = swStr.substring(0, swStr.length() - ".00".length());
-        }
 
         // Sort the honorees and schools (keeping honorees associated with their schools) TODO: sort by last name
         String[][] multiSortBundle = ArrayUtils.multiSort(tiedHonorees, tiedSchools);
@@ -429,6 +427,12 @@ public class DefaultEventResultsSlideList implements EventResultsSlideList {
         // we don't simply overwrite placeNumColor as in tryAddTie because we might need to reenable the place number if we start a new slide
 
         for (int i = 0; i < tiedHonorees.length; i++) {
+            // Generate a sweeps string for this competitor
+            String swStr = String.format("%.2f", sweeps.get(sortedHonorees[i]).toDouble()); // Two decimals
+            if (swStr.endsWith(".00")) { // Chop off the last two digits if they're .00
+                swStr = swStr.substring(0, swStr.length() - ".00".length());
+            }
+
             boolean addSucceeded = false;
             if (threeCol) {
                 addSucceeded = sl.addThreeText(plStr, number, placeNumColorCur, sortedHonorees[i], base, honoreeColor, swStr, number, sweepsColor);
@@ -512,7 +516,7 @@ public class DefaultEventResultsSlideList implements EventResultsSlideList {
                 int placeOne = i + 1;
                 int placeTwo = i + honorees[i].length;
                 int placeAssign = evr.getEvent().getTieAssign().assignPlace(placeOne, placeTwo);
-                boolean addSucceeded = tryAddTie(sl, placeAssign, honorees[i], schools[i], sweeps.get(honorees[i][0]));
+                boolean addSucceeded = tryAddTie(sl, placeAssign, honorees[i], schools[i], sweeps);
                 if (!addSucceeded) {
                     sl.revert();
                     return false;
@@ -570,7 +574,7 @@ public class DefaultEventResultsSlideList implements EventResultsSlideList {
                 int placeOne = i + 1;
                 int placeTwo = i + honorees[i].length;
                 int placeAssign = evr.getEvent().getTieAssign().assignPlace(placeOne, placeTwo);
-                boolean addSucceeded = tryAddTie(sl, placeAssign, honorees[i], schools[i], sweeps.get(honorees[i][0]));
+                boolean addSucceeded = tryAddTie(sl, placeAssign, honorees[i], schools[i], sweeps);
                 if (!addSucceeded) {
                     // The tryAddTie method leaves no trace if it fails, so we start a new slide
                     sl.commit();
@@ -588,7 +592,7 @@ public class DefaultEventResultsSlideList implements EventResultsSlideList {
                     int placeOneAgain = i + 1;
                     int placeTwoAgain = i + honorees[i].length;
                     int placeAssignAgain = evr.getEvent().getTieAssign().assignPlace(placeOneAgain, placeTwoAgain);
-                    List<BuildableStackedSlide> forced = forceAddTie(sl, newSlideResType, newSlideHonorName, placeAssignAgain, honorees[i], schools[i], sweeps.get(honorees[i][0]));
+                    List<BuildableStackedSlide> forced = forceAddTie(sl, newSlideResType, newSlideHonorName, placeAssignAgain, honorees[i], schools[i], sweeps);
 
                     // Mess with sl so that it represents the most recent slide
                     if (forced.size() > 1) { // if forceAddTie generated new slides
