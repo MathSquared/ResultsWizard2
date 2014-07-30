@@ -17,7 +17,7 @@ package mathsquared.resultswizard2;
  * @author MathSquared
  * 
  */
-public class Fraction { // TODO write unit tests
+public class Fraction implements Comparable<Fraction> { // TODO write unit tests
     private int unit;
     private int numerator;
     private int denominator;
@@ -417,5 +417,28 @@ public class Fraction { // TODO write unit tests
         } else {
             return false;
         }
+    }
+
+    /**
+     * Numerically compares this Fraction to another Fraction. This class is {@linkplain Comparable consistent with equals}, discounting the possibility of integer overflow errors; if <code>this.equals(other)</code>, it is guaranteed that <code>this.compareTo(other) == 0</code>; and if <code>!this.equals(other)</code>, it is theoretically guaranteed that <code>this.compareTo(other) != 0</code> (although rounding errors can cause inconsistency here).
+     * 
+     * @param other the Fraction to which to compare this Fraction
+     * @return a number <code>i</code> such that <code>i > 0</code> if this fraction is greater than <code>other</code>, <code>i &lt; 0</code> if this fraction is less than <code>other</code>, and <code>i == 0</code> if this fraction is equal to <code>other</code>
+     * @throws NullPointerException if <code>other</code> is null
+     */
+    public int compareTo (Fraction other) {
+        // NPE if other == null
+        if (other == null) {
+            throw new NullPointerException("other must not be null");
+        }
+
+        // Ensure consistency with equals
+        if (this.equals(other)) {
+            return 0;
+        }
+
+        int myCrossMultiply = getImproperNumerator() * other.getDenominator();
+        int theirCrossMultiply = denominator * other.getImproperNumerator();
+        return myCrossMultiply - theirCrossMultiply;
     }
 }
