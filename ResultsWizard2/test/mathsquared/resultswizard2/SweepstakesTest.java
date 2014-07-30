@@ -178,4 +178,45 @@ public class SweepstakesTest {
         assertEquals("Repeated keys in the same sub-array", Sweepstakes.linkSweepstakes(selfRepeat, toLink), selfRepeatRes);
     }
 
+    /**
+     * Test method for {@link mathsquared.resultswizard2.Sweepstakes#linkSweepstakes(java.lang.String[][], mathsquared.resultswizard2.Fraction[][])}.
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void testLinkSweepstakes2 () {
+        String[][] simple = new String[][]{{"a", "b"}, {"c"}, {"d", "e", "f"}};
+        Fraction[][] simpleLink = new Fraction[][]{{new Fraction(6), new Fraction(5)}, {new Fraction(4)}, {new Fraction(3), new Fraction(2), new Fraction(1)}};
+        String[][] repeat = new String[][]{{"a", "b", "c"}, {"b", "d"}};
+        Fraction[][] repeatLink = new Fraction[][]{{new Fraction(5), new Fraction(4), new Fraction(3)}, {new Fraction(2), new Fraction(1)}};
+        String[][] selfRepeat = new String[][]{{"a", "a"}, {"b"}};
+        Fraction[][] selfRepeatLink = new Fraction[][]{{new Fraction(3), new Fraction(2)}, {new Fraction(1)}};
+
+        // Test length checking--this does not match any of the String arrays
+        Fraction[][] malformedLink = new Fraction[][]{{new Fraction(4)}, {new Fraction(3), new Fraction(2)}, {new Fraction(1)}};
+
+        Map<String, Fraction> simpleRes = new HashMap<String, Fraction>();
+        simpleRes.put("a", new Fraction(6));
+        simpleRes.put("b", new Fraction(5));
+        simpleRes.put("c", new Fraction(4));
+        simpleRes.put("d", new Fraction(3));
+        simpleRes.put("e", new Fraction(2));
+        simpleRes.put("f", new Fraction(1));
+
+        Map<String, Fraction> repeatRes = new HashMap<String, Fraction>();
+        repeatRes.put("a", new Fraction(5));
+        repeatRes.put("b", new Fraction(6));
+        repeatRes.put("c", new Fraction(3));
+        repeatRes.put("d", new Fraction(1));
+
+        Map<String, Fraction> selfRepeatRes = new HashMap<String, Fraction>();
+        selfRepeatRes.put("a", new Fraction(5));
+        selfRepeatRes.put("b", new Fraction(1));
+
+        assertEquals("Simple, no dupes", Sweepstakes.linkSweepstakes(simple, simpleLink), simpleRes);
+        assertEquals("Repeated keys", Sweepstakes.linkSweepstakes(repeat, repeatLink), repeatRes);
+        assertEquals("Repeated keys in the same sub-array", Sweepstakes.linkSweepstakes(selfRepeat, selfRepeatLink), selfRepeatRes);
+
+        // exception thrown here by length check
+        Sweepstakes.linkSweepstakes(simple, malformedLink);
+    }
+
 }
