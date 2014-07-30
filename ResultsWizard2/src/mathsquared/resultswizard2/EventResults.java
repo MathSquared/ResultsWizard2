@@ -29,6 +29,11 @@ public class EventResults implements Serializable {
     private HashMap<String, String[][]> specialHonorees;
     private HashMap<String, String[][]> specialSchools;
 
+    // Cached raw sweeps results; TODO: allow different sweeps for different honorees in the same tie
+    private Fraction[] indivSweeps;
+    private Fraction[] teamSweeps;
+    private Fraction[] specialSweeps;
+
     /**
      * Constructs a new object representing results in the given event.
      * 
@@ -141,7 +146,12 @@ public class EventResults implements Serializable {
      * @return a Map from student or school names to amount of points earned (entries earning 0 points may or may not be included)
      */
     public Map<String, Fraction> computeIndivSweeps (boolean studentNames) {
-        return Sweepstakes.computeSweeps((studentNames ? indivHonorees : indivSchools), ev.getIndivSweeps(), ev.getTieAssign(), ev.getSweepsAssign());
+        String[][] workingArray = studentNames ? indivHonorees : indivSchools;
+        int[] workingLengths = ArrayUtils.condensedLengthArray(workingArray);
+        if (indivSweeps == null) { // sweeps not yet initialized
+            indivSweeps = Sweepstakes.assignPoints(workingLengths, ev.getIndivSweeps(), ev.getTieAssign(), ev.getSweepsAssign());
+        }
+        return Sweepstakes.linkSweepstakes(workingArray, indivSweeps);
     }
 
     /**
@@ -150,7 +160,11 @@ public class EventResults implements Serializable {
      * @return a Map from school names to amount of points earned (entries earning 0 points may or may not be included)
      */
     public Map<String, Fraction> computeTeamSweeps () {
-        return Sweepstakes.computeSweeps(teamHonorees, ev.getTeamSweeps(), ev.getTieAssign(), ev.getSweepsAssign());
+        int[] workingLengths = ArrayUtils.condensedLengthArray(teamHonorees);
+        if (teamSweeps == null) {
+            teamSweeps = Sweepstakes.assignPoints(workingLengths, ev.getTeamSweeps(), ev.getTieAssign(), ev.getSweepsAssign());
+        }
+        return Sweepstakes.linkSweepstakes(teamHonorees, teamSweeps);
     }
 
     /**
@@ -166,7 +180,11 @@ public class EventResults implements Serializable {
         if (results == null) {
             throw new NullPointerException("No results for honor " + honorName);
         }
-        return Sweepstakes.computeSweeps(results, ev.getSpecialSweeps().get(honorName), ev.getTieAssign(), ev.getSweepsAssign());
+        int[] workingLengths = ArrayUtils.condensedLengthArray(results);
+        if (specialSweeps == null) {
+            specialSweeps = Sweepstakes.assignPoints(workingLengths, ev.getSpecialSweeps().get(honorName), ev.getTieAssign(), ev.getSweepsAssign());
+        }
+        return Sweepstakes.linkSweepstakes(results, specialSweeps);
     }
 
     /**
@@ -285,6 +303,9 @@ public class EventResults implements Serializable {
             throw new IllegalArgumentException("Structure of honorees and schools must match");
         }
 
+        // Reset sweeps
+        indivSweeps = null;
+
         setIndivHonorees(indivHonorees);
         setIndivSchools(indivSchools);
     }
@@ -322,6 +343,10 @@ public class EventResults implements Serializable {
         if (!ArrayUtils.checkTies(teamHonorees)) {
             throw new IllegalArgumentException("teamHonorees must correctly skip places for ties and must not contain extraneous nulls");
         }
+
+        // Reset sweeps
+        teamSweeps = null;
+
         this.teamHonorees = ArrayUtils.deepCopyOf(teamHonorees);
     }
 
@@ -499,6 +524,9 @@ public class EventResults implements Serializable {
                 throw new IllegalArgumentException("Structure of results for honor " + x + " does not match between specialHonorees and specialSchools");
             }
         }
+
+        // Reset sweeps
+        specialSweeps = null;
 
         setSpecialHonorees(specialHonorees);
         setSpecialSchools(specialSchools);
