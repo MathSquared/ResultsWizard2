@@ -17,10 +17,6 @@ public class Sweepstakes {
      * Assigns sweepstakes points to all competitors in an event. For all array parameters, index 0 represents first place.
      * 
      * <p>
-     * Note that if <code>sweepsM</code> equals {@link SweepstakesAssignment.CUSTOM}, this method returns null, since assigning sweepstakes points with a custom scheme falls to the user, who should be prompted by the application.
-     * </p>
-     * 
-     * <p>
      * Note also that the format of <code>quantities</code> is precisely that of a {@linkplain ArrayUtils#condensedLengthArray(int[]) condensed length array}.
      * </p>
      * 
@@ -28,13 +24,9 @@ public class Sweepstakes {
      * @param spec the number of sweepstakes points assigned to competitors in each place
      * @param tiePlaceM the {@link TiePlaceAssignment} handling assigning one place to each competitor
      * @param sweepsM the {@link SweepstakesAssignment} dictating the sweepstakes points that should be assigned to each competitor
-     * @return an array where each entry is the number of points to assign to the tie in the corresponding index of <code>quantities</code> (null if <code>sweepsM == SweepstakesAssignment.CUSTOM</code>); if <code>sweepsM != SweepstakesAssignment.CUSTOM</code>, the length of the returned array is equal to <code>quantities.length</code>
+     * @return an array where each entry is the number of points to assign to the tie in the corresponding index of <code>quantities</code>; the length of the returned array is equal to <code>quantities.length</code>
      */
     public static Fraction[] assignPoints (int[] quantities, int[] spec, TiePlaceAssignment tiePlaceM, SweepstakesAssignment sweepsM) {
-        if (sweepsM == SweepstakesAssignment.CUSTOM) {
-            return null; // the app should be prompting--leave that to the GUI code, not the back-end
-        }
-
         Fraction[] ret = new Fraction[quantities.length];
 
         // Start at 0 because indexing into spec is 0-based, not 1-based, and subtracting 1 all the time is too tedious

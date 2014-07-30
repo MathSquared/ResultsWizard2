@@ -5,7 +5,6 @@ package mathsquared.resultswizard2;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -91,9 +90,6 @@ public class SweepstakesTest {
         // TEST CODE //
 
         TiePlaceAssignment tpaDefault = TiePlaceAssignment.TOP; // behavior of TPA is tested with SweepstakesAssignment.TIE_PLACE; otherwise, we can afford to make this more compact
-
-        // Sanity check: SweepstakesAssignment.CUSTOM
-        assertTrue("Returns null for SweepstakesAssignment.CUSTOM", null == Sweepstakes.assignPoints(simple, spec, tpaDefault, SweepstakesAssignment.CUSTOM));
 
         // Simple cases: simple, overrun
         assertArrayEquals("Simplest case", Sweepstakes.assignPoints(simple, spec, tpaDefault, SweepstakesAssignment.TOP), simpleRes);

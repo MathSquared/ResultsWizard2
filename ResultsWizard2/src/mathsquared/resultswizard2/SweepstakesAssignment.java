@@ -53,11 +53,7 @@ public enum SweepstakesAssignment {
      * Note that this is not a true mathematical median, since it takes the middle places' sweepstakes totals, not the median of all of the sweepstakes totals in range. So, if the sweepstakes for an event are higher in second and third place than first and fourth, and there is a four-way tie for first through fourth, this method selects the average of the point totals assigned to second and third place.
      * </p>
      */
-    MEDIAN,
-    /**
-     * Indicates that an application should prompt for point totals in case of a tie.
-     */
-    CUSTOM;
+    MEDIAN;
 
     /**
      * Returns a SweepstakesAssignment corresponding to the given character.
@@ -75,7 +71,6 @@ public enum SweepstakesAssignment {
      * <li>i: {@link AVERAGE_IGNORE}</li>
      * <li>j: {@link AVERAGE_ADJUSTED}</li>
      * <li>d: {@link MEDIAN}</li>
-     * <li>c: {@link CUSTOM}</li>
      * <li>All others: {@link TIE_PLACE}</li>
      * </ul>
      * 
@@ -102,8 +97,6 @@ public enum SweepstakesAssignment {
             return AVERAGE_ADJUSTED;
         case 'd':
             return MEDIAN;
-        case 'c':
-            return CUSTOM;
         default:
             return TIE_PLACE;
         }
