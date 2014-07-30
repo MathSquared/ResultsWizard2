@@ -252,4 +252,51 @@ public class ArrayUtilsTest {
         assertArrayEquals("Three: correct result (1)", threeRes[1], threeExpected1);
         assertArrayEquals("Three: correct result (2)", threeRes[2], threeExpected2);
     }
+
+    /**
+     * Test method for {@link mathsquared.resultswizard2.ArrayUtils#expandToLengths(Object[], int[])}.
+     */
+    @Test
+    public void testExpandToLengths () {
+        String[] toExp1 = new String[]{"a", "b", "c", "d", "e"};
+        Integer[] toExp2 = new Integer[]{11, 12, 13, 14};
+
+        int[] invalidLengths = new int[]{3, 4, 2, 1, 7, 6, 5};
+        int[] negatives = new int[]{1, 3, -7, 4};
+
+        int[] lengths1 = new int[]{3, 3, 3, 3, 3};
+        String[][] expected1 = new String[][]{{"a", "a", "a"}, {"b", "b", "b"}, {"c", "c", "c"}, {"d", "d", "d"}, {"e", "e", "e"}};
+        int[] lengths2 = new int[]{1, 2, 3, 4};
+        Integer[][] expected2 = new Integer[][]{{11}, {12, 12}, {13, 13, 13}, {14, 14, 14, 14}};
+        int[] lengths3 = new int[]{3, 2, 6, 4, 7};
+        String[][] expected3 = new String[][]{{"a", "a", "a"}, {"b", "b"}, {"c", "c", "c", "c", "c", "c"}, {"d", "d", "d", "d"}, {"e", "e", "e", "e", "e", "e", "e"}};
+
+        boolean exceptionThrown = false;
+        try {
+            ArrayUtils.expandToLengths(toExp1, invalidLengths);
+        } catch (IllegalArgumentException e) {
+            exceptionThrown = true;
+        }
+        if (!exceptionThrown) {
+            fail("Sanity check false positive: mismatched input lengths");
+        }
+
+        exceptionThrown = false;
+        try {
+            ArrayUtils.expandToLengths(toExp2, negatives);
+        } catch (IllegalArgumentException e) {
+            exceptionThrown = true;
+        }
+        if (!exceptionThrown) {
+            fail("Sanity check false positive: negative lengths entry");
+        }
+
+        String[][] res1 = ArrayUtils.expandToLengths(toExp1, lengths1);
+        assertArrayEquals("All lengths same", res1, expected1);
+        Integer[][] res2 = ArrayUtils.expandToLengths(toExp2, lengths2);
+        assertArrayEquals("Linearly increasing lengths", res2, expected2);
+        // Re-using toExp1 for this test
+        String[][] res3 = ArrayUtils.expandToLengths(toExp1, lengths3);
+        assertArrayEquals("Chaotic lengths", res3, expected3);
+    }
 }
