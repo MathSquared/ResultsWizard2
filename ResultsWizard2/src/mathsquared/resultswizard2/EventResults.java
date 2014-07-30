@@ -188,7 +188,7 @@ public class EventResults implements Serializable {
     }
 
     /**
-     * Computes the sum total amount of sweepstakes points to award to all schools for this event.
+     * Computes the sum total amount of sweepstakes points to award to all schools for this event, disregarding the event's {@linkplain Event#getMaxPoints() point cap}.
      * 
      * <p>
      * This is equivalent to {@linkplain AdditiveMapUtils#addAllNumbers(Map, Map, boolean) numerically adding} the results of {@link #computeIndivSweeps(boolean) computeIndivSweeps(false)}, {@link #computeTeamSweeps()}, and {@link #computeSpecialSweeps(String, boolean) computeSpecialSweeps(x, false)} where <code>x</code> takes on all of the values of <code>getSpecialHonorees().keySet()</code> (equivalently, the names of all of the special honors in this event).
@@ -203,6 +203,34 @@ public class EventResults implements Serializable {
         // Add all special honors
         for (String x : specialHonorees.keySet()) {
             AdditiveMapUtils.addAllNumbers(ret, computeSpecialSweeps(x, false), false);
+        }
+
+        return ret;
+    }
+
+    /**
+     * Computes the sum total amount of sweepstakes points to award to all schools for this event.
+     * 
+     * <p>
+     * This is equivalent to {@link #computeTotalSweeps()}, but all values in the returned map are guaranteed to be less than or equal to the event's {@linkplain Event#getMaxPoints() point cap}.
+     * </p>
+     * 
+     * <p>
+     * Note that unlike <code>computeTotalSweeps()</code>, maps returned from this method will not include keys for which <code>computeTotalSweeps</code> would return a value of 0.
+     * </p>
+     * 
+     * @return a Map from school names to amount of points earned in this event (entries earning 0 points are excluded)
+     */
+    public Map<String, Fraction> computeTotalSweepsCapped () {
+        Map<String, Fraction> uncapped = computeTotalSweeps();
+        Map<String, Fraction> ret = new HashMap<String, Fraction>();
+
+        Fraction cap = new Fraction(ev.getMaxPoints());
+
+        for (String x : uncapped.keySet()) {
+            Fraction rawSweeps = uncapped.get(x);
+            // TODO Make Fraction comparable and test for != 0
+            ret.put(x, rawSweeps);
         }
 
         return ret;
