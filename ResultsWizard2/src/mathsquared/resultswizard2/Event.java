@@ -49,10 +49,11 @@ public class Event implements Serializable {
      * @param specialSweeps the amount of sweepstakes points to award for each placing in each special honor, where the value for any key is the array of points to award for the honor indicated by that key; <code>specialSweeps.keySet().equals(specialHonors.keySet())</code> must be true (meaning <code>specialSweeps</code> and <code>specialHonors</code> must have mappings from the exact same keys)
      * @param tieAssign the {@link TiePlaceAssignment} used to award places in the event of ties
      * @param sweepsAssign the {@link SweepstakesAssignment} used to award sweepstakes points in the event of ties
+     * @param maxPoints the maximum points a school can earn in this event (to convey that this is effectively unlimited, use {@link Integer#MAX_VALUE})
      * @throws NullPointerException if any parameter is null or contains null as an element, key, or value
      * @throws IllegalArgumentException if <code>primaryName</code> contains a character outside the allowable range, <code>(indivPlaces &lt; 0)</code>, <code>(teamPlaces &lt; 0)</code>, <code>(specialHonors.get(x) &lt;= 0)</code> for any <code>x</code> present in <code>specialHonors.keySet()</code>, <code>(indivSweeps.length != indivPlaces)</code>, <code>(teamSweeps.length != teamPlaces)</code>, or <code>(!specialHonors.keySet().equals(specialSweeps.keySet()))</code>
      */
-    public Event (String primaryName, String[] otherNames, int indivPlaces, int teamPlaces, Map<String, Integer> specialHonors, int[] indivSweeps, int[] teamSweeps, Map<String, int[]> specialSweeps, TiePlaceAssignment tieAssign, SweepstakesAssignment sweepsAssign) {
+    public Event (String primaryName, String[] otherNames, int indivPlaces, int teamPlaces, Map<String, Integer> specialHonors, int[] indivSweeps, int[] teamSweeps, Map<String, int[]> specialSweeps, TiePlaceAssignment tieAssign, SweepstakesAssignment sweepsAssign, int maxPoints) {
         // Null checks
         if (primaryName == null) {
             throw new NullPointerException("primaryName must not be null");
@@ -141,6 +142,7 @@ public class Event implements Serializable {
         // specialSweeps handled below
         this.tieAssign = tieAssign;
         this.sweepsAssign = sweepsAssign;
+        this.maxPoints = maxPoints;
 
         // Copy over the specialHonors
         this.specialHonors = new HashMap<String, Integer>();

@@ -44,6 +44,7 @@ public class EventConfigParser {
      * <li><code>evt`<b>specialSweeps</b></code>: the amount of sweepstakes points to award for special honors in this event (see below)</li>
      * <li><code>evt`<b>tieAssign</b></code>: the {@linkplain TiePlaceAssignment#forChar(char) character} corresponding to the {@link TiePlaceAssignment} used to assign places in case of ties (only the first character is considered)</li>
      * <li><code>evt`<b>sweepsAssign</b></code>: the {@linkplain SweepstakesAssignment#forChar(char) character} corresponding to the {@link SweepstakesAssignment} used to assign sweepstakes points in case of ties (only the first character is considered)</li>
+     * <li><code>evt`<b>maxPoints</b></code>: the maximum amount of points that a school may accumulate in this event; if there is no limit, give a value of "oo", "infinity", or "unlimited" (case-insensitive)</li>
      * </ul>
      * 
      * <p>
@@ -64,7 +65,7 @@ public class EventConfigParser {
      * @return a <code>Map</code> from events' primary names to event objects
      * @throws IOException if an I/O error occurs when reading the data file
      * @throws NumberFormatException if a number in the data file does not parse correctly when one was expected
-     * @throws IllegalArgumentException if an invalid value is given for a field; see {@linkplain Event#Event(String, String[], int, int, Map, int[], int[], Map, TiePlaceAssignment, SweepstakesAssignment) the <code>Event</code> constructor}
+     * @throws IllegalArgumentException if an invalid value is given for a field; see {@linkplain Event#Event(String, String[], int, int, Map, int[], int[], Map, TiePlaceAssignment, SweepstakesAssignment, int) the <code>Event</code> constructor}
      */
     public static Map<String, Event> load (Reader read) throws IOException {
         Properties loaded = new Properties();
@@ -83,7 +84,7 @@ public class EventConfigParser {
         Map<String, Event> ret = new HashMap<String, Event>();
         for (String x : events) {
             // Check that the property table contains all data fields
-            String[] propertyNames = {"otherNames", "indivPlaces", "teamPlaces", "specialHonors", "indivSweeps", "teamSweeps", "specialSweeps", "tieAssign", "sweepsAssign"};
+            String[] propertyNames = {"otherNames", "indivPlaces", "teamPlaces", "specialHonors", "indivSweeps", "teamSweeps", "specialSweeps", "tieAssign", "sweepsAssign", "maxPoints"};
             for (String p : propertyNames) {
                 String propertyToCheck = x + "`" + p;
                 if (!loaded.containsKey(propertyToCheck)) {
@@ -101,6 +102,13 @@ public class EventConfigParser {
             // Special processing for specialSweeps done below
             TiePlaceAssignment tieAssign = TiePlaceAssignment.forChar(loaded.getProperty(x + "`tieAssign").charAt(0));
             SweepstakesAssignment sweepsAssign = SweepstakesAssignment.forChar(loaded.getProperty(x + "`sweepsAssign").charAt(0));
+            int maxPoints; // We need to parse the user input
+            String maxPointsRaw = loaded.getProperty(x + "`maxPoints");
+            if (maxPointsRaw.equalsIgnoreCase("oo") || maxPointsRaw.equalsIgnoreCase("infinity") || maxPointsRaw.equalsIgnoreCase("unlimited")) {
+                maxPoints = Integer.MAX_VALUE;
+            } else {
+                maxPoints = Integer.parseInt(maxPointsRaw);
+            }
 
             Map<String, String> specialHonorsRaw = SyntaxParser.createPairwiseMap(SyntaxParser.parseQuotedSyntax(loaded.getProperty(x + "`specialHonors")));
             // We multiply size by 2 since default load factor is 0.75, so no more than 3/4 of the capacity can be taken; with capacity equal to twice the size, this passes with flying colors
@@ -117,7 +125,7 @@ public class EventConfigParser {
             }
 
             // Finally, add to the Map
-            ret.put(x, new Event(x, otherNames, indivPlaces, teamPlaces, specialHonors, indivSweeps, teamSweeps, specialSweeps, tieAssign, sweepsAssign));
+            ret.put(x, new Event(x, otherNames, indivPlaces, teamPlaces, specialHonors, indivSweeps, teamSweeps, specialSweeps, tieAssign, sweepsAssign, maxPoints));
         }
 
         // All events processed
@@ -131,7 +139,7 @@ public class EventConfigParser {
      * @return a <code>Map</code> from events' primary names to event objects
      * @throws IOException if an I/O error occurs when reading the data file
      * @throws NumberFormatException if a number in the data file does not parse correctly when one was expected
-     * @throws IllegalArgumentException if an invalid value is given for a field; see {@linkplain Event#Event(String, String[], int, int, Map, int[], int[], Map, TiePlaceAssignment, SweepstakesAssignment) the <code>Event</code> constructor}
+     * @throws IllegalArgumentException if an invalid value is given for a field; see {@linkplain Event#Event(String, String[], int, int, Map, int[], int[], Map, TiePlaceAssignment, SweepstakesAssignment, int) the <code>Event</code> constructor}
      * @see {@link #load(Reader)}
      */
     public static Map<String, Event> load (InputStream is) throws IOException {
@@ -147,7 +155,7 @@ public class EventConfigParser {
      * @return a <code>Map</code> from events' primary names to event objects
      * @throws IOException if an I/O error occurs when reading the data file
      * @throws NumberFormatException if a number in the data file does not parse correctly when one was expected
-     * @throws IllegalArgumentException if an invalid value is given for a field; see {@linkplain Event#Event(String, String[], int, int, Map, int[], int[], Map, TiePlaceAssignment, SweepstakesAssignment) the <code>Event</code> constructor}
+     * @throws IllegalArgumentException if an invalid value is given for a field; see {@linkplain Event#Event(String, String[], int, int, Map, int[], int[], Map, TiePlaceAssignment, SweepstakesAssignment, int) the <code>Event</code> constructor}
      * @see {@link #load(Reader)}
      */
     public static Map<String, Event> load (InputStream is, Charset cset) throws IOException {
