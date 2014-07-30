@@ -343,4 +343,26 @@ public class FractionTest {
         assertEquals("Int", f3, 3);
     }
 
+    /**
+     * Test method for {@link mathsquared.resultswizard2.Fraction#compareTo(Fraction)}.
+     */
+    @Test
+    public void testCompareTo () {
+        Fraction fn1d7 = new Fraction(1, 7);
+        Fraction fn1d7b = new Fraction(1, 7);
+        Fraction fn1d3 = new Fraction(1, 3);
+        Fraction fn2d3 = new Fraction(2, 3);
+        Fraction fn7d10 = new Fraction(7, 10);
+        Fraction fn3d4 = new Fraction(3, 4);
+        Fraction fn8d7 = new Fraction(8, 7);
+        Fraction fn4d3 = new Fraction(4, 3);
+
+        assertTrue("Simple proper same denominator", fn1d3.compareTo(fn2d3) < 0);
+        assertTrue("Simple proper equality", fn1d7.compareTo(fn1d7b) == 0);
+        assertTrue("Simple improper same denominator", fn4d3.compareTo(fn2d3) > 0);
+        assertTrue("Proper different denominator", fn2d3.compareTo(fn3d4) < 0);
+        assertTrue("Proper different denominator 2", fn3d4.compareTo(fn7d10) > 0);
+        assertTrue("Improper different denominator", fn4d3.compareTo(fn8d7) > 0);
+    }
+
 }
