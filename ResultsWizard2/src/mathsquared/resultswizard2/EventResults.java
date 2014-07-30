@@ -32,7 +32,7 @@ public class EventResults implements Serializable {
     // Cached raw sweeps results; TODO: allow different sweeps for different honorees in the same tie
     private Fraction[] indivSweeps;
     private Fraction[] teamSweeps;
-    private Fraction[] specialSweeps;
+    private HashMap<String, Fraction[]> specialSweeps;
 
     /**
      * Constructs a new object representing results in the given event.
@@ -181,10 +181,10 @@ public class EventResults implements Serializable {
             throw new NullPointerException("No results for honor " + honorName);
         }
         int[] workingLengths = ArrayUtils.condensedLengthArray(results);
-        if (specialSweeps == null) {
-            specialSweeps = Sweepstakes.assignPoints(workingLengths, ev.getSpecialSweeps().get(honorName), ev.getTieAssign(), ev.getSweepsAssign());
+        if (specialSweeps.get(honorName) == null) {
+            specialSweeps.put(honorName, Sweepstakes.assignPoints(workingLengths, ev.getSpecialSweeps().get(honorName), ev.getTieAssign(), ev.getSweepsAssign()));
         }
-        return Sweepstakes.linkSweepstakes(results, specialSweeps);
+        return Sweepstakes.linkSweepstakes(results, specialSweeps.get(honorName));
     }
 
     /**
@@ -526,7 +526,7 @@ public class EventResults implements Serializable {
         }
 
         // Reset sweeps
-        specialSweeps = null;
+        specialSweeps = new HashMap<String, Fraction[]>();
 
         setSpecialHonorees(specialHonorees);
         setSpecialSchools(specialSchools);
