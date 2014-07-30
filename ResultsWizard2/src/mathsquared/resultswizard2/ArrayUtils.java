@@ -368,6 +368,12 @@ public class ArrayUtils {
         Class<T[]> type = (Class<T[]>) toSort.getClass().getComponentType();
         T[][] ret = (T[][]) Array.newInstance(type, toSort.length);
 
+        // Initialize the elements of the generic array
+        Class<T> compType = (Class<T>) toSort.getClass().getComponentType().getComponentType();
+        for (int i = 0; i < ret.length; i++) {
+            ret[i] = (T[]) Array.newInstance(compType, toSort[0].length);
+        }
+
         int arrayInsertionIndex = 0; // used to track where to insert array elements so we don't have to use Lists
         for (List<Integer> x : indices) {
             for (int y : x) {
