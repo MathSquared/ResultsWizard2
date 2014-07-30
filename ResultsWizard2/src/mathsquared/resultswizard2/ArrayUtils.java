@@ -387,4 +387,51 @@ public class ArrayUtils {
 
         return ret;
     }
+
+    /**
+     * Expands a 1-D array into a 2-D array based on the lengths in another given array.
+     * 
+     * <p>
+     * Specifically, given an array <code>toExpand</code> and an int[] <code>lengths</code> where <code>toExpand.length == lengths.length</code>, this method returns a 2-D array <code>ret</code> such that the component type of <code>ret</code> is the type of <code>toExpand</code>.
+     * </p>
+     * 
+     * <p>
+     * Additionally, for all non-negative integers <code>i</code> less than <code>toExpand.length</code>, it is the case that:
+     * </p>
+     * 
+     * <ul>
+     * <li><code>ret[i].length == lengths[i]</code></li>
+     * <li>for all non-negative integers <code>j</code> less than <code>lengths[i]</code>, <code>ret[i][j] == toExpand[i]</code></li>
+     * </ul>
+     * 
+     * <p>
+     * Stated simply, this method turns <code>toExpand</code> and <code>lengths</code> into a 2-D array where each sub-array at index <code>i</code> has length <code>lengths[i]</code> and is filled with <code>toExpand[i]</code>.
+     * </p>
+     * 
+     * @param toExpand the array to expand; not modified
+     * @param lengths the lengths of the sub-arrays of the resultant array; not modified
+     * @return an array expanded as indicated above
+     * @throws IllegalArgumentException if <code>(toExpand.length != lengths.length)</code>
+     */
+    // HASHTAG UNCHECKED CASTS
+    @SuppressWarnings("unchecked")
+    public static <T> T[][] expandToLengths (T[] toExpand, int[] lengths) {
+        // Sanity checks
+        if (toExpand.length != lengths.length) {
+            throw new IllegalArgumentException("Length of toExpand (" + toExpand.length + ") and lengths (" + lengths.length + ") must match");
+        }
+
+        // Instantiate a generic array
+        Class<T[]> type = (Class<T[]>) toExpand.getClass();
+        T[][] ret = (T[][]) Array.newInstance(type, toExpand.length);
+
+        // Initialize the elements of the generic array and conduct the fill operation
+        Class<T> compType = (Class<T>) toExpand.getClass().getComponentType();
+        for (int i = 0; i < ret.length; i++) {
+            ret[i] = (T[]) Array.newInstance(compType, lengths[i]);
+            Arrays.fill(ret[i], toExpand[i]); // fill this subarray with the value from the array we are expanding
+        }
+
+        return ret;
+    }
 }
