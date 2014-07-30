@@ -149,9 +149,9 @@ public class SweepstakesTest {
      */
     @Test
     public void testLinkSweepstakes () {
-        String[][] simple = new String[][]{{"a", "b"}, {"c"}, {"d", "e", "f"}};
-        String[][] repeat = new String[][]{{"a", "b", "c"}, {"b", "d"}};
-        String[][] selfRepeat = new String[][]{{"a", "a"}, {"b"}};
+        String[][] simple = new String[][]{{"a", "b"}, null, {"c"}, {"d", "e", "f"}, null, null};
+        String[][] repeat = new String[][]{{"a", "b", "c"}, null, null, {"b", "d"}, null};
+        String[][] selfRepeat = new String[][]{{"a", "a"}, null, {"b"}};
 
         Fraction[] toLink = new Fraction[]{new Fraction(4), new Fraction(2), new Fraction(1)};
 
@@ -183,11 +183,11 @@ public class SweepstakesTest {
      */
     @Test(expected = IllegalArgumentException.class)
     public void testLinkSweepstakes2 () {
-        String[][] simple = new String[][]{{"a", "b"}, {"c"}, {"d", "e", "f"}};
+        String[][] simple = new String[][]{{"a", "b"}, null, {"c"}, {"d", "e", "f"}, null, null};
         Fraction[][] simpleLink = new Fraction[][]{{new Fraction(6), new Fraction(5)}, {new Fraction(4)}, {new Fraction(3), new Fraction(2), new Fraction(1)}};
-        String[][] repeat = new String[][]{{"a", "b", "c"}, {"b", "d"}};
+        String[][] repeat = new String[][]{{"a", "b", "c"}, null, null, {"b", "d"}, null};
         Fraction[][] repeatLink = new Fraction[][]{{new Fraction(5), new Fraction(4), new Fraction(3)}, {new Fraction(2), new Fraction(1)}};
-        String[][] selfRepeat = new String[][]{{"a", "a"}, {"b"}};
+        String[][] selfRepeat = new String[][]{{"a", "a"}, null, {"b"}};
         Fraction[][] selfRepeatLink = new Fraction[][]{{new Fraction(3), new Fraction(2)}, {new Fraction(1)}};
 
         // Test length checking--this does not match any of the String arrays
