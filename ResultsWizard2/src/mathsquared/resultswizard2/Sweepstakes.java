@@ -172,6 +172,67 @@ public class Sweepstakes {
     }
 
     /**
+     * Links an array of sweepstakes points to corresponding results.
+     * 
+     * <p>
+     * Specifically, iterates through the non-null subarrays of <code>results</code> and the entries of <code>sweeps</code>, and returns a Map from each string in <code>results</code> to the sum of corresponding entries in <code>sweeps</code>.
+     * </p>
+     * 
+     * <p>
+     * Definition of "corresponding entry":
+     * </p>
+     * 
+     * <ol>
+     * <li>Assign each sub-array of nonzero length in <code>results</code> an ID, which is equal to the number of sub-arrays before it that are not null or of length 0</li>
+     * <li>For each string located at index <code>i</code> in each sub-array of <code>results</code>, the corresponding entry in <code>sweeps</code> is that located at index <code>i</code> in the sub-array at the index in <code>sweeps</code> equal to the ID of the sub-array in <code>results</code> containing that string</li>
+     * </ol>
+     * 
+     * <p>
+     * Note that for a sub-array of nonzero length in <code>results</code> at index <code>r</code> and ID <code>s</code>, <code>results[r].length</code> must equal <code>sweeps[s].length</code>.
+     * </p>
+     * 
+     * <p>
+     * If a string occurs multiple times in <code>results</code>, the corresponding entries in <code>sweeps</code> are added together numerically.
+     * </p>
+     * 
+     * <p>
+     * If an entry in <code>results</code> has no corresponding entry in <code>sweeps</code> (e.g. if an entry in <code>results</code> has an ID greater than <code>sweeps.length</code>), it is not added to the returned Map.
+     * </p>
+     * 
+     * @param results the raw results of the event, as returned from {@link EventResults#getIndivHonorees()} or a similar method; must represent ties as entries within the same sub-array and should (but need not) correctly {@linkplain ArrayUtils#checkTies(Object[][]) skip places for ties}
+     * @param sweeps the sweepstakes to assign to each place, skipping places with no actual results, as if returned from {@link #assignPoints(int[], int[], TiePlaceAssignment, SweepstakesAssignment)}
+     * @return a Map linking <code>sweeps</code> from <code>results</code>, as described above
+     * @throws IllegalArgumentException if a sub-array of <code>results</code> does not have the same length as a sub-array of <code>sweeps</code> at the index corresponding to the <code>results</code> sub-array's ID (see above)
+     */
+    public static Map<String, Fraction> linkSweepstakes (String[][] results, Fraction[][] sweeps) {
+        Map<String, Fraction> ret = new HashMap<String, Fraction>();
+
+        int r = 0; // declaring outside the loop for clarity in skipping logic
+        for (int s = 0; s < sweeps.length; s++) { // r is handled below
+            // Check that the lengths are the same
+            if (results[r].length != sweeps[s].length) {
+                throw new IllegalArgumentException("Length of results[" + r + "] must match length of sweeps[" + s + "]");
+            }
+
+            for (int i = 0; i < results[r].length; i++) { // each string in the sub-array gets the corresponding amount of points
+                AdditiveMapUtils.addNumber(ret, results[r][i], sweeps[s][i]);
+            }
+
+            // Skip places until I hit the next ones; do...while skips the current entry
+            do {
+                r++;
+            } while (r < results.length && (results[r] == null || results[r].length == 0));
+
+            // Check for overrunning results array
+            if (r >= results.length) {
+                break;
+            }
+        }
+
+        return ret;
+    }
+
+    /**
      * Computes sweepstakes from start to finish.
      * 
      * <p>
