@@ -26,6 +26,7 @@ public class Event implements Serializable {
     private HashMap<String, int[]> specialSweeps; // The amount of sweepstakes points to award to each special honor (indices correspond with specialHonors); the array is the points to award for each place
     private TiePlaceAssignment tieAssign; // How this event assigns places in the event of ties
     private SweepstakesAssignment sweepsAssign; // How this event assigns sweepstakes points in the event of ties
+    private int maxPoints; // Maximum amount of points a school can earn in this event (Integer.MAX_VALUE if no maximum)
 
     /**
      * Creates an object representing a new competition event. All objects passed in have their data copied into the class; in this way, the Event object maintains no references to passed-in data.
@@ -250,5 +251,14 @@ public class Event implements Serializable {
      */
     public SweepstakesAssignment getSweepsAssign () {
         return sweepsAssign;
+    }
+
+    /**
+     * Returns the maximum amount of sweepstakes points that a school can earn in this event.
+     * 
+     * @return the maximum amount of possible points, or {@link Integer#MAX_VALUE} if effectively unlimited
+     */
+    public int getMaxPoints () {
+        return maxPoints;
     }
 }
