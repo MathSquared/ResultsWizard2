@@ -6,6 +6,7 @@ package mathsquared.resultswizard2;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 /*
  * TODO:
@@ -567,5 +568,137 @@ public class EventResults implements Serializable {
 
         setSpecialHonorees(specialHonorees);
         setSpecialSchools(specialSchools);
+    }
+
+    /**
+     * Returns the raw sweepstakes for individual results. These are in a format as if returned by {@link Sweepstakes#assignPoints(int[], int[], TiePlaceAssignment, SweepstakesAssignment)}.
+     * 
+     * <p>
+     * Specifically, the format is such that <code>getIndivSweeps()[i][j]</code> is the number of points to assign to the competitor at <code>{@link #getIndivHonorees()}[i][j]</code>.
+     * </p>
+     * 
+     * @return the indivSweeps
+     */
+    public Fraction[][] getIndivSweeps () {
+        return ArrayUtils.deepCopyOf(indivSweeps);
+    }
+
+    /**
+     * Sets the raw individual sweepstakes. The format is such that <code>indivSweeps[i][j]</code> is the number of points to assign to the competitor at <code>{@link #getIndivHonorees()}[i][j]</code>.
+     * 
+     * <p>
+     * If this method is never called, the sweepstakes point assignment is obtained from the {@link Sweepstakes} class.
+     * </p>
+     * 
+     * <p>
+     * After a call to {@link #setIndivResults(String[][], String[][])}, the sweepstakes are reset and must be re-entered using this method.
+     * </p>
+     * 
+     * @param indivSweeps the indivSweeps to set
+     * @throws NullPointerException if <code>indivSweeps</code> is null
+     * @throws IllegalArgumentException if <code>indivSweeps</code> and the array returned by <code>getIndivHonorees</code> differ in {@linkplain ArrayUtils#checkStructureSame(Object[], Object[]) structure}
+     */
+    public void setIndivSweeps (Fraction[][] indivSweeps) {
+        // Sanity check: null
+        if (indivSweeps == null) {
+            throw new NullPointerException("indivSweeps must not be null");
+        }
+
+        // Sanity check: structure
+        if (!ArrayUtils.checkStructureSame(indivHonorees, indivSweeps)) {
+            throw new IllegalArgumentException("indivSweeps and array returned from getIndivHonorees() must have same structure");
+        }
+
+        this.indivSweeps = ArrayUtils.deepCopyOf(indivSweeps);
+    }
+
+    /**
+     * Returns the raw sweepstakes for team results. These are in a format as if returned by {@link Sweepstakes#assignPoints(int[], int[], TiePlaceAssignment, SweepstakesAssignment)}.
+     * 
+     * <p>
+     * Specifically, the format is such that <code>getTeamSweeps()[i][j]</code> is the number of points to assign to the competitor at <code>{@link #getTeamHonorees()}[i][j]</code>.
+     * </p>
+     * 
+     * @return the teamSweeps
+     */
+    public Fraction[][] getTeamSweeps () {
+        return ArrayUtils.deepCopyOf(teamSweeps);
+    }
+
+    /**
+     * Sets the raw team sweepstakes. The format is such that <code>teamSweeps[i][j]</code> is the number of points to assign to the competitor at <code>{@link #getTeamHonorees()}[i][j]</code>.
+     * 
+     * <p>
+     * If this method is never called, the sweepstakes point assignment is obtained from the {@link Sweepstakes} class.
+     * </p>
+     * 
+     * <p>
+     * After a call to {@link #setTeamHonorees(String[][])}, the sweepstakes are reset and must be re-entered using this method.
+     * </p>
+     * 
+     * @param teamSweeps the teamSweeps to set
+     * @throws NullPointerException if <code>teamSweeps</code> is null
+     * @throws IllegalArgumentException if <code>teamSweeps</code> and the array returned by <code>getTeamHonorees</code> differ in {@linkplain ArrayUtils#checkStructureSame(Object[], Object[]) structure}
+     */
+    public void setTeamSweeps (Fraction[][] teamSweeps) {
+        // Sanity check: null
+        if (teamSweeps == null) {
+            throw new NullPointerException("teamSweeps must not be null");
+        }
+
+        // Sanity check: structure
+        if (!ArrayUtils.checkStructureSame(teamHonorees, teamSweeps)) {
+            throw new IllegalArgumentException("teamSweeps and array returned from getTeamHonorees() must have same structure");
+        }
+
+        this.teamSweeps = ArrayUtils.deepCopyOf(teamSweeps);
+    }
+
+    /**
+     * Returns the raw sweepstakes for a given special honor. These are in a format as if returned by {@link Sweepstakes#assignPoints(int[], int[], TiePlaceAssignment, SweepstakesAssignment)}.
+     * 
+     * <p>
+     * Specifically, the format is such that <code>getSpecialSweeps(honorName)[i][j]</code> is the number of points to assign to the competitor at <code>{@link #getSpecialHonorees()}.get(honorName)[i][j]</code>.
+     * </p>
+     * 
+     * @return the teamSweeps, or null if the honor given by <code>honorName</code> does not exist
+     */
+    public Fraction[][] getSpecialSweeps (String honorName) {
+        return ArrayUtils.deepCopyOf(specialSweeps.get(honorName));
+    }
+
+    /**
+     * Sets the raw sweepstakes for a given special honor. The format is such that <code>specialSweeps[i][j]</code> is the number of points to assign to the competitor at <code>{@link #getSpecialHonorees()}.get(honorName)[i][j]</code>.
+     * 
+     * <p>
+     * If this method is never called, the sweepstakes point assignment is obtained from the {@link Sweepstakes} class.
+     * </p>
+     * 
+     * <p>
+     * After a call to {@link #setSpecialResults(Map, Map)}, the sweepstakes are reset and must be re-entered using this method.
+     * </p>
+     * 
+     * @param specialSweeps the specialSweeps to set
+     * @throws NullPointerException if specialSweeps is null
+     * @throws IllegalArgumentException if the Event represented by this EventResults does not have a special honor with the name given by <code>honorName</code>, or if <code>specialSweeps</code> and the array returned by <code>getSpecialHonorees()</code> differ in {@linkplain ArrayUtils#checkStructureSame(Object[], Object[]) structure}
+     */
+    public void setSpecialSweeps (String honorName, Fraction[][] specialSweeps) {
+        // Sanity check: honor exists
+        Set<String> honors = ev.getSpecialHonors().keySet();
+        if (!honors.contains(honorName)) {
+            throw new IllegalArgumentException("Honor " + honorName + " does not exist for event " + ev.getPrimaryName());
+        }
+
+        // Sanity check: null
+        if (specialSweeps == null) {
+            throw new NullPointerException("indivSweeps must not be null");
+        }
+
+        // Sanity check: structure
+        if (!ArrayUtils.checkStructureSame(specialHonorees.get(honorName), specialSweeps)) {
+            throw new IllegalArgumentException("specialSweeps and array returned from getSpecialHonorees().get(honorName) must have same structure");
+        }
+
+        this.specialSweeps.put(honorName, ArrayUtils.deepCopyOf(specialSweeps));
     }
 }
