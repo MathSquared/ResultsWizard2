@@ -3,7 +3,9 @@
  */
 package mathsquared.resultswizard2;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -36,6 +38,9 @@ public class DefaultSweepstakesSlideList implements SweepstakesSlideList {
 
     private ArrayList<Slide> slides;
 
+    public static final String DATE_FORMAT = "E M/d 'at' h:mm a z"; // Definitely not intended for long-term usage.
+    private String date; // initialized in the constructor to the time of generation, formatted according to DATE_FORMAT
+
     /**
      * Initializes a new DefaultSweepstakesSlideList with the given data. The sweepstakes will be displayed in descending order by point total.
      * 
@@ -55,6 +60,12 @@ public class DefaultSweepstakesSlideList implements SweepstakesSlideList {
         this.displayCap = displayCap;
 
         slides = new ArrayList<Slide>();
+
+        // Get the update timestamp
+        Calendar rightNow = Calendar.getInstance(); // default timezone
+        SimpleDateFormat fmt = new SimpleDateFormat(DATE_FORMAT);
+        fmt.setCalendar(rightNow); // overwrites values such as time zone
+        date = fmt.format(rightNow.getTime()); // getTime converts to Date, since SDF doesn't recognize Calendar properly
 
         // TODO render
     }
