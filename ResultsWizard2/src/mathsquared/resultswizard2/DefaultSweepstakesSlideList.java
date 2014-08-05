@@ -171,6 +171,52 @@ public class DefaultSweepstakesSlideList implements SweepstakesSlideList {
         return ret;
     }
 
+    private boolean tryAddTie (BuildableStackedSlide sl, Map<String, Fraction> toAdd, int index) {
+        // this holds a list of all slides used
+        ArrayList<BuildableStackedSlide> ret = new ArrayList<BuildableStackedSlide>();
+        ret.add(sl);
+
+        Color placeNumColor = (color.containsKey("placeNum")) ? color.get("placeNum") : new Color(0x444444);
+        Color honoreeColor = (color.containsKey("honoree")) ? color.get("honoree") : new Color(0x222222);
+        Color sweepsColor = (color.containsKey("sweeps")) ? color.get("sweeps") : new Color(0x666666);
+
+        String plStr = Integer.toString(index + 1);
+
+        // Find the length of this tie
+        int tieLength = checkTieLength(toAdd, index);
+        if (tieLength == 0) { // nothing to add; adding nothing is always successful
+            return true;
+        }
+
+        List<Map.Entry<String, Fraction>> entries = new LinkedList<Map.Entry<String, Fraction>>(toAdd.entrySet());
+        ListIterator<Map.Entry<String, Fraction>> iter = entries.listIterator(index);
+
+        for (int i = 0; i < tieLength; i++) {
+            Map.Entry<String, Fraction> cur = iter.next();
+
+            // Generate a sweeps string for this school
+            String swStr = String.format("%.2f", cur.getValue().toDouble()); // Two decimals
+            if (swStr.endsWith(".00")) { // Chop off the last two digits if they're .00
+                swStr = swStr.substring(0, swStr.length() - ".00".length());
+            }
+
+            boolean addSucceeded = sl.addThreeText(plStr, number, placeNumColor, cur.getKey(), base, honoreeColor, swStr, number, sweepsColor);
+
+            if (!addSucceeded) {
+                sl.reset();
+                return false;
+            }
+
+            // Only add the place number once; overwrite the color for subsequent iterations (transparent so that subsequent entries still line up)
+            placeNumColor = transparent;
+        }
+
+        // All is well in the universe
+        sl.addSpacer(BETWEEN_TIES); // we don't really care if this works
+        sl.commit();
+        return true;
+    }
+
     private List<BuildableStackedSlide> forceAddTie (BuildableStackedSlide sl, Map<String, Fraction> toAdd, int index) {
         // this holds a list of all slides used
         ArrayList<BuildableStackedSlide> ret = new ArrayList<BuildableStackedSlide>();
