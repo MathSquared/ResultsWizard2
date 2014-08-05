@@ -124,6 +124,9 @@ public class DefaultSweepstakesSlideList implements SweepstakesSlideList {
         this.width = width;
         this.height = height;
 
+        // Sort the sweepstakes
+        Map<String, Fraction> sorted = MapSortingUtils.sortValue(sweeps, true, true);
+
         // Discard old slides
         slides.clear();
 
@@ -134,6 +137,26 @@ public class DefaultSweepstakesSlideList implements SweepstakesSlideList {
         BuildableStackedSlide sl = createNewSkeletalSlide();
         workingSlides.add(sl);
         List<BuildableStackedSlide> surplus;
+
+        // Add the stuff
+        surplus = forceAddList(sl, sorted);
+        if (surplus.size() > 1) { // extra slides generated
+            workingSlides.addAll(surplus.subList(1, surplus.size()));
+        }
+
+        // Update the slides
+        int totNumSlides = workingSlides.size();
+
+        for (int i = 0; i < workingSlides.size(); i++) {
+            String toUpdate = String.format("page %d of %d for this event; last updated %s", i + 1, totNumSlides, date);
+            workingSlides.get(i).update(0, toUpdate); // first updatable request for each slide, so we know it's 0 (see Javadoc)
+        }
+
+        // Update the slides list; make the contained slides immutable (this is where SlideEncapsulator comes in)
+        // slides is already cleared
+        for (Slide x : workingSlides) {
+            slides.add(new SlideEncapsulator(x));
+        }
     }
 
     public Map<String, Fraction> getSweeps () {
