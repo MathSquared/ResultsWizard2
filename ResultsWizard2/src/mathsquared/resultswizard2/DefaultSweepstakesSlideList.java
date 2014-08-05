@@ -3,6 +3,7 @@
  */
 package mathsquared.resultswizard2;
 
+import java.awt.Font;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -41,6 +42,26 @@ public class DefaultSweepstakesSlideList implements SweepstakesSlideList {
     public static final String DATE_FORMAT = "E M/d 'at' h:mm a z"; // Definitely not intended for long-term usage.
     private String date; // initialized in the constructor to the time of generation, formatted according to DATE_FORMAT
 
+    // Define the fonts
+    public static final String FONT_FACE = "SansSerif";
+    private Font base; // used for most text--competitor names, etc.
+    private Font head; // used for the heading
+    public static final int HEAD_MULT = 3; // evaluate baseFont * HEAD_MULT / HEAD_DIV for the head font size
+    public static final int HEAD_DIV = 2;
+    public static final int HEAD_STYLE = Font.BOLD;
+    private Font subhead; // used for subheadings, e.g. subsections within the larger results
+    public static final int SUBHEAD_MULT = 1;
+    public static final int SUBHEAD_DIV = 1;
+    public static final int SUBHEAD_STYLE = Font.BOLD;
+    private Font number; // used for numbers (places, sweeps)
+    public static final int NUMBER_MULT = 1;
+    public static final int NUMBER_DIV = 1;
+    public static final int NUMBER_STYLE = Font.BOLD | Font.ITALIC;
+    private Font smalltext; // used for things like "page _ of _ for this event"
+    public static final int SMALLTEXT_MULT = 1;
+    public static final int SMALLTEXT_DIV = 2;
+    public static final int SMALLTEXT_STYLE = Font.PLAIN;
+
     /**
      * Initializes a new DefaultSweepstakesSlideList with the given data. The sweepstakes will be displayed in descending order by point total.
      * 
@@ -60,6 +81,13 @@ public class DefaultSweepstakesSlideList implements SweepstakesSlideList {
         this.displayCap = displayCap;
 
         slides = new ArrayList<Slide>();
+
+        // Initialize the fonts
+        base = new Font(FONT_FACE, baseFont, Font.PLAIN);
+        head = new Font(FONT_FACE, baseFont * HEAD_MULT / HEAD_DIV, HEAD_STYLE);
+        subhead = new Font(FONT_FACE, baseFont * SUBHEAD_MULT / SUBHEAD_DIV, SUBHEAD_STYLE);
+        number = new Font(FONT_FACE, baseFont * NUMBER_MULT / NUMBER_DIV, NUMBER_STYLE);
+        smalltext = new Font(FONT_FACE, baseFont * SMALLTEXT_MULT / SMALLTEXT_DIV, SMALLTEXT_STYLE);
 
         // Get the update timestamp
         Calendar rightNow = Calendar.getInstance(); // default timezone
