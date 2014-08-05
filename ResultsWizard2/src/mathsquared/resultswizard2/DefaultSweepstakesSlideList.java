@@ -289,8 +289,31 @@ public class DefaultSweepstakesSlideList implements SweepstakesSlideList {
             sl = surplus.get(surplus.size() - 1);
         }
 
-        // TODO add the rest
+        while (checkTieLength(toAdd, index) > 0) {
+            boolean addSucceeded = tryAddTie(sl, toAdd, index);
 
+            if (!addSucceeded) {
+                // The tryAddTie method leaves no trace if it fails, so we start a new slide
+                sl.commit();
+                sl.push();
+                sl = createNewSkeletalSlide();
+
+                // Force the add this time
+                surplus = forceAddTie(sl, toAdd, 0);
+
+                // Add the surplus
+                if (surplus.size() > 1) {
+                    ret.addAll(surplus.subList(1, surplus.size()));
+                    sl = surplus.get(surplus.size() - 1);
+                }
+            }
+
+            index += checkTieLength(toAdd, index);
+        }
+
+        // All is well in the universe
+        sl.commit();
+        sl.push();
         return ret;
     }
 
