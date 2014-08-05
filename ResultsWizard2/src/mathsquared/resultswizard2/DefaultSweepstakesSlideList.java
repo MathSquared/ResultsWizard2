@@ -3,6 +3,7 @@
  */
 package mathsquared.resultswizard2;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -38,6 +39,14 @@ public class DefaultSweepstakesSlideList implements SweepstakesSlideList {
     private int displayCap; // maximum amount of sweeps winners to display
 
     private ArrayList<Slide> slides;
+
+    // Layout constants
+    public static final int TOP_MARGIN = 20;
+    public static final int BEFORE_RES_TYPE = 10; // before/after the "INDIVIDUAL RESULTS" etc. headers
+    public static final int AFTER_RES_TYPE = 10; // also used after a special honor name
+    public static final int BETWEEN_TIES = 2;
+
+    public static final Color transparent = new Color(0, 0, 0, 0);
 
     public static final String DATE_FORMAT = "E M/d 'at' h:mm a z"; // Definitely not intended for long-term usage.
     private String date; // initialized in the constructor to the time of generation, formatted according to DATE_FORMAT
