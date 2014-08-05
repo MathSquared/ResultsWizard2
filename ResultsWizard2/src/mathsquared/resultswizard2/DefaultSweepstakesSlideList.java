@@ -95,7 +95,33 @@ public class DefaultSweepstakesSlideList implements SweepstakesSlideList {
         fmt.setCalendar(rightNow); // overwrites values such as time zone
         date = fmt.format(rightNow.getTime()); // getTime converts to Date, since SDF doesn't recognize Calendar properly
 
-        // TODO render
+        renderSlides(width, height);
+    }
+
+    // public in case the screen size changes
+    /**
+     * Changes this DefaultSweepstakesSlideList to expose Slides that display using the given width and height.
+     * 
+     * <p>
+     * Note that the slides represented by this DefaultSweepstakesSlideList may completely change after calling this method. In particular, this implementation completely regenerates all of its Slides according to the new dimensions.
+     * </p>
+     * 
+     * @param width the new width of the slides, in pixels
+     * @param height the new height of the slides, in pixels
+     */
+    public void renderSlides (int width, int height) {
+        // Update instance variables
+        this.width = width;
+        this.height = height;
+
+        // Discard old slides
+        slides.clear();
+
+        // Since slides is an ArrayList<Slide> and not <BuildableStackedSlide>...
+        // (this is so we can make the slides returned to the client immutable with SlideEncapsulator)
+        ArrayList<BuildableStackedSlide> workingSlides = new ArrayList<BuildableStackedSlide>();
+
+        // TODO magic
     }
 
     public Map<String, Fraction> getSweeps () {
