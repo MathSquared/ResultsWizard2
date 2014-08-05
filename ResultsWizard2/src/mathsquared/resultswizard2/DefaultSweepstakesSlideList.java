@@ -137,6 +137,34 @@ public class DefaultSweepstakesSlideList implements SweepstakesSlideList {
         return new LinkedHashMap<String, Fraction>(sweeps);
     }
 
+    // SLIDE GENERATION METHODS //
+
+    /**
+     * Creates a new {@link BuildableStackedSlide} that carries the event title and a default timestamp in the headers. The default timestamp is assigned {@linkplain BuildableStackedSlide#updatable() update} ID 0.
+     * 
+     * <p>
+     * The headers are committed and pushed.
+     * </p>
+     * 
+     * @return the newly generated slide
+     */
+    private BuildableStackedSlide createNewSkeletalSlide () {
+        BuildableStackedSlide ret = new BuildableStackedSlide(width, height);
+        ret.addSpacer(TOP_MARGIN);
+
+        Color evtTitleColor = (color.containsKey("evtTitle")) ? color.get("evtTitle") : Color.black;
+        ret.addText(">> CURRENT SWEEPSTAKES", head, evtTitleColor, false);
+
+        Color timestampColor = (color.containsKey("timestamp")) ? color.get("timestamp") : new Color(0x666666);
+        ret.addText("estimated sweepstakes totals", smalltext, timestampColor, false);
+        ret.updatable(); // this will always be 0; see updatable Javadoc
+
+        ret.commit(); // Propagate to top buffer
+        ret.push();
+
+        return ret;
+    }
+
     // IMPLEMENT LIST //
 
     // These methods make this an immutable List<Slide> backed by slides.
