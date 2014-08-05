@@ -130,7 +130,9 @@ public class DefaultSweepstakesSlideList implements SweepstakesSlideList {
         // (this is so we can make the slides returned to the client immutable with SlideEncapsulator)
         ArrayList<BuildableStackedSlide> workingSlides = new ArrayList<BuildableStackedSlide>();
 
-        // TODO magic
+        BuildableStackedSlide sl = createNewSkeletalSlide();
+        workingSlides.add(sl);
+        List<BuildableStackedSlide> surplus;
     }
 
     public Map<String, Fraction> getSweeps () {
@@ -164,6 +166,15 @@ public class DefaultSweepstakesSlideList implements SweepstakesSlideList {
 
         ret.commit(); // Propagate to top buffer
         ret.push();
+
+        return ret;
+    }
+
+    private List<BuildableStackedSlide> forceAddList (BuildableStackedSlide sl, Map<String, Fraction> toAdd) {
+        List<BuildableStackedSlide> ret = new ArrayList<BuildableStackedSlide>();
+        ret.add(sl);
+
+        // TODO magic
 
         return ret;
     }
