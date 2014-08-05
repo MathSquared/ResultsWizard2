@@ -171,6 +171,64 @@ public class DefaultSweepstakesSlideList implements SweepstakesSlideList {
         return ret;
     }
 
+    private List<BuildableStackedSlide> forceAddTie (BuildableStackedSlide sl, Map<String, Fraction> toAdd, int index) {
+        // this holds a list of all slides used
+        ArrayList<BuildableStackedSlide> ret = new ArrayList<BuildableStackedSlide>();
+        ret.add(sl);
+
+        Color placeNumColor = (color.containsKey("placeNum")) ? color.get("placeNum") : new Color(0x444444);
+        Color honoreeColor = (color.containsKey("honoree")) ? color.get("honoree") : new Color(0x222222);
+        Color sweepsColor = (color.containsKey("sweeps")) ? color.get("sweeps") : new Color(0x666666);
+
+        String plStr = Integer.toString(index + 1);
+
+        Color placeNumColorCur = placeNumColor; // assigned to transparent if we want the place num. to be invisible on a certain line
+        // we don't simply overwrite placeNumColor as in tryAddTie because we might need to reenable the place number if we start a new slide
+
+        // Find the length of this tie
+        int tieLength = checkTieLength(toAdd, index);
+        if (tieLength == 0) { // nothing to add
+            return ret;
+        }
+
+        List<Map.Entry<String, Fraction>> entries = new LinkedList<Map.Entry<String, Fraction>>(toAdd.entrySet());
+        ListIterator<Map.Entry<String, Fraction>> iter = entries.listIterator(index);
+
+        for (int i = 0; i < tieLength; i++) {
+            Map.Entry<String, Fraction> cur = iter.next();
+
+            // Generate a sweeps string for this school
+            String swStr = String.format("%.2f", cur.getValue().toDouble()); // Two decimals
+            if (swStr.endsWith(".00")) { // Chop off the last two digits if they're .00
+                swStr = swStr.substring(0, swStr.length() - ".00".length());
+            }
+
+            boolean addSucceeded = sl.addThreeText(plStr, number, placeNumColorCur, cur.getKey(), base, honoreeColor, swStr, number, sweepsColor);
+
+            if (!addSucceeded) {
+                // Undo and restart on a new slide
+                sl.undo();
+                sl.commit();
+                sl.push(); // ensure that the partial sequence actually renders on the previous slide
+                sl = createNewSkeletalSlide();
+                ret.add(sl);
+
+                // Add it again (placeNumColor instead of placeNumColorCur because this is the first row of the new slide)
+                sl.addThreeText(plStr, number, placeNumColor, cur.getKey(), base, honoreeColor, swStr, number, sweepsColor);
+            }
+
+            // Only add the place number once; overwrite the color for subsequent iterations (transparent so that subsequent entries still line up)
+            // (if we just started a new slide, it would have been taken care of above)
+            placeNumColorCur = transparent;
+        }
+
+        // All is well in the universe
+        sl.addSpacer(BETWEEN_TIES); // we don't really care if this works
+        sl.commit();
+        sl.push(); // we know for certain we want what we just authored on the slide
+        return ret;
+    }
+
     private List<BuildableStackedSlide> forceAddList (BuildableStackedSlide sl, Map<String, Fraction> toAdd) {
         List<BuildableStackedSlide> ret = new ArrayList<BuildableStackedSlide>();
         ret.add(sl);
