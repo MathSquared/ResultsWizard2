@@ -270,12 +270,24 @@ public class BuildableStackedSlide implements Slide {
     /**
      * Constructs a new BuildableStackedSlide that renders with the given height and width.
      * 
+     * <p>
+     * Note that this constructor enforces a minimum dimension of 800 wide by 600 tall; any width less than 800 will be treated as 800, and any height less than 600 will be treated as 600.
+     * </p>
+     * 
      * @param width the width available for this slide's rendering, in pixels
      * @param height the height available for this slide's rendering, in pixels
      */
     public BuildableStackedSlide (int width, int height) {
         this.width = width;
         this.height = height;
+
+        // Sanity checks: ensure minimum dimension of 800x600
+        if (this.width < 800) {
+            this.width = 800;
+        }
+        if (this.height < 600) {
+            this.height = 600;
+        }
     }
 
     @Override
