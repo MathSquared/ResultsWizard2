@@ -13,6 +13,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
@@ -177,6 +178,34 @@ public class DefaultSweepstakesSlideList implements SweepstakesSlideList {
         // TODO magic
 
         return ret;
+    }
+
+    /**
+     * Finds the length of a run of identical list values. This checks the Map in iteration order and returns the number of entries, starting at <code>index</code>, with the same value as the entry at <code>index</code>.
+     * 
+     * <p>
+     * The entry at a given index <code>i</code> is defined as the entry found by obtaining the iterator into the map's entry set and calling <code>next</code> <code>i + 1</code> times, saving the result of the last call.
+     * </p>
+     * 
+     * @param toCheck the Map to check for ties
+     * @param index the index at which to start looking for ties
+     * @return the number of elements at or after <code>index</code> whose values compare as equal; 0 if we have reached the end of the entry set
+     * @throws IndexOutOfBoundsException if <code>index</code> is less than 0 or greater than <code>toCheck.size()</code>
+     */
+    private int checkTieLength (Map<String, Fraction> toCheck, int index) {
+        List<Map.Entry<String, Fraction>> entries = new LinkedList<Map.Entry<String, Fraction>>(toCheck.entrySet());
+        ListIterator<Map.Entry<String, Fraction>> iter = entries.listIterator(index);
+        if (!iter.hasNext()) {
+            return 0; // no next elements -> no ties
+        }
+
+        int currentLength = 1;
+        Fraction firstMember = iter.next().getValue();
+        while (iter.hasNext() && iter.next().equals(firstMember)) {
+            currentLength++;
+        }
+
+        return currentLength;
     }
 
     // IMPLEMENT LIST //
