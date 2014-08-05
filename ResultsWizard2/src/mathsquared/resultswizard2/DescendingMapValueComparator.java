@@ -27,6 +27,24 @@ public class DescendingMapValueComparator<K, V extends Comparable<V>> implements
     }
 
     /**
+     * Returns the map used for comparison.
+     * 
+     * @return the toCompare
+     */
+    public Map<K, V> getToCompare () {
+        return toCompare;
+    }
+
+    /**
+     * Sets the map used for comparison.
+     * 
+     * @param toCompare the toCompare to set
+     */
+    public void setToCompare (Map<K, V> toCompare) {
+        this.toCompare = toCompare;
+    }
+
+    /**
      * Compares two keys based on their values in the given Map. Note that this comparator uses the opposite of the natural ordering of the values.
      * 
      * <p>
