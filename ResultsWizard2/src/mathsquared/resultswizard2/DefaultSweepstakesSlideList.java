@@ -31,9 +31,33 @@ public class DefaultSweepstakesSlideList implements SweepstakesSlideList {
     private int height;
     private ColorScheme color;
     private int baseFont; // the base font size
-    private HashMap<String, Fraction> sweeps;
+    private HashMap<String, Fraction> sweeps; // raw; this is sorted in the rendering method
+    private int displayCap; // maximum amount of sweeps winners to display
 
     private ArrayList<Slide> slides;
+
+    /**
+     * Initializes a new DefaultSweepstakesSlideList with the given data. The sweepstakes will be displayed in descending order by point total.
+     * 
+     * @param width the width of the slides, in pixels
+     * @param height the height of the slides, in pixels
+     * @param color a {@link ColorScheme} with the colors to use (see the class description for which keys are used)
+     * @param baseFont the base font size, in points (this is the size of normal text; some fonts multiply this base size by fixed constants)
+     * @param sweeps the sweepstakes data that this DefaultSweepstakesSlideList should represent
+     * @param displayCap the maximum amount of sweepstakes winners to display; the actual amount displayed will be the size of <code>sweeps</code> or the value of this parameter, whichever is lesser
+     */
+    public DefaultSweepstakesSlideList (int width, int height, ColorScheme color, int baseFont, Map<String, Fraction> sweeps, int displayCap) {
+        this.width = width;
+        this.height = height;
+        this.color = color;
+        this.baseFont = baseFont;
+        this.sweeps = new HashMap<String, Fraction>(sweeps); // descending--highest schools at the top
+        this.displayCap = displayCap;
+
+        slides = new ArrayList<Slide>();
+
+        // TODO render
+    }
 
     public Map<String, Fraction> getSweeps () {
         return new LinkedHashMap<String, Fraction>(sweeps);
