@@ -233,7 +233,17 @@ public class DefaultSweepstakesSlideList implements SweepstakesSlideList {
         List<BuildableStackedSlide> ret = new ArrayList<BuildableStackedSlide>();
         ret.add(sl);
 
-        // TODO magic
+        int index = 0;
+        index = checkTieLength(toAdd, index);
+        List<BuildableStackedSlide> surplus = forceAddTie(sl, toAdd, 0);
+
+        // Add the surplus
+        if (surplus.size() > 1) {
+            ret.addAll(surplus.subList(1, surplus.size()));
+            sl = surplus.get(surplus.size() - 1);
+        }
+
+        // TODO add the rest
 
         return ret;
     }
