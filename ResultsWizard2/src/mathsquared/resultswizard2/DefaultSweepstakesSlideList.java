@@ -159,6 +159,9 @@ public class DefaultSweepstakesSlideList implements SweepstakesSlideList {
         ret.addText("estimated sweepstakes totals", smalltext, timestampColor, false);
         ret.updatable(); // this will always be 0; see updatable Javadoc
 
+        // Add a spacer, since we don't use result types like DERSL
+        ret.addSpacer(AFTER_RES_TYPE);
+
         ret.commit(); // Propagate to top buffer
         ret.push();
 
