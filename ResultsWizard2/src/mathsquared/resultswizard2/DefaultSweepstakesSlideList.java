@@ -6,11 +6,12 @@ package mathsquared.resultswizard2;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
-import java.util.TreeMap;
 
 /**
  * A simple implementation of {@link SweepstakesSlideList}.
@@ -30,12 +31,12 @@ public class DefaultSweepstakesSlideList implements SweepstakesSlideList {
     private int height;
     private ColorScheme color;
     private int baseFont; // the base font size
-    private TreeMap<String, Fraction> sweeps;
+    private HashMap<String, Fraction> sweeps;
 
     private ArrayList<Slide> slides;
 
     public Map<String, Fraction> getSweeps () {
-        return new TreeMap<String, Fraction>(sweeps);
+        return new LinkedHashMap<String, Fraction>(sweeps);
     }
 
     // IMPLEMENT LIST //
