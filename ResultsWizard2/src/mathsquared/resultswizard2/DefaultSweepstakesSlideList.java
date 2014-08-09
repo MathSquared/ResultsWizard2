@@ -194,6 +194,22 @@ public class DefaultSweepstakesSlideList implements SweepstakesSlideList {
         return ret;
     }
 
+    /**
+     * Attempts to add a series of lines representing multiple schools tied for the same sweeps amount to a given slide.
+     * 
+     * <p>
+     * The text is committed. If an addition overflows the slide, the slide is reset (this affects the first buffer).
+     * </p>
+     * 
+     * <p>
+     * The results are displayed in the iteration order of the given Map.
+     * </p>
+     * 
+     * @param sl the {@link BuildableStackedSlide} to which the text should be added
+     * @param toAdd the sweepstakes that should be displayed, in a mapping from school names to amounts of points
+     * @param index the index in the iteration order marking the beginning of a given tie; the place number used is <code>index + 1</code>
+     * @return false if the operation failed
+     */
     private boolean tryAddTie (BuildableStackedSlide sl, Map<String, Fraction> toAdd, int index) {
         // this holds a list of all slides used
         ArrayList<BuildableStackedSlide> ret = new ArrayList<BuildableStackedSlide>();
@@ -240,6 +256,22 @@ public class DefaultSweepstakesSlideList implements SweepstakesSlideList {
         return true;
     }
 
+    /**
+     * Adds a series of lines representing multiple schools tied for the same sweeps amount to a given slide, overflowing onto new slides if necessary.
+     * 
+     * <p>
+     * All generated slides are committed and pushed.
+     * </p>
+     * 
+     * <p>
+     * The results are displayed in the iteration order of the given Map.
+     * </p>
+     * 
+     * @param sl the first {@link BuildableStackedSlide} to which the text should be added
+     * @param toAdd the sweepstakes that should be displayed, in a mapping from school names to amounts of points
+     * @param index the index in the iteration order marking the beginning of a given tie; the place number used is <code>index + 1</code>
+     * @return a list of all slides to which content was added, including <code>sl</code>
+     */
     private List<BuildableStackedSlide> forceAddTie (BuildableStackedSlide sl, Map<String, Fraction> toAdd, int index) {
         // this holds a list of all slides used
         ArrayList<BuildableStackedSlide> ret = new ArrayList<BuildableStackedSlide>();
@@ -298,6 +330,21 @@ public class DefaultSweepstakesSlideList implements SweepstakesSlideList {
         return ret;
     }
 
+    /**
+     * Adds a series of lines representing a complete set of results to a given slide, overflowing onto new slides if necessary.
+     * 
+     * <p>
+     * All generated slides are committed and pushed.
+     * </p>
+     * 
+     * <p>
+     * The results are displayed in the iteration order of the given Map.
+     * </p>
+     * 
+     * @param sl the first {@link BuildableStackedSlide} to which the text should be added
+     * @param toAdd the sweepstakes that should be displayed, in a mapping from school names to amounts of points
+     * @return a list of all slides to which content was added, including <code>sl</code>
+     */
     private List<BuildableStackedSlide> forceAddList (BuildableStackedSlide sl, Map<String, Fraction> toAdd) {
         List<BuildableStackedSlide> ret = new ArrayList<BuildableStackedSlide>();
         ret.add(sl);
