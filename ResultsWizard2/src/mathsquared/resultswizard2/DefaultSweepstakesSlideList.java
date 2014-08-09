@@ -153,7 +153,7 @@ public class DefaultSweepstakesSlideList implements SweepstakesSlideList {
         int totNumSlides = workingSlides.size();
 
         for (int i = 0; i < workingSlides.size(); i++) {
-            String toUpdate = String.format("page %d of %d for this event; last updated %s", i + 1, totNumSlides, date);
+            String toUpdate = String.format("page %d of %d for sweepstakes; last updated %s", i + 1, totNumSlides, date);
             workingSlides.get(i).update(0, toUpdate); // first updatable request for each slide, so we know it's 0 (see Javadoc)
         }
 
