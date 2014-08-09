@@ -388,7 +388,7 @@ public class DefaultSweepstakesSlideList implements SweepstakesSlideList {
     }
 
     /**
-     * Finds the length of a run of identical list values. This checks the Map in iteration order and returns the number of entries, starting at <code>index</code>, with the same value as the entry at <code>index</code>.
+     * Finds the length of a run of identical map values arranged sequentially in iteration order. This checks the Map in iteration order and returns the number of entries, starting at <code>index</code>, with the same value as the entry at <code>index</code>.
      * 
      * <p>
      * The entry at a given index <code>i</code> is defined as the entry found by obtaining the iterator into the map's entry set and calling <code>next</code> <code>i + 1</code> times, saving the result of the last call.
