@@ -26,6 +26,11 @@ import java.util.Map;
  * </p>
  * 
  * <ul>
+ * <li><code>evtTitle</code> for the title ">> CURRENT SWEEPSTAKES" (default: black)</li>
+ * <li><code>timestamp</code> for the line containing the page number and last updated time (default: #666666)</li>
+ * <li><code>placeNum</code> for the place number (default: #444444)</li>
+ * <li><code>honoree</code> for the names of recognized schools (default: #222222)</li>
+ * <li><code>sweeps</code> for the amount of sweepstakes points earned for a given placing (default: #666666)</li>
  * </ul>
  * 
  * @author MathSquared
