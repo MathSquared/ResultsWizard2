@@ -6,6 +6,7 @@ package mathsquared.resultswizard2;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
+import java.util.Map;
 
 /**
  * Handles communication between client and server, including slide selection.
@@ -17,7 +18,7 @@ public class ProtocolSelector implements Selector {
     private int width;
     private int height;
 
-    private LinkedHashMap<String, Slide[]> slides; // stores the slides to display
+    private LinkedHashMap<String, SlideList> slides; // stores the slides to display
     private String currentTag; // the current key in the map where to find the current slide
     private int currentIndex; // the index in the array given by currentTag
 
@@ -25,7 +26,7 @@ public class ProtocolSelector implements Selector {
         this.width = width;
         this.height = height;
 
-        slides = new LinkedHashMap<String, Slide[]>();
+        slides = new LinkedHashMap<String, SlideList>();
     }
 
     public Slide getCurrent () {
@@ -47,16 +48,73 @@ public class ProtocolSelector implements Selector {
         if (idx < 0) {
             idx = 0;
         }
-        if (idx > slides.get(tag).length) {
+        if (idx > slides.get(tag).size()) {
             // Move to the next tag; continue while there are no slides in the current one
             String origTag = tag; // ensure we don't wrap around the keySet
             do {
                 tag = locateNextString(tag);
-            } while (slides.get(tag).length == 0 && origTag != tag);
+            } while (slides.get(tag).size() == 0 && origTag != tag);
             idx = 0;
         }
 
-        return slides.get(tag)[idx];
+        return slides.get(tag).get(idx);
+    }
+
+    public Command processMessage (Command msg) {
+        switch (msg.getType()) {
+        case POISON:
+        case XMIT_ERROR_RESTART:
+            currentTag = null;
+            break;
+        case ADD:
+            slides.putAll(msg.getStringSlideListPayload());
+            break;
+        case REMOVE:
+            slides.remove(msg.getStringPayload());
+            break;
+        case RETR_SLIDES:
+            return new Command() {
+                // Carry the slides along with the command
+                private LinkedHashMap<String, SlideList> carriedSlides = new LinkedHashMap<String, SlideList>(slides);
+
+                public Message getType () {
+                    return Message.RESP_SLIDES;
+                }
+
+                public String getStringPayload () {
+                    throw new UnsupportedOperationException("RESP_SLIDES does not carry a String payload");
+                }
+
+                public Map<String, SlideList> getStringSlideListPayload () {
+                    return new LinkedHashMap<String, SlideList>(carriedSlides);
+                }
+            };
+            // break; (unreachable)
+        case TICKER:
+            // TODO ticker not supported
+            break;
+        case RETR_TICKER:
+            return new Command() {
+                public Message getType () {
+                    return Message.RESP_TICKER;
+                }
+
+                public String getStringPayload () {
+                    return "";
+                }
+
+                public Map<String, SlideList> getStringSlideListPayload () {
+                    throw new UnsupportedOperationException("RESP_TICKER does not carry a Map<String, SlideList> payload");
+                }
+            };
+            // break; (unreachable)
+        case RESP_SLIDES: // we don't expect these cases
+        case RESP_TICKER:
+            break;
+        }
+
+        // if we haven't already returned, nothing to send to the client
+        return null;
     }
 
     private String locateNextString (String current) {
