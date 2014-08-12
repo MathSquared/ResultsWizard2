@@ -166,6 +166,12 @@ public class ProtocolSelector implements Selector {
     }
 
     private void canonicalizeIndexing () {
+        // If no slides, set to null and 0 (not needed in getCurrent because of size check earlier in the method)
+        if (slides.size() == 0) {
+            currentTag = null;
+            currentIndex = 0;
+        }
+
         // Ensure currentIndex is in bounds
         if (currentIndex < 0) {
             currentIndex = 0;
