@@ -17,14 +17,16 @@ import java.util.Map;
 public class ProtocolSelector implements Selector {
     private int width;
     private int height;
+    private long cycleDelay; // amount of milliseconds to wait between cycles
 
     private LinkedHashMap<String, SlideList> slides; // stores the slides to display
     private String currentTag; // the current key in the map where to find the current slide
     private int currentIndex; // the index in the array given by currentTag
 
-    public ProtocolSelector (int width, int height) {
+    public ProtocolSelector (int width, int height, long cycleDelay) {
         this.width = width;
         this.height = height;
+        this.cycleDelay = cycleDelay;
 
         slides = new LinkedHashMap<String, SlideList>();
     }
