@@ -50,7 +50,11 @@ public class ProtocolSelector implements Selector {
                 // Cycle
                 currentIndex++;
                 canonicalizeIndexing();
-                lastCycle = System.currentTimeMillis();
+
+                // Only update lastCycle if we actually cycled to a slide as opposed to emptiness
+                if (currentTag != null) {
+                    lastCycle = System.currentTimeMillis();
+                }
             } else { // not enough time passed
                 // do nothing
             }
