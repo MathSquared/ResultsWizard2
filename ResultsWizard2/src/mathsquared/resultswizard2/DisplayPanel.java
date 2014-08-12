@@ -26,6 +26,10 @@ import javax.swing.SwingUtilities;
  * Game loop logic is heavily based on the sample game loop in Chapter 2 of Killer Game Programming in Java by Andrew Davison, ISBN 978-0-596-00730-0.
  * </p>
  * 
+ * <p>
+ * The intent is for this class to represent a versatile drawing surface. A {@link Selector} will handle choosing the slide to display, including protocol communication. The <code>Selector</code> will probably be handled by a JFrame that interfaces between a given communication method (network, user, etc.) and the <code>Selector</code>.
+ * </p>
+ * 
  * @author MathSquared
  * 
  */
