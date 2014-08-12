@@ -3,7 +3,6 @@
  */
 package mathsquared.resultswizard2;
 
-import java.util.Queue;
 
 /**
  * Handles communication between client and server, including slide selection.
@@ -14,16 +13,12 @@ import java.util.Queue;
 public class ProtocolSelector implements Selector {
     private int width;
     private int height;
-    private Queue in; // from the admin console
-    private Queue out; // to the console
 
     private Slide current;
 
-    public ProtocolSelector (int width, int height, Queue in, Queue out) {
+    public ProtocolSelector (int width, int height) {
         this.width = width;
         this.height = height;
-        this.in = in;
-        this.out = out;
         this.current = null;
     }
 
