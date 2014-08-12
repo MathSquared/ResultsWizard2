@@ -139,6 +139,15 @@ public class ProtocolSelector implements Selector {
         keys.addAll(slides.keySet());
         Iterator<String> iter = keys.iterator();
 
+        // Check if currentTag is null while there are actual entries
+        if (currentTag == null) {
+            if (keys.size() == 0) {
+                return null;
+            } else { // there are keys
+                return keys.get(0);
+            }
+        }
+
         // Iterate while we have entries until we skip over an entry equal to current
         while (iter.hasNext() && !iter.next().equals(current));
 
