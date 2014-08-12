@@ -22,6 +22,8 @@ public class ProtocolSelector implements Selector {
     private LinkedHashMap<String, SlideList> slides; // stores the slides to display
     private String currentTag; // the current key in the map where to find the current slide
     private int currentIndex; // the index in the array given by currentTag
+    private long lastCycle = 0;
+    private boolean getCurrentDone; // whether we've done a getCurrent
 
     public ProtocolSelector (int width, int height, long cycleDelay) {
         this.width = width;
@@ -40,6 +42,19 @@ public class ProtocolSelector implements Selector {
         }
         if (slides.size() == 0) {
             return null; // this also checks that locateNextString won't IOOBE due to no entries in the key set
+        }
+
+        // Figure out when to cycle
+        if (getCurrentDone) { // previous getCurent
+            if (System.currentTimeMillis() - lastCycle > cycleDelay) { // enough time passed
+                // Cycle
+                currentIndex++;
+                lastCycle = System.currentTimeMillis();
+            } else { // not enough time passed
+                // do nothing
+            }
+        } else { // our first getCurrent
+            lastCycle = System.currentTimeMillis();
         }
 
         // Create duplicate field values to mess with (to canonicalize what we return)
