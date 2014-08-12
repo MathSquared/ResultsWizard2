@@ -14,6 +14,7 @@ import java.io.Serializable;
  * @author MathSquared
  * 
  */
+// TODO extend interface with subtypes that allow deeper introspection into the data represented by the Slide (to allow the server to view what results the client has seen, if state reconciliation is needed after a WiFi drop, kicked cord, ...)
 public interface Slide extends Serializable {
     /**
      * Draws this Slide's data to the given <code>Graphics</code> object.

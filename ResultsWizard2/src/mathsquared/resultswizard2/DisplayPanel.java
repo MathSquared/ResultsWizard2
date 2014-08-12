@@ -14,6 +14,7 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
+import java.net.Socket;
 import java.util.Queue;
 
 import javax.swing.JPanel;
@@ -24,6 +25,10 @@ import javax.swing.SwingUtilities;
  * 
  * <p>
  * Game loop logic is heavily based on the sample game loop in Chapter 2 of Killer Game Programming in Java by Andrew Davison, ISBN 978-0-596-00730-0.
+ * </p>
+ * 
+ * <p>
+ * If the connection to the server is ever lost, the DisplayPanel will continue projecting whatever data it has already received until it is able to connect to another server. Servers should NEVER make assumptions about the client's state, communicating with it often to request this information (also a good way to check for a dropped connection).
  * </p>
  * 
  * <p>
@@ -59,6 +64,7 @@ public class DisplayPanel extends JPanel implements Runnable {
     // no frame skip logic needed
 
     // messages
+    private Socket sock;
     private InputStream inRaw;
     private OutputStream outRaw;
     private ObjectInputStream ois;
@@ -67,6 +73,8 @@ public class DisplayPanel extends JPanel implements Runnable {
     private Queue out;
     private StreamQueueProxy sqProxy;
 
+    private boolean commsActive; // false if the connection drops, true if the client is connected to a server
+
     /**
      * Creates a DisplayPanel with the given parameters and prepares it for use.
      * 
@@ -74,19 +82,18 @@ public class DisplayPanel extends JPanel implements Runnable {
      * @param height the height of the projection surface, in pixels
      * @param fps the desired frames per second of the projection (normally, this will equal the monitor refresh rate in Hz)
      * @param bgColor the desired background color of the projection
-     * @param ois the ObjectInputStream carrying {@link Command}s for the display unit
-     * @param oos the ObjectOutputStream carrying {@link Command}s from the display unit
+     * @param sock the {@link Socket} with which this display will communicate with the admin console
      */
-    public DisplayPanel (int width, int height, int fps, Color bgColor, InputStream is, OutputStream os) throws IOException {
+    public DisplayPanel (int width, int height, int fps, Color bgColor, Socket sock) throws IOException {
         WIDTH = width;
         HEIGHT = height;
         FPS = fps;
         period = 1000000000L / fps;
         BG_COLOR = bgColor;
-        inRaw = is;
-        outRaw = os;
-        this.oos = new ObjectOutputStream(os);
-        this.ois = new ObjectInputStream(is);
+        this.sock = sock;
+        initStreams(sock);
+        this.oos = new ObjectOutputStream(outRaw);
+        this.ois = new ObjectInputStream(inRaw);
 
         sqProxy = new StreamQueueProxy(ois, oos);
         in = sqProxy.getInQ();
@@ -96,6 +103,17 @@ public class DisplayPanel extends JPanel implements Runnable {
         setPreferredSize(new Dimension(width, height));
 
         // no event listeners, except that we will pop Messages from the stream each time
+    }
+
+    /**
+     * (Re-)Initializes this Display to communicate over the given socket.
+     * 
+     * @param sock the {@link Socket} over which to communicate
+     * @throws IOException if <code>sock.getInputStream()</code> and/or <code>sock.getOutputStream()</code> would throw an <code>IOException</code>
+     */
+    private void initStreams (Socket sock) throws IOException {
+        inRaw = sock.getInputStream();
+        outRaw = sock.getOutputStream();
     }
 
     /**
@@ -219,5 +237,14 @@ public class DisplayPanel extends JPanel implements Runnable {
             System.out.println("Graphics context error:");
             e.printStackTrace(System.out);
         }
+    }
+
+    /**
+     * Indicates whether this client is connected to a server.
+     * 
+     * @return true if this client is connected to an admin console; false if it is not connected (either never has been, or a previous connection drops)
+     */
+    public boolean getCommsActive () {
+        return commsActive;
     }
 }
