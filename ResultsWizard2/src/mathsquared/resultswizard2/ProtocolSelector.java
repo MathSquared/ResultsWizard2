@@ -49,6 +49,7 @@ public class ProtocolSelector implements Selector {
             if (System.currentTimeMillis() - lastCycle > cycleDelay) { // enough time passed
                 // Cycle
                 currentIndex++;
+                canonicalizeIndexing();
                 lastCycle = System.currentTimeMillis();
             } else { // not enough time passed
                 // do nothing
