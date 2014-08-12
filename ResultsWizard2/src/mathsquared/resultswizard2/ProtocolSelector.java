@@ -133,4 +133,19 @@ public class ProtocolSelector implements Selector {
         // Return the next string
         return iter.next();
     }
+
+    private void canonicalizeIndexing () {
+        // Ensure currentIndex is in bounds
+        if (currentIndex < 0) {
+            currentIndex = 0;
+        }
+        if (currentIndex > slides.get(currentTag).size()) {
+            // Move to the next tag; continue while there are no slides in the current one
+            String origcurrentTag = currentTag; // ensure we don't wrap around the keySet
+            do {
+                currentTag = locateNextString(currentTag);
+            } while (slides.get(currentTag).size() == 0 && origcurrentTag != currentTag);
+            currentIndex = 0;
+        }
+    }
 }
