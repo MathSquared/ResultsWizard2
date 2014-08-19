@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
+import java.util.Map;
 
 /**
  * Handles communication between client and server, including slide selection.
@@ -219,5 +220,19 @@ public class ProtocolSelector implements Selector {
         for (SlideList x : sl) {
             x.renderSlides(w, h);
         }
+    }
+
+    /**
+     * Returns a new Map whose SlideLists have been manipulated so as to render using the given width and height. Note that this method modifies the SlideLists referenced by <code>sl</code>.
+     * 
+     * @param w the width at which to display the slides, in pixels
+     * @param h the height at which to display the slides, in pixels
+     * @param sl a map of the SlideLists on which to operate; the keys are irrelevent
+     * @return a new Map, containing the same elements as <code>sl</code> in the same order and containing the SlideLists rendered to size
+     */
+    private Map<String, SlideList> renderAllToSize (int w, int h, Map<String, SlideList> sl) {
+        LinkedHashMap<String, SlideList> ret = new LinkedHashMap<String, SlideList>(sl);
+        renderAllToSize(w, h, ret.values());
+        return ret;
     }
 }
