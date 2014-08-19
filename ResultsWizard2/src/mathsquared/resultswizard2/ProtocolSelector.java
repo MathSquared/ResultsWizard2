@@ -83,6 +83,12 @@ public class ProtocolSelector implements Selector {
         return slides.get(tag).get(idx);
     }
 
+    public void setSize (int w, int h) {
+        width = w;
+        height = h;
+        slides = renderAllToSize(w, h, slides);
+    }
+
     public Command processMessage (Command msg) {
         switch (msg.getType()) {
         case POISON:
