@@ -119,6 +119,7 @@ public class DefaultEventResultsSlideList implements EventResultsSlideList {
      * <li>the list of slides,</li>
      * <li>the font variables, and</li>
      * <li>the date string.</li>
+     * </ul>
      */
     private void initializeComputedData () {
         slides = new ArrayList<Slide>();
