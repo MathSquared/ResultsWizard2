@@ -117,17 +117,6 @@ public class DefaultEventResultsSlideList implements EventResultsSlideList {
     }
 
     /**
-     * Updates <code>date</code> to a String generated from a given date and time.
-     * 
-     * @param dateToFormat a {@link Calendar} generated from the date which should be represented
-     */
-    private void updateDateString (Calendar dateToFormat) {
-        SimpleDateFormat fmt = new SimpleDateFormat(DATE_FORMAT);
-        fmt.setCalendar(dateToFormat); // overwrites values such as time zone
-        date = fmt.format(dateToFormat.getTime()); // getTime converts to Date, since SDF doesn't recognize Calendar properly
-    }
-
-    /**
      * Initializes the font variables based on a base font size.
      * 
      * @param baseFont the base font size, in points
@@ -138,6 +127,17 @@ public class DefaultEventResultsSlideList implements EventResultsSlideList {
         subhead = new Font(FONT_FACE, baseFont * SUBHEAD_MULT / SUBHEAD_DIV, SUBHEAD_STYLE);
         number = new Font(FONT_FACE, baseFont * NUMBER_MULT / NUMBER_DIV, NUMBER_STYLE);
         smalltext = new Font(FONT_FACE, baseFont * SMALLTEXT_MULT / SMALLTEXT_DIV, SMALLTEXT_STYLE);
+    }
+
+    /**
+     * Updates <code>date</code> to a String generated from a given date and time.
+     * 
+     * @param dateToFormat a {@link Calendar} generated from the date which should be represented
+     */
+    private void updateDateString (Calendar dateToFormat) {
+        SimpleDateFormat fmt = new SimpleDateFormat(DATE_FORMAT);
+        fmt.setCalendar(dateToFormat); // overwrites values such as time zone
+        date = fmt.format(dateToFormat.getTime()); // getTime converts to Date, since SDF doesn't recognize Calendar properly
     }
 
     // public in case the screen size changes
