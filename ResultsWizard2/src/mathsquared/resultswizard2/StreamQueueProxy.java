@@ -6,7 +6,6 @@ package mathsquared.resultswizard2;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -83,20 +82,21 @@ public class StreamQueueProxy implements Runnable {
                                 e.printStackTrace(System.out);
                             }
 
-                            // TODO rewrite this with an instance of a non-anonymous implementing class of Command, when I write an implementation
-                            return new Command() {
-                                public Message getType () {
-                                    return Message.XMIT_ERROR_RESTART;
-                                }
-
-                                public String getStringPayload () {
-                                    throw new UnsupportedOperationException("This message does not carry a String payload");
-                                }
-
-                                public Map<String, SlideList> getStringSlideListPayload () {
-                                    throw new UnsupportedOperationException("This message does not carry a Map<String, SlideList> payload");
-                                }
-                            }; // if an exception is thrown; this queue chokes on null
+                            // return new Command() {
+                            // public Message getType () {
+                            // return Message.XMIT_ERROR_RESTART;
+                            // }
+                            //
+                            // public String getStringPayload () {
+                            // throw new UnsupportedOperationException("This message does not carry a String payload");
+                            // }
+                            //
+                            // public Map<String, SlideList> getStringSlideListPayload () {
+                            // throw new UnsupportedOperationException("This message does not carry a Map<String, SlideList> payload");
+                            // }
+                            // };
+                            return new SimpleCommand(Message.XMIT_ERROR_RESTART, null, null);
+                            // if an exception is thrown; this queue chokes on null
                         }
                     });
                     inQ.add(future.get(1000, TimeUnit.MILLISECONDS));
