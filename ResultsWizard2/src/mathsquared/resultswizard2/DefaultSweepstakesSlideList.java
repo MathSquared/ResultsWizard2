@@ -85,7 +85,7 @@ public class DefaultSweepstakesSlideList implements SweepstakesSlideList {
      * @param color a {@link ColorScheme} with the colors to use (see the class description for which keys are used)
      * @param baseFont the base font size, in points (this is the size of normal text; some fonts multiply this base size by fixed constants)
      * @param sweeps the sweepstakes data that this DefaultSweepstakesSlideList should represent
-     * @param displayCap the maximum amount of sweepstakes winners to display; the actual amount displayed will be the size of <code>sweeps</code> or the value of this parameter, whichever is lesser
+     * @param displayCap the maximum amount of sweepstakes winners to display; the actual amount displayed will be the size of <code>sweeps</code> or the value of this parameter, whichever is lesser, with the exception that any ties that this number leaves partially-displayed will be fully displayed
      */
     public DefaultSweepstakesSlideList (int width, int height, ColorScheme color, int baseFont, Map<String, Fraction> sweeps, int displayCap) {
         this.width = width;
