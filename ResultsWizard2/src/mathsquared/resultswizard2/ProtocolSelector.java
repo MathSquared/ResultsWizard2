@@ -3,6 +3,7 @@
  */
 package mathsquared.resultswizard2;
 
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -203,6 +204,20 @@ public class ProtocolSelector implements Selector {
                 currentTag = locateNextString(currentTag);
             } while (slides.get(currentTag).size() == 0 && origcurrentTag != currentTag);
             currentIndex = 0;
+        }
+    }
+
+    /**
+     * Renders a collection of SlideLists such that all of their Slides display using the given width and height.
+     * 
+     * @param w the width at which to display the slides, in pixels
+     * @param h the height at which to display the slides, in pixels
+     * @param sl a collection of the SlideLists on which to operate
+     * @see SlideList#renderSlides(int, int)
+     */
+    private void renderAllToSize (int w, int h, Collection<SlideList> sl) {
+        for (SlideList x : sl) {
+            x.renderSlides(w, h);
         }
     }
 }
