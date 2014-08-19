@@ -209,7 +209,7 @@ public class ProtocolSelector implements Selector {
     }
 
     /**
-     * Renders a collection of SlideLists such that all of their Slides display using the given width and height.
+     * Renders a collection of SlideLists such that all of their Slides display using the given width and height. Note that this method modifies the SlideLists referenced by <code>sl</code>.
      * 
      * @param w the width at which to display the slides, in pixels
      * @param h the height at which to display the slides, in pixels
