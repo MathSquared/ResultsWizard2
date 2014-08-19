@@ -105,21 +105,39 @@ public class DefaultEventResultsSlideList implements EventResultsSlideList {
         slides = new ArrayList<Slide>();
 
         // Initialize the fonts
+        initializeFonts(baseFont);
+
+        // Get the update timestamp if no date has been assigned
+        if (date == null) {
+            Calendar rightNow = Calendar.getInstance(); // default timezone
+            updateDateString(rightNow);
+        }
+
+        renderSlides(width, height);
+    }
+
+    /**
+     * Updates <code>date</code> to a String generated from a given date and time.
+     * 
+     * @param dateToFormat a {@link Calendar} generated from the date which should be represented
+     */
+    private void updateDateString (Calendar dateToFormat) {
+        SimpleDateFormat fmt = new SimpleDateFormat(DATE_FORMAT);
+        fmt.setCalendar(dateToFormat); // overwrites values such as time zone
+        date = fmt.format(dateToFormat.getTime()); // getTime converts to Date, since SDF doesn't recognize Calendar properly
+    }
+
+    /**
+     * Initializes the font variables based on a base font size.
+     * 
+     * @param baseFont the base font size, in points
+     */
+    private void initializeFonts (int baseFont) {
         base = new Font(FONT_FACE, baseFont, Font.PLAIN);
         head = new Font(FONT_FACE, baseFont * HEAD_MULT / HEAD_DIV, HEAD_STYLE);
         subhead = new Font(FONT_FACE, baseFont * SUBHEAD_MULT / SUBHEAD_DIV, SUBHEAD_STYLE);
         number = new Font(FONT_FACE, baseFont * NUMBER_MULT / NUMBER_DIV, NUMBER_STYLE);
         smalltext = new Font(FONT_FACE, baseFont * SMALLTEXT_MULT / SMALLTEXT_DIV, SMALLTEXT_STYLE);
-
-        // Get the update timestamp if no date has been assigned
-        if (date == null) {
-            Calendar rightNow = Calendar.getInstance(); // default timezone
-            SimpleDateFormat fmt = new SimpleDateFormat(DATE_FORMAT);
-            fmt.setCalendar(rightNow); // overwrites values such as time zone
-            date = fmt.format(rightNow.getTime()); // getTime converts to Date, since SDF doesn't recognize Calendar properly
-        }
-
-        renderSlides(width, height);
     }
 
     // public in case the screen size changes
