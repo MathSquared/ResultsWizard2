@@ -90,7 +90,7 @@ public class ProtocolSelector implements Selector {
             currentTag = null;
             break;
         case ADD:
-            slides.putAll(msg.getStringSlideListPayload());
+            slides.putAll(renderAllToSize(width, height, msg.getStringSlideListPayload()));
             break;
         case REMOVE:
             slides.remove(msg.getStringPayload());
