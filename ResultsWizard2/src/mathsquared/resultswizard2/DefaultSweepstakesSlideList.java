@@ -95,6 +95,18 @@ public class DefaultSweepstakesSlideList implements SweepstakesSlideList {
         this.sweeps = new HashMap<String, Fraction>(sweeps); // descending--highest schools at the top
         this.displayCap = displayCap;
 
+        initializeComputedData();
+    }
+
+    /**
+     * Initialize data that can be computed from other fields. This includes:
+     * 
+     * <ul>
+     * <li>the list of slides,</li>
+     * <li>the font variables, and</li>
+     * <li>the date string.</li>
+     */
+    private void initializeComputedData () {
         slides = new ArrayList<Slide>();
 
         // Initialize the fonts
