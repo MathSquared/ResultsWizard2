@@ -104,11 +104,13 @@ public class DefaultSweepstakesSlideList implements SweepstakesSlideList {
         number = new Font(FONT_FACE, baseFont * NUMBER_MULT / NUMBER_DIV, NUMBER_STYLE);
         smalltext = new Font(FONT_FACE, baseFont * SMALLTEXT_MULT / SMALLTEXT_DIV, SMALLTEXT_STYLE);
 
-        // Get the update timestamp
-        Calendar rightNow = Calendar.getInstance(); // default timezone
-        SimpleDateFormat fmt = new SimpleDateFormat(DATE_FORMAT);
-        fmt.setCalendar(rightNow); // overwrites values such as time zone
-        date = fmt.format(rightNow.getTime()); // getTime converts to Date, since SDF doesn't recognize Calendar properly
+        // Get the update timestamp if no date has been assigned
+        if (date == null) {
+            Calendar rightNow = Calendar.getInstance(); // default timezone
+            SimpleDateFormat fmt = new SimpleDateFormat(DATE_FORMAT);
+            fmt.setCalendar(rightNow); // overwrites values such as time zone
+            date = fmt.format(rightNow.getTime()); // getTime converts to Date, since SDF doesn't recognize Calendar properly
+        }
 
         renderSlides(width, height);
     }
