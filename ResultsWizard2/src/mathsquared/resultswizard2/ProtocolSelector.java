@@ -87,6 +87,9 @@ public class ProtocolSelector implements Selector {
         width = w;
         height = h;
         slides = renderAllToSize(w, h, slides);
+
+        // Because rendering messes with slide ordering within SlideLists, return to the beginning of this tag
+        currentIndex = 0;
     }
 
     public Command processMessage (Command msg) {
