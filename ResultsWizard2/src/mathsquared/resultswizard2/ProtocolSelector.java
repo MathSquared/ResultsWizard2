@@ -6,7 +6,6 @@ package mathsquared.resultswizard2;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
-import java.util.Map;
 
 /**
  * Handles communication between client and server, including slide selection.
@@ -95,40 +94,42 @@ public class ProtocolSelector implements Selector {
             slides.remove(msg.getStringPayload());
             break;
         case RETR_SLIDES:
-            return new Command() {
-                // Carry the slides along with the command
-                private LinkedHashMap<String, SlideList> carriedSlides = new LinkedHashMap<String, SlideList>(slides);
-
-                public Message getType () {
-                    return Message.RESP_SLIDES;
-                }
-
-                public String getStringPayload () {
-                    throw new UnsupportedOperationException("RESP_SLIDES does not carry a String payload");
-                }
-
-                public Map<String, SlideList> getStringSlideListPayload () {
-                    return new LinkedHashMap<String, SlideList>(carriedSlides);
-                }
-            };
+            // return new Command() {
+            // // Carry the slides along with the command
+            // private LinkedHashMap<String, SlideList> carriedSlides = new LinkedHashMap<String, SlideList>(slides);
+            //
+            // public Message getType () {
+            // return Message.RESP_SLIDES;
+            // }
+            //
+            // public String getStringPayload () {
+            // throw new UnsupportedOperationException("RESP_SLIDES does not carry a String payload");
+            // }
+            //
+            // public Map<String, SlideList> getStringSlideListPayload () {
+            // return new LinkedHashMap<String, SlideList>(carriedSlides);
+            // }
+            // };
+            return new SimpleCommand(Message.RESP_SLIDES, null, slides);
             // break; (unreachable)
         case TICKER:
             // TODO ticker not supported
             break;
         case RETR_TICKER:
-            return new Command() {
-                public Message getType () {
-                    return Message.RESP_TICKER;
-                }
-
-                public String getStringPayload () {
-                    return "";
-                }
-
-                public Map<String, SlideList> getStringSlideListPayload () {
-                    throw new UnsupportedOperationException("RESP_TICKER does not carry a Map<String, SlideList> payload");
-                }
-            };
+            // return new Command() {
+            // public Message getType () {
+            // return Message.RESP_TICKER;
+            // }
+            //
+            // public String getStringPayload () {
+            // return "";
+            // }
+            //
+            // public Map<String, SlideList> getStringSlideListPayload () {
+            // throw new UnsupportedOperationException("RESP_TICKER does not carry a Map<String, SlideList> payload");
+            // }
+            // };
+            return new SimpleCommand(Message.RESP_TICKER, "", null);
             // break; (unreachable)
         case RESP_SLIDES: // we don't expect these cases
         case RESP_TICKER:
