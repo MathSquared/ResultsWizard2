@@ -102,6 +102,18 @@ public class DefaultEventResultsSlideList implements EventResultsSlideList {
         this.baseFont = baseFont;
         this.evr = new EventResults(evr);
 
+        initializeComputedData();
+    }
+
+    /**
+     * Initialize data that can be computed from other fields. This includes:
+     * 
+     * <ul>
+     * <li>the list of slides,</li>
+     * <li>the font variables, and</li>
+     * <li>the date string.</li>
+     */
+    private void initializeComputedData () {
         slides = new ArrayList<Slide>();
 
         // Initialize the fonts
