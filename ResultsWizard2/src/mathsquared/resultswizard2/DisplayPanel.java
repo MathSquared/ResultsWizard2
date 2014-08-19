@@ -10,12 +10,6 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.Window;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.OutputStream;
-import java.net.Socket;
-import java.util.Queue;
 
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
@@ -63,17 +57,8 @@ public class DisplayPanel extends JPanel implements Runnable {
 
     // no frame skip logic needed
 
-    // messages
-    private Socket sock;
-    private InputStream inRaw;
-    private OutputStream outRaw;
-    private ObjectInputStream ois;
-    private ObjectOutputStream oos;
-    private Queue in;
-    private Queue out;
-    private StreamQueueProxy sqProxy;
-
-    private boolean commsActive; // false if the connection drops, true if the client is connected to a server
+    // handle the protocol
+    private Selector sel;
 
     /**
      * Creates a DisplayPanel with the given parameters and prepares it for use.
@@ -82,22 +67,15 @@ public class DisplayPanel extends JPanel implements Runnable {
      * @param height the height of the projection surface, in pixels
      * @param fps the desired frames per second of the projection (normally, this will equal the monitor refresh rate in Hz)
      * @param bgColor the desired background color of the projection
-     * @param sock the {@link Socket} with which this display will communicate with the admin console
+     * @param sel the {@link Selector} that will supply this DisplayPanel with slides
      */
-    public DisplayPanel (int width, int height, int fps, Color bgColor, Socket sock) throws IOException {
+    public DisplayPanel (int width, int height, int fps, Color bgColor, Selector sel) throws IOException {
         WIDTH = width;
         HEIGHT = height;
         FPS = fps;
         period = 1000000000L / fps;
         BG_COLOR = bgColor;
-        this.sock = sock;
-        initStreams(sock);
-        this.oos = new ObjectOutputStream(outRaw);
-        this.ois = new ObjectInputStream(inRaw);
-
-        sqProxy = new StreamQueueProxy(ois, oos);
-        in = sqProxy.getInQ();
-        out = sqProxy.getOutQ();
+        this.sel = sel;
 
         setBackground(bgColor);
         setPreferredSize(new Dimension(width, height));
@@ -105,16 +83,16 @@ public class DisplayPanel extends JPanel implements Runnable {
         // no event listeners, except that we will pop Messages from the stream each time
     }
 
-    /**
-     * (Re-)Initializes this Display to communicate over the given socket.
-     * 
-     * @param sock the {@link Socket} over which to communicate
-     * @throws IOException if <code>sock.getInputStream()</code> and/or <code>sock.getOutputStream()</code> would throw an <code>IOException</code>
-     */
-    private void initStreams (Socket sock) throws IOException {
-        inRaw = sock.getInputStream();
-        outRaw = sock.getOutputStream();
-    }
+    // /**
+    // * (Re-)Initializes this Display to communicate over the given socket.
+    // *
+    // * @param sock the {@link Socket} over which to communicate
+    // * @throws IOException if <code>sock.getInputStream()</code> and/or <code>sock.getOutputStream()</code> would throw an <code>IOException</code>
+    // */
+    // private void initStreams (Socket sock) throws IOException {
+    // inRaw = sock.getInputStream();
+    // outRaw = sock.getOutputStream();
+    // }
 
     /**
      * Called when this component is added to another, this method simply starts the projection.
@@ -239,12 +217,12 @@ public class DisplayPanel extends JPanel implements Runnable {
         }
     }
 
-    /**
-     * Indicates whether this client is connected to a server.
-     * 
-     * @return true if this client is connected to an admin console; false if it is not connected (either never has been, or a previous connection drops)
-     */
-    public boolean getCommsActive () {
-        return commsActive;
-    }
+    // /**
+    // * Indicates whether this client is connected to a server.
+    // *
+    // * @return true if this client is connected to an admin console; false if it is not connected (either never has been, or a previous connection drops)
+    // */
+    // public boolean getCommsActive () {
+    // return commsActive;
+    // }
 }
