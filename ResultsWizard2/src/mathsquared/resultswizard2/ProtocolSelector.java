@@ -150,8 +150,8 @@ public class ProtocolSelector implements Selector {
             return null;
         }
 
-        // Check if currentTag is null while there are actual entries
-        if (currentTag == null) {
+        // Check if current is null while there are actual entries
+        if (current == null) {
             if (keys.size() == 0) {
                 return null;
             } else { // there are keys
