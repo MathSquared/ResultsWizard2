@@ -195,11 +195,16 @@ public class ProtocolSelector implements Selector {
      * Specifically, ensures that <code>currentIndex</code> points to a valid index within <code>slides.get(currentTag)</code>. If the index is negative, makes it zero; if the index is positive, sets it to 0 and sets <code>currentTag</code> to the next entry with a non-zero amount of slides.
      * </p>
      */
-    // TODO: Handle key that does not exist in slides
     private void canonicalizeIndexing () {
         // If no slides, set to null and 0 (not needed in getCurrent because of size check earlier in the method)
         if (slides.size() == 0) {
             currentTag = null;
+            currentIndex = 0;
+        }
+
+        // Handle keys that don't exist in slides by setting to first slide
+        if (!slides.containsKey(currentTag)) {
+            currentTag = locateNextString(currentTag); // this sets to the first string, or null if there are no strings
             currentIndex = 0;
         }
 
