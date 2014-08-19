@@ -140,6 +140,12 @@ public class ProtocolSelector implements Selector {
         return null;
     }
 
+    /**
+     * Returns the String key in <code>slides</code> next in iteration order after the given one. If we're at the last entry, or <code>slides</code> does not contain the given key, returns the first key. If there are no keys, returns null.
+     * 
+     * @param current the current String
+     * @return the String after it in <code>slides</code>'s iteration order
+     */
     private String locateNextString (String current) {
         LinkedList<String> keys = new LinkedList<String>();
         keys.addAll(slides.keySet());
