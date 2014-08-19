@@ -230,7 +230,7 @@ public class ProtocolSelector implements Selector {
      * @param sl a map of the SlideLists on which to operate; the keys are irrelevent
      * @return a new Map, containing the same elements as <code>sl</code> in the same order and containing the SlideLists rendered to size
      */
-    private Map<String, SlideList> renderAllToSize (int w, int h, Map<String, SlideList> sl) {
+    private LinkedHashMap<String, SlideList> renderAllToSize (int w, int h, Map<String, SlideList> sl) {
         LinkedHashMap<String, SlideList> ret = new LinkedHashMap<String, SlideList>(sl);
         renderAllToSize(w, h, ret.values());
         return ret;
