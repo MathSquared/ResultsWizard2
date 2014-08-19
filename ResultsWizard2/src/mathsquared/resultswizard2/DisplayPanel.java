@@ -196,7 +196,10 @@ public class DisplayPanel extends JPanel implements Runnable {
         gBuf.setColor(BG_COLOR);
         gBuf.fillRect(0, 0, WIDTH, HEIGHT);
 
-        // TODO draw Slides and ticker
+        // Draw the current slide
+        sel.getCurrent().draw(gBuf);
+
+        // TODO ticker
     }
 
     /**
