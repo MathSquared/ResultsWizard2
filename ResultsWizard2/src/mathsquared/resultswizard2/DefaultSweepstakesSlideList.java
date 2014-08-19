@@ -366,7 +366,9 @@ public class DefaultSweepstakesSlideList implements SweepstakesSlideList {
             sl = surplus.get(surplus.size() - 1);
         }
 
-        while (checkTieLength(toAdd, index) > 0) {
+        // Compare to displayCap to enforce display limit
+        // we test here in order to ensure ties are displayed in full
+        while (index < displayCap && checkTieLength(toAdd, index) > 0) {
             boolean addSucceeded = tryAddTie(sl, toAdd, index);
 
             if (!addSucceeded) {
