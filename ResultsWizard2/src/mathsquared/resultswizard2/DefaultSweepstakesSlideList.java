@@ -5,6 +5,8 @@ package mathsquared.resultswizard2;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -44,7 +46,7 @@ public class DefaultSweepstakesSlideList implements SweepstakesSlideList {
     private HashMap<String, Fraction> sweeps; // raw; this is sorted in the rendering method
     private int displayCap; // maximum amount of sweeps winners to display
 
-    private ArrayList<Slide> slides;
+    private transient ArrayList<Slide> slides;
 
     // Layout constants
     public static final int TOP_MARGIN = 20;
@@ -59,20 +61,20 @@ public class DefaultSweepstakesSlideList implements SweepstakesSlideList {
 
     // Define the fonts
     public static final String FONT_FACE = "SansSerif";
-    private Font base; // used for most text--competitor names, etc.
-    private Font head; // used for the heading
+    private transient Font base; // used for most text--competitor names, etc.
+    private transient Font head; // used for the heading
     public static final int HEAD_MULT = 3; // evaluate baseFont * HEAD_MULT / HEAD_DIV for the head font size
     public static final int HEAD_DIV = 2;
     public static final int HEAD_STYLE = Font.BOLD;
-    private Font subhead; // used for subheadings, e.g. subsections within the larger results
+    private transient Font subhead; // used for subheadings, e.g. subsections within the larger results
     public static final int SUBHEAD_MULT = 1;
     public static final int SUBHEAD_DIV = 1;
     public static final int SUBHEAD_STYLE = Font.BOLD;
-    private Font number; // used for numbers (places, sweeps)
+    private transient Font number; // used for numbers (places, sweeps)
     public static final int NUMBER_MULT = 1;
     public static final int NUMBER_DIV = 1;
     public static final int NUMBER_STYLE = Font.BOLD | Font.ITALIC;
-    private Font smalltext; // used for things like "page _ of _ for this event"
+    private transient Font smalltext; // used for things like "page _ of _ for this event"
     public static final int SMALLTEXT_MULT = 1;
     public static final int SMALLTEXT_DIV = 2;
     public static final int SMALLTEXT_STYLE = Font.PLAIN;
@@ -95,6 +97,11 @@ public class DefaultSweepstakesSlideList implements SweepstakesSlideList {
         this.sweeps = new HashMap<String, Fraction>(sweeps); // descending--highest schools at the top
         this.displayCap = displayCap;
 
+        initializeComputedData();
+    }
+
+    private void readObject (ObjectInputStream ois) throws IOException, ClassNotFoundException {
+        ois.defaultReadObject();
         initializeComputedData();
     }
 
