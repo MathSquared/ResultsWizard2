@@ -21,7 +21,7 @@ public interface Selector {
      * Sets the size of slides that will be returned from this Selector.
      * 
      * <p>
-     * Some implementations may impose their own limitations on the parameters to this method.
+     * Some implementations may silently impose their own limitations on the parameters to this method. Thus, client code must not assume that the size of the slides to be returned will be precisely equal to what is passed to this method.
      * </p>
      * 
      * @param width the width of the slides to return, in pixels

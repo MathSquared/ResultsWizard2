@@ -17,7 +17,7 @@ public interface SlideList extends List<Slide>, Serializable {
      * Modifies the Slides carried by this SlideList to display using the given width and height. This method can change any aspect of the slides, including their number, amount, and relative ordering; it is as if the SlideList was reinitialized from its raw data.
      * 
      * <p>
-     * Implementors may impose their own restrictions on the possible arguments to this method.
+     * Implementors may silently impose their own restrictions on the possible arguments to this method. Thus, client code must not assume that the size of the slides to be returned will be precisely equal to what is passed to this method.
      * </p>
      * 
      * @param width the width of the slides, in pixels
