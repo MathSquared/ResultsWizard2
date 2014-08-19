@@ -99,7 +99,7 @@ public class DefaultSweepstakesSlideList implements SweepstakesSlideList {
     }
 
     /**
-     * Initialize data that can be computed from other fields. This includes:
+     * Initializes data that can be computed from other fields. This includes:
      * 
      * <ul>
      * <li>the list of slides,</li>
