@@ -376,7 +376,7 @@ public class DefaultSweepstakesSlideList implements SweepstakesSlideList {
                 sl = createNewSkeletalSlide();
 
                 // Force the add this time
-                surplus = forceAddTie(sl, toAdd, 0);
+                surplus = forceAddTie(sl, toAdd, index);
 
                 // Add the surplus
                 if (surplus.size() > 1) {
