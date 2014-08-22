@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 
 import javax.swing.JDialog;
 import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
 import javax.swing.border.EmptyBorder;
 
 /**
@@ -29,6 +30,18 @@ public class EventResultsEditorDialog extends JDialog {
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         contentPane.setLayout(new BorderLayout(0, 0));
         setContentPane(contentPane);
+
+        JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+        contentPane.add(tabbedPane, BorderLayout.CENTER);
+
+        JPanel indivPanel = new JPanel();
+        tabbedPane.addTab("Individual", null, indivPanel, null);
+
+        JPanel teamPanel = new JPanel();
+        tabbedPane.addTab("Team", null, teamPanel, null);
+
+        JPanel honorsPanel = new JPanel();
+        tabbedPane.addTab("Special Honors", null, honorsPanel, null);
 
     }
 
