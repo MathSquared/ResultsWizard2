@@ -90,6 +90,50 @@ public class Fraction implements Comparable<Fraction> { // TODO write unit tests
     }
 
     /**
+     * Parses a String into fraction form.
+     * 
+     * <h1>Format</h1>
+     * 
+     * <p>
+     * The input string must match the <code>fraction</code> production rule in the following EBNF:
+     * </p>
+     * 
+     * <code>
+     * number = [ "_" ] , ? <i>a Java integer literal that represents a valid int</i> ? , [ "_" ]<br />
+     * denominator = [ "_" ] , ? <i>a Java integer literal that represents a valid int other than 0</i> ? , [ "_" ]<br />
+     * unit-symbol = { " " } , ( "u" | "U" | "+" ) , { " " }<br />
+     * fraction-symbol = { " " } , "/" , { " " }<br />
+     * decimal = [ "_" ] , ? <i>a Java integer literal that represents a valid int, with the exception that it contains exactly one decimal point inserted between two arbitrary characters or at the start or end of the string</i> ? , [ "_" ]<br />
+     * (* <i>Note that unlike a Java floating-point literal, a decimal may contain an underscore adjacent to a decimal point.</i> *)<br />
+     * <br />
+     * fraction = decimal | ( [ number , unit-symbol ] , number , [ fraction-symbol , denominator ] )
+     * </code>
+     * 
+     * <h1>Parsing</h1>
+     * 
+     * <p>
+     * A String meeting the above production is parsed as follows, or in an equivalent manner:
+     * </p>
+     * 
+     * <ul>
+     * <li>For a <code>fraction</code> matching the <code>decimal</code> production rule, return a Fraction {@linkplain #Fraction(int, int) canonicalized} from one whose numerator is equal to the value of the integer literal with the decimal point, and whose denominator is equal to <code>(10<sup>number-of-digits-after-decimal-point</sup>)</code>.</li>
+     * <li>For a <code>fraction</code> matching the other pattern, there are two options:
+     * <ul>
+     * <li>If a <code>fraction-symbol</code> is present, we return a Fraction canonicalized from one whose unit is equal to the <code>number</code> before the <code>unit-symbol</code> (if present) or 0 (if not present)</li>, whose numerator is equal to the <code>number</code> immediately before the <code>fraction-symbol</code>, and whose denominator is equal to the <code>denominator</code>.
+     * <li>Else, a <code>fraction-symbol</code> is not present, and we return a Fraction canonicalized from one whose numerator is equal to the sum of all <code>numbers</code> in the pattern string, and whose denominator is equal to 1.</li>
+     * </ul>
+     * </li>
+     * </ul>
+     * 
+     * @param toParse a String adhering to the <code>fraction</code> production rule in the above EBNF
+     * @return a Fraction representing the String, as detailed above
+     */
+    public static Fraction parseFraction (String toParse) {
+        // TODO implement
+        return new Fraction(0);
+    }
+
+    /**
      * Canonicalizes this fraction according to the criteria {@linkplain #Fraction(int, int) noted above}. This method may be invoked at any time.
      */
     private void canonicalize () {
