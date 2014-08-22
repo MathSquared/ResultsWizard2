@@ -9,6 +9,7 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.border.EmptyBorder;
@@ -68,8 +69,36 @@ public class AdminGuiFrame extends JFrame {
         configPanel.add(configBtnSelectColorScheme);
 
         // Contains a GUI for inputting event results and manipulating the projection
+        // inputPanel contains only layout border elements
         JPanel inputPanel = new JPanel();
         tabbedPane.addTab("Input Results", null, inputPanel, null);
+        inputPanel.setLayout(new BorderLayout(0, 0));
+
+        Component inputTopStrut = Box.createVerticalStrut(20);
+        inputPanel.add(inputTopStrut, BorderLayout.NORTH);
+
+        Component inputBottomStrut = Box.createVerticalStrut(20);
+        inputPanel.add(inputBottomStrut, BorderLayout.SOUTH);
+
+        Component inputLeftStrut = Box.createHorizontalStrut(10);
+        inputPanel.add(inputLeftStrut, BorderLayout.WEST);
+
+        Component inputRightStrut = Box.createHorizontalStrut(10);
+        inputPanel.add(inputRightStrut, BorderLayout.EAST);
+
+        // Contains the actual GUI elements
+        JPanel inputInteriorPanel = new JPanel();
+        inputPanel.add(inputInteriorPanel, BorderLayout.CENTER);
+        inputInteriorPanel.setLayout(new BorderLayout(10, 0));
+
+        // Contains buttons for manipulating inputList below
+        JPanel inputButtonPanel = new JPanel();
+        inputInteriorPanel.add(inputButtonPanel, BorderLayout.EAST);
+        inputButtonPanel.setLayout(new BoxLayout(inputButtonPanel, BoxLayout.Y_AXIS));
+
+        // Contains entries representing the different SlideLists that the display unit has in its directory
+        JList inputList = new JList();
+        inputInteriorPanel.add(inputList, BorderLayout.CENTER);
 
         // Contains commands relating to the projection system itself, such as closing the socket or sending a Message.POISON
         JPanel systemPanel = new JPanel();
