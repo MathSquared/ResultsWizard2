@@ -75,6 +75,24 @@ public class AdminGuiFrame extends JFrame {
         JPanel systemPanel = new JPanel();
         tabbedPane.addTab("System Options", null, systemPanel, null);
         systemPanel.setLayout(new BoxLayout(systemPanel, BoxLayout.Y_AXIS));
+
+        Component systemFirstVerticalStrut = Box.createVerticalStrut(20);
+        systemPanel.add(systemFirstVerticalStrut);
+
+        // Allows the user to close the connection (this should close this frame and open a WFCFrame)
+        JButton systemBtnCloseConnection = new JButton("Close Connection...");
+        systemBtnCloseConnection.setToolTipText("Close this control panel but keep the projection running");
+        systemBtnCloseConnection.setAlignmentX(Component.CENTER_ALIGNMENT);
+        systemPanel.add(systemBtnCloseConnection);
+
+        Component systemSecondVerticalStrut = Box.createVerticalStrut(10);
+        systemPanel.add(systemSecondVerticalStrut);
+
+        // Allows the user to send Message.POISON (should also close the connectiona and close this frame)
+        JButton systemBtnTerminateProjection = new JButton("Terminate Projection...");
+        systemBtnTerminateProjection.setToolTipText("WARNING: input data will NOT BE SAVED");
+        systemBtnTerminateProjection.setAlignmentX(Component.CENTER_ALIGNMENT);
+        systemPanel.add(systemBtnTerminateProjection);
     }
 
 }
