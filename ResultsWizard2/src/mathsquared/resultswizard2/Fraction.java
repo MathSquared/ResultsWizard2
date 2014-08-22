@@ -99,11 +99,11 @@ public class Fraction implements Comparable<Fraction> { // TODO write unit tests
      * </p>
      * 
      * <code>
-     * number = [ "_" ] , ? <i>a Java integer literal that represents a valid int</i> ? , [ "_" ]<br />
-     * denominator = [ "_" ] , ? <i>a Java integer literal that represents a valid int other than 0</i> ? , [ "_" ]<br />
+     * number = [ "_" ] , { "0" } , ? <i>a Java decimal integer literal that represents a valid int</i> ? , [ "_" ]<br />
+     * denominator = [ "_" ] , { "0" } , ? <i>a Java decimal integer literal that represents a valid int other than 0</i> ? , [ "_" ]<br />
      * unit-symbol = { " " } , ( "u" | "U" | "+" ) , { " " }<br />
      * fraction-symbol = { " " } , "/" , { " " }<br />
-     * decimal = [ "_" ] , ? <i>a Java integer literal that represents a valid int, with the exception that it contains exactly one decimal point inserted between two arbitrary characters or at the start or end of the string</i> ? , [ "_" ]<br />
+     * decimal = [ "_" ] , { "0" } , ? <i>a Java decimal integer literal that represents a valid int, with the exception that it contains exactly one decimal point inserted between two arbitrary characters or at the start or end of the string</i> ? , [ "_" ]<br />
      * (* <i>Note that unlike a Java floating-point literal, a decimal may contain an underscore adjacent to a decimal point.</i> *)<br />
      * <br />
      * fraction = decimal | ( [ number , unit-symbol ] , number , [ fraction-symbol , denominator ] )
