@@ -1,10 +1,13 @@
 package mathsquared.resultswizard2;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
@@ -46,6 +49,23 @@ public class AdminGuiFrame extends JFrame {
         JPanel configPanel = new JPanel();
         tabbedPane.addTab("Configuration", null, configPanel, null);
         configPanel.setLayout(new BoxLayout(configPanel, BoxLayout.Y_AXIS));
+
+        Component configFirstVerticalStrut = Box.createVerticalStrut(20);
+        configPanel.add(configFirstVerticalStrut);
+
+        // Allows the user to input an event configuration file
+        JButton configBtnSelectEventConfiguration = new JButton("Select Event Configuration...");
+        configBtnSelectEventConfiguration.setAlignmentX(Component.CENTER_ALIGNMENT);
+        configPanel.add(configBtnSelectEventConfiguration);
+
+        Component configSecondVerticalStrut = Box.createVerticalStrut(10);
+        configPanel.add(configSecondVerticalStrut);
+
+        // Allows the user to input a color scheme for use in all new slides
+        JButton configBtnSelectColorScheme = new JButton("Select Color Scheme...");
+        configBtnSelectColorScheme.setToolTipText("Will NOT affect previously sent slides");
+        configBtnSelectColorScheme.setAlignmentX(Component.CENTER_ALIGNMENT);
+        configPanel.add(configBtnSelectColorScheme);
 
         // Contains a GUI for inputting event results and manipulating the projection
         JPanel inputPanel = new JPanel();
