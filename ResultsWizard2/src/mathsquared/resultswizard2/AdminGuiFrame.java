@@ -97,6 +97,36 @@ public class AdminGuiFrame extends JFrame {
         inputInteriorPanel.add(inputButtonPanel, BorderLayout.EAST);
         inputButtonPanel.setLayout(new BoxLayout(inputButtonPanel, BoxLayout.Y_AXIS));
 
+        // Opens a GUI responsible for adding a new SlideList
+        JButton inputBtnAddNew = new JButton("Add New...");
+        inputBtnAddNew.setAlignmentX(Component.CENTER_ALIGNMENT);
+        inputButtonPanel.add(inputBtnAddNew);
+
+        // Bigger, since we're separating content creation from content editing
+        Component inputButtonPanelFirstStrut = Box.createVerticalStrut(20);
+        inputButtonPanel.add(inputButtonPanelFirstStrut);
+
+        // Removes the selected SlideList
+        JButton inputBtnRemove = new JButton("Remove");
+        inputBtnRemove.setAlignmentX(Component.CENTER_ALIGNMENT);
+        inputButtonPanel.add(inputBtnRemove);
+
+        Component inputButtonPanelSecondStrut = Box.createVerticalStrut(5);
+        inputButtonPanel.add(inputButtonPanelSecondStrut);
+
+        // Opens a GUI responsible for editing the selected SlideList (ideally same GUI as inputBtnAddNew, but prepopulated)
+        JButton inputBtnEdit = new JButton("Edit...");
+        inputBtnEdit.setAlignmentX(Component.CENTER_ALIGNMENT);
+        inputButtonPanel.add(inputBtnEdit);
+
+        Component inputButtonPanelThirdStrut = Box.createVerticalStrut(5);
+        inputButtonPanel.add(inputButtonPanelThirdStrut);
+
+        // Moves the selected SlideList to the end of the projection order
+        JButton inputBtnMoveToBottom = new JButton("Move to Bottom");
+        inputBtnMoveToBottom.setAlignmentX(Component.CENTER_ALIGNMENT);
+        inputButtonPanel.add(inputBtnMoveToBottom);
+
         // Contains entries representing the different SlideLists that the display unit has in its directory
         JList inputList = new JList();
         inputList.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
