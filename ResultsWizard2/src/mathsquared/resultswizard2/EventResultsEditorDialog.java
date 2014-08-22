@@ -14,6 +14,7 @@ public class EventResultsEditorDialog extends JDialog {
      * Create the dialog.
      */
     public EventResultsEditorDialog () {
+        setTitle("Edit Event Results");
         setBounds(100, 100, 450, 300);
 
     }
