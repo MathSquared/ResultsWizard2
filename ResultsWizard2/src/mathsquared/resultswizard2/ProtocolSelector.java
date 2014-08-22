@@ -15,7 +15,7 @@ import java.util.Map;
  * @author MathSquared
  * 
  */
-public class ProtocolSelector implements Selector {
+public class ProtocolSelector implements Selector, CommandProcessor {
     private int width;
     private int height;
     private long cycleDelay; // amount of milliseconds to wait between cycles
