@@ -6,7 +6,7 @@ package mathsquared.resultswizard2;
 import java.util.Queue;
 
 /**
- * Feeds data from a queue to another object, and from the object to another queue. Currently, the only supported object is a {@link ProtocolSelector}.
+ * Feeds data from a queue to another object, and from the object to another queue. The object must be able to {@linkplain CommandProcessor process commands}.
  * 
  * @author MathSquared
  * 
@@ -14,11 +14,11 @@ import java.util.Queue;
 public class QueueCommunicator implements Runnable {
     private Queue rx; // receiving
     private Queue tx; // sending
-    private ProtocolSelector comm;
+    private CommandProcessor comm;
 
     public static final long SLEEP_TIME = 100; // time to sleep when rx is empty
 
-    public QueueCommunicator (Queue rx, Queue tx, ProtocolSelector comm) {
+    public QueueCommunicator (Queue rx, Queue tx, CommandProcessor comm) {
         this.rx = rx;
         this.tx = tx;
         this.comm = comm;
