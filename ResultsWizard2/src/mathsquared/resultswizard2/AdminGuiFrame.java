@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
@@ -44,6 +45,7 @@ public class AdminGuiFrame extends JFrame {
         // Contains configuration options, such as setting a color scheme
         JPanel configPanel = new JPanel();
         tabbedPane.addTab("Configuration", null, configPanel, null);
+        configPanel.setLayout(new BoxLayout(configPanel, BoxLayout.Y_AXIS));
 
         // Contains a GUI for inputting event results and manipulating the projection
         JPanel inputPanel = new JPanel();
@@ -52,6 +54,7 @@ public class AdminGuiFrame extends JFrame {
         // Contains commands relating to the projection system itself, such as closing the socket or sending a Message.POISON
         JPanel systemPanel = new JPanel();
         tabbedPane.addTab("System Options", null, systemPanel, null);
+        systemPanel.setLayout(new BoxLayout(systemPanel, BoxLayout.Y_AXIS));
     }
 
 }
