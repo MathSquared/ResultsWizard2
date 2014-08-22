@@ -16,6 +16,8 @@ public class QueueCommunicator implements Runnable {
     private Queue tx; // sending
     private ProtocolSelector comm;
 
+    public static final long SLEEP_TIME = 100; // time to sleep when rx is empty
+
     public QueueCommunicator (Queue rx, Queue tx, ProtocolSelector comm) {
         this.rx = rx;
         this.tx = tx;
@@ -28,7 +30,7 @@ public class QueueCommunicator implements Runnable {
             // Wait until we have data
             while (rx.size() == 0) {
                 try {
-                    Thread.sleep(100);
+                    Thread.sleep(SLEEP_TIME);
                 } catch (InterruptedException e) {
                     // ignore
                 }
