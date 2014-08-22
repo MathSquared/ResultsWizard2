@@ -12,6 +12,7 @@ import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import javax.swing.border.BevelBorder;
 import javax.swing.border.EmptyBorder;
 
 /**
@@ -98,6 +99,7 @@ public class AdminGuiFrame extends JFrame {
 
         // Contains entries representing the different SlideLists that the display unit has in its directory
         JList inputList = new JList();
+        inputList.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
         inputInteriorPanel.add(inputList, BorderLayout.CENTER);
 
         // Contains commands relating to the projection system itself, such as closing the socket or sending a Message.POISON
