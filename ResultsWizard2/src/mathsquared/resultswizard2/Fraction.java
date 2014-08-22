@@ -106,7 +106,8 @@ public class Fraction implements Comparable<Fraction> { // TODO write unit tests
      * decimal = [ "_" ] , { "0" } , ? <i>a Java decimal integer literal that represents a valid int, with the exception that it contains exactly one decimal point inserted between two arbitrary characters or at the start or end of the string</i> ? , [ "_" ]<br />
      * (* <i>Note that unlike a Java floating-point literal, a decimal may contain an underscore adjacent to a decimal point.</i> *)<br />
      * <br />
-     * fraction = decimal | ( [ number , unit-symbol ] , number , [ fraction-symbol , denominator ] )
+     * unsigned-fraction = decimal | ( [ number , unit-symbol ] , number , [ fraction-symbol , denominator ] )
+     * fraction = { "-" } , unsigned-fraction
      * </code>
      * 
      * <h1>Parsing</h1>
@@ -116,6 +117,7 @@ public class Fraction implements Comparable<Fraction> { // TODO write unit tests
      * </p>
      * 
      * <ul>
+     * <li>First, note that if the string includes an initial hyphen, the string is parsed as if the hyphen was removed except that the unit and numerator values given below are negated.</li>
      * <li>For a <code>fraction</code> matching the <code>decimal</code> production rule, return a Fraction {@linkplain #Fraction(int, int) canonicalized} from one whose numerator is equal to the value of the integer literal with the decimal point, and whose denominator is equal to <code>(10<sup>number-of-digits-after-decimal-point</sup>)</code>.</li>
      * <li>For a <code>fraction</code> matching the other pattern, there are two options:
      * <ul>
@@ -132,7 +134,7 @@ public class Fraction implements Comparable<Fraction> { // TODO write unit tests
         // TODO implement
         return new Fraction(0);
 
-        // Fraction regex:
+        // unsigned-fraction regex:
         // ([0-9_]{0,10}\.[0-9_]{0,10})|((([0-9_]{1,10}) *[uU+ ] *)?([0-9_]{1,10})( *\/ *_*([0-9_]{0,9}[1-9][0-9_]{0,9}))?)
         // (must check that fields that require content aren't content-free, e.g. _._)
     }
