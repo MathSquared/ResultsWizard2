@@ -131,6 +131,10 @@ public class Fraction implements Comparable<Fraction> { // TODO write unit tests
     public static Fraction parseFraction (String toParse) {
         // TODO implement
         return new Fraction(0);
+
+        // Fraction regex:
+        // ([0-9_]{0,10}\.[0-9_]{0,10})|((([0-9_]{1,10}) *[uU+ ] *)?([0-9_]{1,10})( *\/ *_*([1-9][0-9_]{0,9}))?)
+        // (must check that fields that require content aren't content-free, e.g. _._)
     }
 
     /**
