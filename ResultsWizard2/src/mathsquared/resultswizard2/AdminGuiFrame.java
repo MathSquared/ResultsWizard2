@@ -26,6 +26,7 @@ public class AdminGuiFrame extends JFrame {
      * Create the frame.
      */
     public AdminGuiFrame (ObjectInputStream ois, ObjectOutputStream oos) {
+        setTitle("Results Wizard");
         // Initialize comms
         this.oos = oos;
         this.ois = ois;
