@@ -1,6 +1,8 @@
 package mathsquared.resultswizard2;
 
 import java.awt.BorderLayout;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -14,12 +16,19 @@ import javax.swing.border.EmptyBorder;
  */
 public class AdminGuiFrame extends JFrame {
 
+    private ObjectInputStream ois;
+    private ObjectOutputStream oos;
+
     private JPanel contentPane;
 
     /**
      * Create the frame.
      */
-    public AdminGuiFrame () {
+    public AdminGuiFrame (ObjectInputStream ois, ObjectOutputStream oos) {
+        // Initialize comms
+        this.oos = oos;
+        this.ois = ois;
+
         setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         setBounds(100, 100, 450, 300);
         contentPane = new JPanel();
