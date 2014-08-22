@@ -6,6 +6,7 @@ import java.io.ObjectOutputStream;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
 import javax.swing.border.EmptyBorder;
 
 /**
@@ -35,6 +36,21 @@ public class AdminGuiFrame extends JFrame {
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         contentPane.setLayout(new BorderLayout(0, 0));
         setContentPane(contentPane);
+
+        JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+        contentPane.add(tabbedPane, BorderLayout.CENTER);
+
+        // Contains configuration options, such as setting a color scheme
+        JPanel configPanel = new JPanel();
+        tabbedPane.addTab("Configuration", null, configPanel, null);
+
+        // Contains a GUI for inputting event results and manipulating the projection
+        JPanel inputPanel = new JPanel();
+        tabbedPane.addTab("Input Results", null, inputPanel, null);
+
+        // Contains commands relating to the projection system itself, such as closing the socket or sending a Message.POISON
+        JPanel systemPanel = new JPanel();
+        tabbedPane.addTab("System Options", null, systemPanel, null);
     }
 
 }
