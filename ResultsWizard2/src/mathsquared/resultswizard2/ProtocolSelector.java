@@ -61,6 +61,7 @@ public class ProtocolSelector implements Selector, CommandProcessor {
             }
         } else { // our first getCurrent
             lastCycle = System.currentTimeMillis();
+            getCurrentDone = true;
         }
 
         // Create duplicate field values to mess with (to canonicalize what we return)
