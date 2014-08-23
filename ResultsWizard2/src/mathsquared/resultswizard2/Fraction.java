@@ -192,6 +192,13 @@ public class Fraction implements Comparable<Fraction> { // TODO write unit tests
                     throw thr;
                 }
 
+                // Handle negatives
+                if (negative) {
+                    u *= -1;
+                    n *= -1;
+                    // No d, since -n/-d would cancel out
+                }
+
                 return new Fraction(u, n, d);
             } else { // decimal
                 // Algorithm specified in documentation
@@ -206,6 +213,12 @@ public class Fraction implements Comparable<Fraction> { // TODO write unit tests
                     NumberFormatException thr = new NumberFormatException("[decimal] " + e.getMessage());
                     thr.initCause(e);
                     throw thr;
+                }
+
+                // Handle negatives
+                if (negative) {
+                    numerator *= -1;
+                    // No denominator, since -numerator/-denominator would cancel out
                 }
 
                 // Find the denominator, avoiding Math.pow due to floating-point roundoff
