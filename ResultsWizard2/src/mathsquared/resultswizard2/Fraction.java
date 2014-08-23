@@ -204,8 +204,8 @@ public class Fraction implements Comparable<Fraction> { // TODO write unit tests
                 return new Fraction(u, n, d);
             } else { // decimal
                 // Algorithm specified in documentation
-                String decimalRemoved = scrubbed.replace(".", "");
-                int digitsAfterDecimal = scrubbed.substring(scrubbed.indexOf(".") + 1).length();
+                String decimalRemoved = match.group(DECIMAL_GROUP).replace(".", "");
+                int digitsAfterDecimal = match.group(DECIMAL_GROUP).substring(scrubbed.indexOf(".") + 1).length();
 
                 // Parse decimalRemoved
                 int numerator;
