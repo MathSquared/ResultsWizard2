@@ -35,6 +35,7 @@ public class EventConfigParser {
      * </p>
      * 
      * <ul>
+     * <li><code>evt</code>: no value needed (this key simply indicates the name of the event)
      * <li><code>evt`<b>otherNames</b></code>: the other names for this event, in {@linkplain SyntaxParser#parseQuotedSyntax(String) quoted syntax}</li>
      * <li><code>evt`<b>indivPlaces</b></code>: the amount of individual places to recognize in this event</li>
      * <li><code>evt`<b>teamPlaces</b></code>: the amount of team places to recognize in this event</li>
