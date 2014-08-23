@@ -228,11 +228,6 @@ public class Fraction implements Comparable<Fraction> { // TODO write unit tests
                 return new Fraction(numerator, denominator);
             }
         }
-
-        // unsigned-fraction regex:
-        // (0*([0-9]{0,10}\.([0-9]{0,9}[1-9])?)0*)|((0*([0-9]{1,10}) *[uU+ ] *)?0*([0-9]{1,10})( *\/ *_*0*([1-9][0-9]{0,9}))?)
-        // (must check that fields that require content aren't content-free, e.g. _._)
-        // (also must remove underscores)
     }
 
     /**
