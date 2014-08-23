@@ -107,7 +107,7 @@ public class Fraction implements Comparable<Fraction> { // TODO write unit tests
      * (* <i>Note that unlike a Java floating-point literal, a decimal may contain an underscore adjacent to a decimal point.</i> *)<br />
      * <br />
      * unsigned-fraction = decimal | ( [ number , unit-symbol ] , number , [ fraction-symbol , denominator ] )
-     * fraction = { "-" } , unsigned-fraction
+     * fraction = [ "-" ] , unsigned-fraction
      * </code>
      * 
      * <h1>Parsing</h1>
