@@ -23,7 +23,7 @@ public class ProtocolSelector implements Selector, CommandProcessor {
     private LinkedHashMap<String, SlideList> slides; // stores the slides to display
     private String currentTag; // the current key in the map where to find the current slide
     private int currentIndex; // the index in the array given by currentTag
-    private long lastCycle = 0;
+    private long lastCycle = 0; // millisecond time of the last cycle
     private boolean getCurrentDone; // whether we've done a getCurrent
 
     public ProtocolSelector (int width, int height, long cycleDelay) {
@@ -60,6 +60,7 @@ public class ProtocolSelector implements Selector, CommandProcessor {
                 // do nothing
             }
         } else { // our first getCurrent
+            // Start cycling when we first retrieve a slide
             lastCycle = System.currentTimeMillis();
             getCurrentDone = true;
         }
