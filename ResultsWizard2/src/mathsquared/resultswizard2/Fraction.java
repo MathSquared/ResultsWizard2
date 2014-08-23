@@ -95,7 +95,7 @@ public class Fraction implements Comparable<Fraction> { // TODO write unit tests
      * <h1>Format</h1>
      * 
      * <p>
-     * The input string must match the <code>fraction</code> production rule in the following EBNF:
+     * The input string must match the <code>fraction</code> production rule in the following EBNF (note that any underscores in the input string are ignored):
      * </p>
      * 
      * <code>
@@ -135,8 +135,9 @@ public class Fraction implements Comparable<Fraction> { // TODO write unit tests
         return new Fraction(0);
 
         // unsigned-fraction regex:
-        // ([0_]*([0-9_]{0,10}\.([0-9_]{0,9}[1-9])?)[0_]*)|(([0_]*([0-9_]{1,10}) *[uU+ ] *)?[0_]*([0-9_]{1,10})( *\/ *_*[0_]*([1-9][0-9_]{0,9}))?)
+        // (0*([0-9]{0,10}\.([0-9]{0,9}[1-9])?)0*)|((0*([0-9]{1,10}) *[uU+ ] *)?0*([0-9]{1,10})( *\/ *_*0*([1-9][0-9]{0,9}))?)
         // (must check that fields that require content aren't content-free, e.g. _._)
+        // (also must remove underscores)
     }
 
     /**
