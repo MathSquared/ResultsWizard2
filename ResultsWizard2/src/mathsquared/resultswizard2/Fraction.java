@@ -118,8 +118,8 @@ public class Fraction implements Comparable<Fraction> { // TODO write unit tests
      * 
      * <ul>
      * <li>First, note that if the string includes an initial hyphen, the string is parsed as if the hyphen was removed except that the unit and numerator values given below are negated.</li>
-     * <li>For a <code>fraction</code> matching the <code>decimal</code> production rule, return a Fraction {@linkplain #Fraction(int, int) canonicalized} from one whose numerator is equal to the value of the integer literal with the decimal point, and whose denominator is equal to <code>(10<sup>number-of-digits-after-decimal-point</sup>)</code>.</li>
-     * <li>For a <code>fraction</code> matching the other pattern, there are two options:
+     * <li>For an <code>unsigned-fraction</code> matching the <code>decimal</code> production rule, return a Fraction {@linkplain #Fraction(int, int) canonicalized} from one whose numerator is equal to the value of the integer literal with the decimal point, and whose denominator is equal to <code>(10<sup>number-of-digits-after-decimal-point</sup>)</code>.</li>
+     * <li>For an <code>unsigned-fraction</code> matching the other pattern, there are two options:
      * <ul>
      * <li>If a <code>fraction-symbol</code> is present, we return a Fraction canonicalized from one whose unit is equal to the <code>number</code> before the <code>unit-symbol</code> (if present) or 0 (if not present)</li>, whose numerator is equal to the <code>number</code> immediately before the <code>fraction-symbol</code>, and whose denominator is equal to the <code>denominator</code>.
      * <li>Else, a <code>fraction-symbol</code> is not present, and we return a Fraction canonicalized from one whose numerator is equal to the sum of all <code>numbers</code> in the pattern string, and whose denominator is equal to 1.</li>
