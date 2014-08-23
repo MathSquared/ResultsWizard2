@@ -26,6 +26,13 @@ public class ProtocolSelector implements Selector, CommandProcessor {
     private long lastCycle = 0; // millisecond time of the last cycle
     private boolean getCurrentDone; // whether we've done a getCurrent
 
+    /**
+     * Creates a new ProtocolSelector that exposes slides of a given size and cycles between them after a given delay.
+     * 
+     * @param width the width of the slides to expose, in pixels
+     * @param height the height of the slides to expose, in pixels
+     * @param cycleDelay the number of milliseconds after which to cycle to the next slide
+     */
     public ProtocolSelector (int width, int height, long cycleDelay) {
         this.width = width;
         this.height = height;
