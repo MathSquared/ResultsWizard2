@@ -106,6 +106,7 @@ public class Fraction implements Comparable<Fraction> { // TODO write unit tests
      * decimal = [ "_" ] , { "0" } , ? <i>a Java decimal integer literal that represents a valid positive int, with the exception that it contains exactly one decimal point inserted between two arbitrary characters or at the start or end of the string</i> ? , [ "_" ]<br />
      * (* <i>Note that unlike a Java floating-point literal, a decimal may contain an underscore adjacent to a decimal point.</i> *)<br />
      * <br />
+     * (* <i>See Trimming below for notes on whitespace</i> *)
      * unsigned-fraction = decimal | ( [ number , unit-symbol ] , number , [ fraction-symbol , denominator ] )
      * fraction = [ "-" ] , unsigned-fraction
      * </code>
@@ -126,6 +127,12 @@ public class Fraction implements Comparable<Fraction> { // TODO write unit tests
      * </ul>
      * </li>
      * </ul>
+     * 
+     * <h1>Trimming</h1>
+     * 
+     * <p>
+     * Note that all input strings are treated as if run through {@link String#trim()} before parsing and after an initial hyphen is removed, if any. This means that any characters less than <code>U+0020</code> (the space character) may be ignored when they come at the beginning or end of an input string or immediately after an initial hyphen.
+     * </p>
      * 
      * @param toParse a String adhering to the <code>fraction</code> production rule in the above EBNF
      * @return a Fraction representing the String, as detailed above
