@@ -209,12 +209,16 @@ public class Fraction implements Comparable<Fraction> { // TODO write unit tests
 
                 // Parse decimalRemoved
                 int numerator;
-                try {
-                    numerator = Integer.parseInt(decimalRemoved);
-                } catch (NumberFormatException e) {
-                    NumberFormatException thr = new NumberFormatException("[decimal] " + e.getMessage());
-                    thr.initCause(e);
-                    throw thr;
+                if (decimalRemoved.equals("")) {
+                    numerator = 0;
+                } else {
+                    try {
+                        numerator = Integer.parseInt(decimalRemoved);
+                    } catch (NumberFormatException e) {
+                        NumberFormatException thr = new NumberFormatException("[decimal] " + e.getMessage());
+                        thr.initCause(e);
+                        throw thr;
+                    }
                 }
 
                 // Handle negatives
