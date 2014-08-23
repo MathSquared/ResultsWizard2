@@ -171,7 +171,8 @@ public class Fraction implements Comparable<Fraction> { // TODO write unit tests
                 int n;
                 int d;
                 try {
-                    u = Integer.parseInt(match.group(UNIT_GROUP));
+                    // Unit nulls default to 0 as the additive identity
+                    u = (match.group(UNIT_GROUP) == null) ? 0 : Integer.parseInt(match.group(UNIT_GROUP));
                 } catch (NumberFormatException e) {
                     NumberFormatException thr = new NumberFormatException("[unit] " + e.getMessage());
                     thr.initCause(e);
@@ -185,7 +186,8 @@ public class Fraction implements Comparable<Fraction> { // TODO write unit tests
                     throw thr;
                 }
                 try {
-                    d = Integer.parseInt(match.group(DENOMINATOR_GROUP));
+                    // Denominator nulls default to 1 as the multiplicative identity
+                    d = (match.group(DENOMINATOR_GROUP) == null) ? 1 : Integer.parseInt(match.group(DENOMINATOR_GROUP));
                 } catch (NumberFormatException e) {
                     NumberFormatException thr = new NumberFormatException("[denominator] " + e.getMessage());
                     thr.initCause(e);
