@@ -205,7 +205,7 @@ public class Fraction implements Comparable<Fraction> { // TODO write unit tests
             } else { // decimal
                 // Algorithm specified in documentation
                 String decimalRemoved = match.group(DECIMAL_GROUP).replace(".", "");
-                int digitsAfterDecimal = match.group(DECIMAL_GROUP).substring(scrubbed.indexOf(".") + 1).length();
+                int digitsAfterDecimal = match.group(DECIMAL_GROUP).substring(match.group(DECIMAL_GROUP).indexOf(".") + 1).length();
 
                 // Parse decimalRemoved
                 int numerator;
