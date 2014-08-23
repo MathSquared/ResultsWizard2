@@ -3,6 +3,9 @@
  */
 package mathsquared.resultswizard2;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * An immutable object that represents a proper or improper fraction.
  * 
@@ -24,6 +27,15 @@ public class Fraction implements Comparable<Fraction> { // TODO write unit tests
 
     // If the denominator is detected as 0, this is false--prevents finalizer exploits from propagating 0 denominators
     private boolean valid = true;
+
+    // parseFraction regex
+    public static final Pattern PARSE_FRACTION = Pattern.compile("(0*([0-9]{0,10}\\.([0-9]{0,9}[1-9])?)0*)|((0*([0-9]{1,10}) *[uU+ ] *)?0*([0-9]{1,10})( *\\/ *_*0*([1-9][0-9]{0,9}))?)");
+
+    // Capturing groups within PARSE_FRACTION
+    public static final int DECIMAL_GROUP = 2; // the decimal, with initial/terminal zeroes scrubbed
+    public static final int UNIT_GROUP = 6; // the unit of the fraction
+    public static final int NUMERATOR_GROUP = 7; // the numerator of the fraction
+    public static final int DENOMINATOR_GROUP = 9; // the denominator of the fraction
 
     /**
      * Constructs a Fraction representing the given whole number. This is equivalent to <code>Fraction(num, 1)</code> and is provided as a convenience method.
@@ -138,8 +150,71 @@ public class Fraction implements Comparable<Fraction> { // TODO write unit tests
      * @return a Fraction representing the String, as detailed above
      */
     public static Fraction parseFraction (String toParse) {
-        // TODO implement
-        return new Fraction(0);
+        // First, let's trim and remove underscores
+        String scrubbed = toParse.trim().replace("_", "");
+
+        // Check for an initial hyphen
+        boolean negative = scrubbed.charAt(0) == '-';
+        if (negative) {
+            scrubbed = scrubbed.substring(1).trim();
+        }
+
+        // Run through the regex
+        Matcher match = PARSE_FRACTION.matcher(scrubbed);
+        if (!match.matches()) {
+            throw new IllegalArgumentException("String does not match required syntax");
+        } else {
+            // Detect the input type (decimal or fractional)
+            if (match.group(DECIMAL_GROUP) == null) { // fractional
+                // Extract numbers from strings, adding a descriptor to any exceptions that occur
+                int u;
+                int n;
+                int d;
+                try {
+                    u = Integer.parseInt(match.group(UNIT_GROUP));
+                } catch (NumberFormatException e) {
+                    NumberFormatException thr = new NumberFormatException("[unit] " + e.getMessage());
+                    thr.initCause(e);
+                    throw thr;
+                }
+                try {
+                    n = Integer.parseInt(match.group(NUMERATOR_GROUP));
+                } catch (NumberFormatException e) {
+                    NumberFormatException thr = new NumberFormatException("[numerator] " + e.getMessage());
+                    thr.initCause(e);
+                    throw thr;
+                }
+                try {
+                    d = Integer.parseInt(match.group(DENOMINATOR_GROUP));
+                } catch (NumberFormatException e) {
+                    NumberFormatException thr = new NumberFormatException("[denominator] " + e.getMessage());
+                    thr.initCause(e);
+                    throw thr;
+                }
+
+                return new Fraction(u, n, d);
+            } else { // decimal
+                // Algorithm specified in documentation
+                String decimalRemoved = scrubbed.replace(".", "");
+                int digitsAfterDecimal = scrubbed.substring(scrubbed.indexOf(".") + 1).length();
+
+                // Parse decimalRemoved
+                int numerator;
+                try {
+                    numerator = Integer.parseInt(decimalRemoved);
+                } catch (NumberFormatException e) {
+                    NumberFormatException thr = new NumberFormatException("[decimal] " + e.getMessage());
+                    thr.initCause(e);
+                    throw thr;
+                }
+
+                // Find the denominator, avoiding Math.pow due to floating-point roundoff
+                int denominator = 1;
+                for (int i = 0; i < digitsAfterDecimal; i++, denominator *= 10);
+
+                return new Fraction(numerator, denominator);
+            }
+        }
 
         // unsigned-fraction regex:
         // (0*([0-9]{0,10}\.([0-9]{0,9}[1-9])?)0*)|((0*([0-9]{1,10}) *[uU+ ] *)?0*([0-9]{1,10})( *\/ *_*0*([1-9][0-9]{0,9}))?)
