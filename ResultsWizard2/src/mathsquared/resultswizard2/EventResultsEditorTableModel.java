@@ -6,13 +6,14 @@ package mathsquared.resultswizard2;
 import javax.swing.event.TableModelListener;
 
 /**
- * Allows for the editing of one facet (individual, team, or special) of {@link EventResults}.
+ * Allows for the editing of one {@linkplain Facet facet} (individual, team, or special) of {@link EventResults}.
  * 
  * @author MathSquared
  *
  */
 public class EventResultsEditorTableModel implements EditorTableModel<EventResults> {
 	private EventResults buffer; // this holds the current state of the results, as edited by the user
+	private Facet facet; // the facet edited by this editor
 
 	@Override
 	public void addTableModelListener(TableModelListener arg0) {
