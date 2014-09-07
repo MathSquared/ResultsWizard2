@@ -43,7 +43,7 @@ public class EventResults implements Serializable {
      * </p>
      * 
      * <p>
-     * This constructor is private so as to avoid EventResult objects in incomplete states (that don't represent fully available event results). To instantiate an EventResults object, use the {@link EventResults#EventResults(Event, String[], String[], Map)} constructor.
+     * This constructor is private so as to avoid EventResult objects in incomplete states (that don't represent fully available event results). To instantiate an EventResults object, use the {@link EventResults#EventResults(Event, String[][], String[][], String[][], Map, Map)} constructor.
      * </p>
      * 
      * @param evt the Event object represented
