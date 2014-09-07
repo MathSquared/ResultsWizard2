@@ -8,6 +8,8 @@ import javax.swing.table.TableModel;
 /**
  * Represents data that can be edited in one or more stages and then transformed into another object.
  * 
+ * <p>Note that these stages should not change the column headers or layout in this table. They should only change which columns are editable and which are not. This will help generate a consistent user experience.</p>
+ * 
  * @author MathSquared
  * @param <T> the type of data that can be obtained from this model using {@link #getResult()}
  *
