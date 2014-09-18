@@ -3,6 +3,8 @@
  */
 package mathsquared.resultswizard2;
 
+import java.util.List;
+
 import javax.swing.table.AbstractTableModel;
 
 /**
@@ -22,6 +24,12 @@ public abstract class RankingEditorTableModel<T> extends AbstractTableModel impl
     // Normally, this is set to the number of places in the event (or sweeps contenders to be recognized).
     // The actual row count can exceed this number in cases of a tie for last place.
     private int retainPlaces;
+
+    // These will contain the data. Unfortunately, we have to use List<Object[]> and cast at runtime because the table can expand.
+    // data.get(i)[j] will be the entry in the ith row in the jth column
+    // (column 0 will be the built-in tie handling)
+    // These will probably be exposed to subclasses by way of methods that typecheck beforehand.
+    private List<Object[]> data;
 
     /**
      * Instantiates a model with the given column names and classes. The model will add a column at index 0 with name "End tie?" and class <code>Boolean.class</code>.
