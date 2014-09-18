@@ -3,6 +3,7 @@
  */
 package mathsquared.resultswizard2;
 
+import java.util.Deque;
 import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
@@ -30,6 +31,14 @@ public abstract class RankingEditorTableModel<T> extends AbstractTableModel impl
     // (column 0 will be the built-in tie handling)
     // These will probably be exposed to subclasses by way of methods that typecheck beforehand.
     private List<Object[]> data;
+
+    // This will be used as a stack for rows that are removed from the table
+    // because a tie near the end of the table is modified.
+    // In this way, we can prevent permanent data loss when an operator accidentally checks an "End tie?" box.
+    // We will push and pop from the beginning of the deque.
+    // Rows that become invisible are removed from data and then pushed onto the stack from bottom to top.
+    // When a row becomes visible again, it is popped from the stack and appended to data.
+    private Deque<Object[]> invisible;
 
     /**
      * Instantiates a model with the given column names and classes. The model will add a column at index 0 with name "End tie?" and class <code>Boolean.class</code>.
