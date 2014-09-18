@@ -242,6 +242,7 @@ public abstract class RankingEditorTableModel<T> extends AbstractTableModel impl
      * <li>directly make changes to <code>row</code> for them to be propagated to the data structure</li>
      * <li>not modify <code>row[0]</code></li>
      * <li>remain consistent with the classes assigned for each column</li>
+     * <li>refrain from modifying fields that are user-editable (since this is used by the event listening architecture to determine whether a row needs to be recomputed)</li>
      * </ul>
      * 
      * <p>
