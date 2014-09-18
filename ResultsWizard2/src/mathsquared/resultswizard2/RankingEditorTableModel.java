@@ -210,10 +210,25 @@ public abstract class RankingEditorTableModel<T> extends AbstractTableModel impl
     /**
      * Recomputes data for the given row. This is a delegate to the {@link #computeRow(Object[])} method, which allows subclassers to directly modify the relevant row.
      * 
+     * <p>
+     * This method fires a row update event for <code>row</code>.
+     * </p>
+     * 
      * @param row the row to update
      */
+    // @formatter:off
+    /*
+     * IMPORTANT NOTE
+     * ==============
+     * 
+     * If I call this method indirectly from the table event listener, it WILL result in calling the same method over and over again. This is because this method fires an update on the row that it modifies; if I don't watch for this, it will call the method to compute this row again.
+     * 
+     * TODO implement a system to prevent infinite recursion from this method.
+     */
+    // @formatter:on
     protected void computeRow (int row) {
         computeRow(data.get(row));
+        fireTableRowsUpdated(row, row);
     }
 
     /**
@@ -228,6 +243,10 @@ public abstract class RankingEditorTableModel<T> extends AbstractTableModel impl
      * <li>not modify <code>row[0]</code></li>
      * <li>remain consistent with the classes assigned for each column</li>
      * </ul>
+     * 
+     * <p>
+     * In addition, <strong>callers of this method</strong> should fire a table update event for the relevant row when updating it. {@link computeRow(int)} takes care of this.
+     * </p>
      * 
      * @param row the row to modify
      */
