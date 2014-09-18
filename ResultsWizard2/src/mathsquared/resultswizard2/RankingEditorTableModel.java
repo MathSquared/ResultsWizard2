@@ -19,14 +19,21 @@ public abstract class RankingEditorTableModel<T> extends AbstractTableModel impl
     private String[] colNames;
     private Class[] colClasses;
 
+    // Normally, this is set to the number of places in the event (or sweeps contenders to be recognized).
+    // The actual row count can exceed this number in cases of a tie for last place.
+    private int retainPlaces;
+
     /**
      * Instantiates a model with the given column names and classes. The model will add a column at index 0 with name "End tie?" and class <code>Boolean.class</code>.
      * 
      * @param names the names of the columns, not including column 0 ("End tie?")
      * @param classes the classes of the objects in each column, not including column 0 (<code>Boolean.class</code>)
+     * @param retainPlaces the minimum number of rows that will always be present (rows can be added in case of a tie for last place)
      * @throws IllegalArgumentException if <code>names.length != classes.length</code>
      */
-    public RankingEditorTableModel (String[] names, Class[] classes) {
+    public RankingEditorTableModel (String[] names, Class[] classes, int retainPlaces) {
+        this.retainPlaces = retainPlaces;
+
         // The first elements of colNames and colClasses will be "End tie?" and Boolean.class, respectively.
         // We copy from names and classes into the rest of colNames and colClasses.
 
