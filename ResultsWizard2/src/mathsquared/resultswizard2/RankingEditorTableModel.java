@@ -149,6 +149,10 @@ public abstract class RankingEditorTableModel<T> extends AbstractTableModel impl
         }
     }
 
+    public int getRowCount () {
+        return data.size();
+    }
+
     // In theory, colNames and colClasses will have the same lengths.
     // This, my friends, is why RETM is not Serializable.
     // (don't want hostile streams messing with the array lengths)
