@@ -82,6 +82,63 @@ public abstract class RankingEditorTableModel<T> extends AbstractTableModel impl
         System.arraycopy(classes, 0, colClasses, 1, classes.length);
     }
 
+    /**
+     * Changes the number of rows in the table to a given number. There are three possible cases:
+     * 
+     * <ul>
+     * <li>If <code>newRows</code> is equal to the current row count, this method does nothing.</li>
+     * <li>If <code>newRows</code> is greater than the current row count (i.e. we're adding rows), we pop rows from <code>invisible</code> and add them to <code>data</code> from top to bottom. If <code>invisible</code> is or becomes empty, the rows are initialized to new arrays.</li>
+     * <li>Else, <code>newRows</code> is less than the current row count (i.e. we're subtracting rows), and we remove rows from the bottom of <code>data</code> and push them to <code>invisible</code> from bottom to top.</li>
+     * </ul>
+     * 
+     * TODO fire events
+     * 
+     * <p>
+     * Note that this method does no formatting checks; in particular, it does not check that the last row in the table has its "End tie?" bit set.
+     * </p>
+     * 
+     * @param newRows the new amount of rows in the table
+     */
+    private void updateForNewRowCount (int newRows) {
+        // Sanity: newRows >= 0
+        if (newRows < 0) {
+            throw new IllegalArgumentException("newRows must not be negative (" + newRows + ")");
+        }
+
+        // Get the old number of rows so we know whether to add or remove
+        int oldRows = data.size();
+
+        if (newRows == oldRows) {
+            // do nothing
+            return;
+        } else if (newRows > oldRows) { // add rows
+            // Algorithm: We're adding (newRows - oldRows) rows.
+            int deltaRows = newRows - oldRows;
+            // So, we do this deltaRows times.
+            for (int i = 0; i < deltaRows; i++) {
+                // We'll fetch an invisible row if it's available.
+                if (!invisible.isEmpty()) {
+                    // Add the new row
+                    Object[] row = invisible.pop();
+                    data.add(row);
+                } else {
+                    // Initialize a new row
+                    data.add(new Object[colNames.length]);
+                }
+            }
+        } else { // subtract rows
+            // Algorithm: We're subtracting (oldRows - newRows) rows.
+            int deltaRows = oldRows - newRows;
+            // So, we do this deltaRows times.
+            for (int i = 0; i < deltaRows; i++) {
+                // Grab a row from the bottom of the data
+                Object[] row = data.remove(data.size() - 1);
+                // Push it to the invisible rows
+                invisible.push(row);
+            }
+        }
+    }
+
     // In theory, colNames and colClasses will have the same lengths.
     // This, my friends, is why RETM is not Serializable.
     // (don't want hostile streams messing with the array lengths)
