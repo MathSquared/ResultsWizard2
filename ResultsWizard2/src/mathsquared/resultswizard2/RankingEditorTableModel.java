@@ -91,7 +91,9 @@ public abstract class RankingEditorTableModel<T> extends AbstractTableModel impl
      * <li>Else, <code>newRows</code> is less than the current row count (i.e. we're subtracting rows), and we remove rows from the bottom of <code>data</code> and push them to <code>invisible</code> from bottom to top.</li>
      * </ul>
      * 
-     * TODO fire events
+     * <p>
+     * After performing these actions, the method notifies listeners of the row insertion or deletion, if applicable.
+     * </p>
      * 
      * <p>
      * Note that this method does no formatting checks; in particular, it does not check that the last row in the table has its "End tie?" bit set.
@@ -126,6 +128,10 @@ public abstract class RankingEditorTableModel<T> extends AbstractTableModel impl
                     data.add(new Object[colNames.length]);
                 }
             }
+
+            // Let's fire events.
+            // We added rows from (oldRows + 1) to newRows.
+            fireTableRowsInserted(oldRows + 1, newRows);
         } else { // subtract rows
             // Algorithm: We're subtracting (oldRows - newRows) rows.
             int deltaRows = oldRows - newRows;
@@ -136,6 +142,10 @@ public abstract class RankingEditorTableModel<T> extends AbstractTableModel impl
                 // Push it to the invisible rows
                 invisible.push(row);
             }
+
+            // Let's fire events.
+            // We removed rows from (newRows + 1) to oldRows.
+            fireTableRowsDeleted(newRows + 1, oldRows);
         }
     }
 
