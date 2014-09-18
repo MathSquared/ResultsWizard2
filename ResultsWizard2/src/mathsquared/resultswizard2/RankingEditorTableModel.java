@@ -6,6 +6,7 @@ package mathsquared.resultswizard2;
 import java.util.Deque;
 import java.util.List;
 
+import javax.swing.event.TableModelEvent;
 import javax.swing.table.AbstractTableModel;
 
 /**
@@ -159,4 +160,76 @@ public abstract class RankingEditorTableModel<T> extends AbstractTableModel impl
     public int getColumnCount () {
         return colNames.length;
     }
+
+    /**
+     * Recomputes data for all rows covered by the given {@link TableModelEvent}.
+     * 
+     * @param evt the event carrying information about the rows to update
+     */
+    private void computeRows (TableModelEvent evt) {
+        computeRows(evt.getFirstRow(), evt.getLastRow());
+    }
+
+    /**
+     * Recomputes data for all rows in the given range.
+     * 
+     * <p>
+     * If <code>lastRow &lt; firstRow</code>, this method does nothing. Otherwise, if <code>firstRow == {@link TableModelEvent#HEADER_ROW}</code>, this is equivalent to <code>computeRows(0, data.size())</code>.
+     * </p>
+     * 
+     * @param firstRow the first row to recompute, inclusive
+     * @param lastRow the last row to update, inclusive
+     * @throws IllegalArgumentException if either parameter is negative and not equal to {@link TableModelEvent#HEADER_ROW}
+     */
+    private void computeRows (int firstRow, int lastRow) {
+        // Because of the crazy HEADER_ROW logic below, let's sanity check that firstRow >= lastRow now.
+        if (firstRow > lastRow) {
+            return;
+        }
+
+        // Sanity: both greater than 0 or equal to TableModelEvent.HEADER_ROW
+        if (firstRow < 0 && firstRow != TableModelEvent.HEADER_ROW) {
+            throw new IllegalArgumentException("firstRow (" + firstRow + ") must be non-negative or equal to HEADER_ROW (" + TableModelEvent.HEADER_ROW);
+        }
+        if (lastRow < 0 && lastRow != TableModelEvent.HEADER_ROW) {
+            throw new IllegalArgumentException("lastRow (" + lastRow + ") must be non-negative or equal to HEADER_ROW (" + TableModelEvent.HEADER_ROW);
+        }
+
+        // HEADER_ROW means that the table structure has changed, a.k.a. the whole table has changed.
+        if (firstRow == TableModelEvent.HEADER_ROW) {
+            for (int i = 0; i < data.size(); i++) {
+                computeRow(i);
+            }
+        } else {
+            for (int i = firstRow; i <= lastRow; i++) {
+                computeRow(i);
+            }
+        }
+    }
+
+    /**
+     * Recomputes data for the given row. This is a delegate to the {@link #computeRow(Object[])} method, which allows subclassers to directly modify the relevant row.
+     * 
+     * @param row the row to update
+     */
+    protected void computeRow (int row) {
+        computeRow(data.get(row));
+    }
+
+    /**
+     * Recomputes data for the given row. That is, allows subclassers to modify data that is computed from other elements of the array.
+     * 
+     * <p>
+     * Subclassers <strong>should</strong>:
+     * </p>
+     * 
+     * <ul>
+     * <li>directly make changes to <code>row</code> for them to be propagated to the data structure</li>
+     * <li>not modify <code>row[0]</code></li>
+     * <li>remain consistent with the classes assigned for each column</li>
+     * </ul>
+     * 
+     * @param row the row to modify
+     */
+    protected abstract void computeRow (Object[] row);
 }
