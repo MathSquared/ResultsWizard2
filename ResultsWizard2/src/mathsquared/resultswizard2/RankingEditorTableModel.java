@@ -177,6 +177,19 @@ public abstract class RankingEditorTableModel<T> extends AbstractTableModel impl
     }
 
     /**
+     * {@inheritDoc}
+     * 
+     * @throws IllegalArgumentException if <code>val</code> is not of the correct class for column <code>col</code>
+     */
+    public void setValueAt (Object val, int row, int col) {
+        // Check the class
+        if (!colClasses[col].isInstance(val)) {
+            throw new IllegalArgumentException("Values in column " + col + " must be of class " + colClasses[col]);
+        }
+        data.get(row)[col] = val;
+    }
+
+    /**
      * Verifies that the objects in a given row are instances of the corresponding classes in <code>colClasses</code>.
      * 
      * @param row the index of the row of the table to check
