@@ -27,10 +27,11 @@ public abstract class RankingEditorTableModel<T> extends AbstractTableModel impl
     // The actual row count can exceed this number in cases of a tie for last place.
     private int retainPlaces;
 
-    // These will contain the data. Unfortunately, we have to use List<Object[]> and cast at runtime because the table can expand.
+    // These will contain the data. Unfortunately, we have to use List<Object[]> and cast at runtime because the table can expand
+    // if there's a tie for last place.
     // data.get(i)[j] will be the entry in the ith row in the jth column
     // (column 0 will be the built-in tie handling)
-    // These will probably be exposed to subclasses by way of methods that typecheck beforehand.
+    // These will probably be exposed to subclasses by way of methods that typecheck beforehand (using the colClasses array).
     private List<Object[]> data;
 
     // This will be used as a stack for rows that are removed from the table
@@ -44,8 +45,8 @@ public abstract class RankingEditorTableModel<T> extends AbstractTableModel impl
     /**
      * Instantiates a model with the given column names and classes. The model will add a column at index 0 with name "End tie?" and class <code>Boolean.class</code>.
      * 
-     * @param names the names of the columns, not including column 0 ("End tie?")
-     * @param classes the classes of the objects in each column, not including column 0 (<code>Boolean.class</code>)
+     * @param names the names of the columns, not including column 0 ("End tie?")--so <code>names[0]</code> is the name of column 1
+     * @param classes the classes of the objects in each column, not including column 0 (<code>Boolean.class</code>)--so <code>classes[0]</code> is the class of column 1
      * @param retainPlaces the minimum number of rows that will always be present (rows can be added in case of a tie for last place)
      * @throws IllegalArgumentException if <code>names.length != classes.length</code>
      */
