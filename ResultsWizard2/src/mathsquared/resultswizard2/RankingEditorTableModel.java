@@ -204,7 +204,7 @@ public abstract class RankingEditorTableModel<T> extends AbstractTableModel impl
      * 
      * @param evt the event carrying information about the rows to update
      */
-    private void computeRows (TableModelEvent evt) {
+    private final void computeRows (TableModelEvent evt) {
         computeRows(evt.getFirstRow(), evt.getLastRow());
     }
 
@@ -219,7 +219,7 @@ public abstract class RankingEditorTableModel<T> extends AbstractTableModel impl
      * @param lastRow the last row to update, inclusive
      * @throws IllegalArgumentException if either parameter is negative and not equal to {@link TableModelEvent#HEADER_ROW}
      */
-    private void computeRows (int firstRow, int lastRow) {
+    private final void computeRows (int firstRow, int lastRow) {
         // Because of the crazy HEADER_ROW logic below, let's sanity check that firstRow >= lastRow now.
         if (firstRow > lastRow) {
             return;
@@ -264,7 +264,7 @@ public abstract class RankingEditorTableModel<T> extends AbstractTableModel impl
      * TODO implement a system to prevent infinite recursion from this method.
      */
     // @formatter:on
-    protected void computeRow (int row) {
+    protected final void computeRow (int row) {
         Object[] tableRow = data.get(row);
         computeRow(tableRow);
 
