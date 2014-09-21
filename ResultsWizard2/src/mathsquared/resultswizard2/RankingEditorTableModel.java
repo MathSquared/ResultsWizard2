@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Set;
 
 import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
 
 /**
@@ -18,7 +19,7 @@ import javax.swing.table.AbstractTableModel;
  * @param <T> the type of data edited by this model
  * 
  */
-public abstract class RankingEditorTableModel<T> extends AbstractTableModel implements EditorTableModel<T> {
+public abstract class RankingEditorTableModel<T> extends AbstractTableModel implements EditorTableModel<T>, TableModelListener {
     // These are the columns.
     // We initialize one for ties and leave the rest to the constructor.
     // Presumably, the constructor will be invoked by a subclass using super.
@@ -206,6 +207,11 @@ public abstract class RankingEditorTableModel<T> extends AbstractTableModel impl
         // All is well
         return true;
         // TODO test
+    }
+
+    public final void tableChanged (TableModelEvent evt) {
+        // Don't process rows that we're currently not processing (this is the anti-infinite-recursion measure)
+        computeRows(evt, false);
     }
 
     /**
