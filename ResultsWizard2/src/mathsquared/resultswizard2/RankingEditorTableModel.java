@@ -280,7 +280,9 @@ public abstract class RankingEditorTableModel<T> extends AbstractTableModel impl
         // Check the classes on tableRow before updating the table
         if (verifyClassConsistency(tableRow)) {
             data.set(row, tableRow);
+            excludeFromRecomputation.add(row);
             fireTableRowsUpdated(row, row);
+            excludeFromRecomputation.remove(row);
         }
     }
 
