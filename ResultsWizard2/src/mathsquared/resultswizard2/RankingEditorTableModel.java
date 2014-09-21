@@ -162,6 +162,12 @@ public abstract class RankingEditorTableModel<T> extends AbstractTableModel impl
         return colNames.length;
     }
 
+    /**
+     * Verifies that the objects in a given row are instances of the corresponding classes in <code>colClasses</code>.
+     * 
+     * @param row the index of the row of the table to check
+     * @return false if the length of the row doesn't match the length of <code>colClasses</code> or if one of the entries in the row is not an instance of the corresponding class in <code>colClasses</code> or a subclass
+     */
     private boolean verifyClassConsistency (int row) {
         Object[] toCheck = data.get(row);
 
