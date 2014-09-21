@@ -3,6 +3,7 @@
  */
 package mathsquared.resultswizard2;
 
+import java.io.Serializable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -20,7 +21,7 @@ import java.util.regex.Pattern;
  * @author MathSquared
  * 
  */
-public class Fraction implements Comparable<Fraction> {
+public class Fraction implements Comparable<Fraction>, Serializable { // TODO add validation for Fractions read from serialization
     private int unit;
     private int numerator;
     private int denominator;
