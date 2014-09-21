@@ -162,6 +162,27 @@ public abstract class RankingEditorTableModel<T> extends AbstractTableModel impl
         return colNames.length;
     }
 
+    private boolean verifyClassConsistency (int row) {
+        Object[] toCheck = data.get(row);
+
+        // Check lengths
+        if (toCheck.length != colClasses.length) {
+            return false;
+        }
+
+        // Check each class
+        // We use isInstance to allow for the values in the row to be subclasses of the values in colClasses
+        for (int i = 0; i < toCheck.length; i++) {
+            if (!colClasses[i].isInstance(toCheck[i])) {
+                return false;
+            }
+        }
+
+        // All is well
+        return true;
+        // TODO test
+    }
+
     /**
      * Recomputes data for all rows covered by the given {@link TableModelEvent}.
      * 
