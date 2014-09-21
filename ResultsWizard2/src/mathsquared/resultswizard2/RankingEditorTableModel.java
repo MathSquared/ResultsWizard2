@@ -172,6 +172,14 @@ public abstract class RankingEditorTableModel<T> extends AbstractTableModel impl
         return colNames.length;
     }
 
+    public String getColumnName (int col) {
+        return colNames[col];
+    }
+
+    public Class getColumnClass (int col) {
+        return colClasses[col];
+    }
+
     public Object getValueAt (int row, int col) {
         return data.get(row)[col];
     }
