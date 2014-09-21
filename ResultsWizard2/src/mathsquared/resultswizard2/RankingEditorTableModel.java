@@ -270,7 +270,7 @@ public abstract class RankingEditorTableModel<T> extends AbstractTableModel impl
      * Recomputes data for the given row. This is a delegate to the {@link #computeRow(Object[])} method, which allows subclassers to directly modify the relevant row. The changes made to the row will be {@linkplain #verifyClassConsistency(Object[]) checked} against the classes in the table before updating the actual table.
      * 
      * <p>
-     * This method fires a row update event for <code>row</code>.
+     * This method fires a row update event for <code>row</code>. During the event firing, <code>row</code> will be present in <code>excludeFromRecomputation</code>.
      * </p>
      * 
      * @param row the row to update
