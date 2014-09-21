@@ -212,9 +212,10 @@ public abstract class RankingEditorTableModel<T> extends AbstractTableModel impl
      * Recomputes data for all rows covered by the given {@link TableModelEvent}.
      * 
      * @param evt the event carrying information about the rows to update
+     * @param processExclusions whether to still recompute rows that are present in <code>excludeFromRecompuation</code>
      */
-    private final void computeRows (TableModelEvent evt) {
-        computeRows(evt.getFirstRow(), evt.getLastRow());
+    private final void computeRows (TableModelEvent evt, boolean processExclusions) {
+        computeRows(evt.getFirstRow(), evt.getLastRow(), processExclusions);
     }
 
     /**
@@ -226,9 +227,10 @@ public abstract class RankingEditorTableModel<T> extends AbstractTableModel impl
      * 
      * @param firstRow the first row to recompute, inclusive
      * @param lastRow the last row to update, inclusive
+     * @param processExclusions whether to still recompute rows that are present in <code>excludeFromRecompuation</code>
      * @throws IllegalArgumentException if either parameter is negative and not equal to {@link TableModelEvent#HEADER_ROW}
      */
-    private final void computeRows (int firstRow, int lastRow) {
+    private final void computeRows (int firstRow, int lastRow, boolean processExclusions) {
         // Because of the crazy HEADER_ROW logic below, let's sanity check that firstRow >= lastRow now.
         if (firstRow > lastRow) {
             return;
@@ -245,11 +247,15 @@ public abstract class RankingEditorTableModel<T> extends AbstractTableModel impl
         // HEADER_ROW means that the table structure has changed, a.k.a. the whole table has changed.
         if (firstRow == TableModelEvent.HEADER_ROW) {
             for (int i = 0; i < data.size(); i++) {
-                computeRow(i);
+                if (processExclusions || !excludeFromRecomputation.contains(i)) {
+                    computeRow(i);
+                }
             }
         } else {
             for (int i = firstRow; i <= lastRow; i++) {
-                computeRow(i);
+                if (processExclusions || !excludeFromRecomputation.contains(i)) {
+                    computeRow(i);
+                }
             }
         }
     }
