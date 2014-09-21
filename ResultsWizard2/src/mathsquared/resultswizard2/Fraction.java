@@ -20,7 +20,7 @@ import java.util.regex.Pattern;
  * @author MathSquared
  * 
  */
-public class Fraction implements Comparable<Fraction> { // TODO write unit tests
+public class Fraction implements Comparable<Fraction> {
     private int unit;
     private int numerator;
     private int denominator;
