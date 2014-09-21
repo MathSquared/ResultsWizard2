@@ -246,7 +246,7 @@ public abstract class RankingEditorTableModel<T> extends AbstractTableModel impl
     }
 
     /**
-     * Recomputes data for the given row. This is a delegate to the {@link #computeRow(Object[])} method, which allows subclassers to directly modify the relevant row.
+     * Recomputes data for the given row. This is a delegate to the {@link #computeRow(Object[])} method, which allows subclassers to directly modify the relevant row. The changes made to the row will be {@linkplain #verifyClassConsistency(Object[]) checked} against the classes in the table before updating the actual table.
      * 
      * <p>
      * This method fires a row update event for <code>row</code>.
@@ -265,8 +265,14 @@ public abstract class RankingEditorTableModel<T> extends AbstractTableModel impl
      */
     // @formatter:on
     protected void computeRow (int row) {
-        computeRow(data.get(row));
-        fireTableRowsUpdated(row, row);
+        Object[] tableRow = data.get(row);
+        computeRow(tableRow);
+
+        // Check the classes on tableRow before updating the table
+        if (verifyClassConsistency(tableRow)) {
+            data.set(row, tableRow);
+            fireTableRowsUpdated(row, row);
+        }
     }
 
     /**
