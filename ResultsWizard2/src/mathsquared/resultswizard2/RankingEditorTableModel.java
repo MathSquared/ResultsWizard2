@@ -282,7 +282,7 @@ public abstract class RankingEditorTableModel<T> extends AbstractTableModel impl
      * 
      * If I call this method indirectly from the table event listener, it WILL result in calling the same method over and over again. This is because this method fires an update on the row that it modifies; if I don't watch for this, it will call the method to compute this row again.
      * 
-     * TODO implement a system to prevent infinite recursion from this method.
+     * BEHAVIOR TAKEN INTO ACCOUNT: excludeFromRecomputation
      */
     // @formatter:on
     protected final void computeRow (int row) {
