@@ -4,7 +4,9 @@
 package mathsquared.resultswizard2;
 
 import java.util.Deque;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.swing.event.TableModelEvent;
 import javax.swing.table.AbstractTableModel;
@@ -41,6 +43,13 @@ public abstract class RankingEditorTableModel<T> extends AbstractTableModel impl
     // Rows that become invisible are removed from data and then pushed onto the stack from bottom to top.
     // When a row becomes visible again, it is popped from the stack and appended to data.
     private Deque<Object[]> invisible;
+
+    // After a row is recomputed, we fire an event on the relevant row.
+    // However, if we simply call computeRow in the event handler, this would result in infinite recursion.
+    // To solve this, before firing the event, we add the row number to this set.
+    // In the event handler, we only call computeRow on the row if it is not present in this set.
+    // The row is removed from the set after the events are fired.
+    private Set<Integer> excludeFromRecomputation = new HashSet<Integer>();
 
     /**
      * Instantiates a model with the given column names and classes. The model will add a column at index 0 with name "End tie?" and class <code>Boolean.class</code>.
