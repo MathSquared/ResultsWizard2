@@ -567,6 +567,29 @@ public class Fraction implements Comparable<Fraction> { // TODO write unit tests
     }
 
     /**
+     * {@inheritDoc}
+     * 
+     * <p>
+     * <code>Fraction</code> implements the <code>hashCode</code> method as returning:
+     * </p>
+     * 
+     * <code>31^3 + 31^2 * getUnit() + 31^1 * getNumerator() + 31^0 * getDenominator()</code>
+     */
+    public int hashCode () {
+        int hash = 1;
+        hash = hash * 31 + unit;
+        hash = hash * 31 + numerator;
+        hash = hash * 31 + denominator;
+
+        // Algebra in the docs above:
+        // hash = ((31 + unit) * 31 + numerator) * 31 + denominator
+        // = (31 * 31 + 31 * unit + numerator) * 31 + denominator
+        // = 31^3 + 31^2 * unit + 31^1 * numerator + denominator
+
+        return hash;
+    }
+
+    /**
      * Numerically compares this Fraction to another Fraction. This class is {@linkplain Comparable consistent with equals}, discounting the possibility of integer overflow errors; if <code>this.equals(other)</code>, it is guaranteed that <code>this.compareTo(other) == 0</code>; and if <code>!this.equals(other)</code>, it is theoretically guaranteed that <code>this.compareTo(other) != 0</code> (although rounding errors can cause inconsistency here).
      * 
      * @param other the Fraction to which to compare this Fraction
