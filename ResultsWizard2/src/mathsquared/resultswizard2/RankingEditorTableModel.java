@@ -172,6 +172,10 @@ public abstract class RankingEditorTableModel<T> extends AbstractTableModel impl
         return colNames.length;
     }
 
+    public Object getValueAt (int row, int col) {
+        return data.get(row)[col];
+    }
+
     /**
      * Verifies that the objects in a given row are instances of the corresponding classes in <code>colClasses</code>.
      * 
