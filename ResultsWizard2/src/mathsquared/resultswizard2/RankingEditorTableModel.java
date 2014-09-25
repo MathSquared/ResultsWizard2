@@ -165,6 +165,9 @@ public abstract class RankingEditorTableModel<T> extends AbstractTableModel impl
             // We removed rows from (newRows + 1) to oldRows.
             fireTableRowsDeleted(newRows + 1, oldRows);
         }
+
+        // We've updated the row count--now let's update the ranks before we finish up
+        updateRankColumn();
     }
 
     /**
