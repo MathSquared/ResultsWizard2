@@ -143,7 +143,7 @@ public abstract class RankingEditorTableModel<T> extends AbstractTableModel impl
                     data.add(row);
                 } else {
                     // Initialize a new row
-                    data.add(new Object[colNames.length]);
+                    data.add(initializeRow());
                 }
             }
 
@@ -165,6 +165,12 @@ public abstract class RankingEditorTableModel<T> extends AbstractTableModel impl
             // We removed rows from (newRows + 1) to oldRows.
             fireTableRowsDeleted(newRows + 1, oldRows);
         }
+    }
+
+    protected Object[] initializeRow () {
+        Object[] ret = new Object[colNames.length];
+        ret[0] = Boolean.valueOf(true); // new rows should end ties unless overriden by the user
+        return ret;
     }
 
     public int getRowCount () {
