@@ -439,4 +439,41 @@ public class ArrayUtils {
 
         return ret;
     }
+
+    public static int[] assignPlacesFromEndTie (boolean[] endTie, TiePlaceAssignment tieAssign) {
+        // Sanity check
+        if (endTie == null) {
+            return null;
+        }
+
+        int[] ret = new int[endTie.length];
+
+        for (int i = 0; i < ret.length; i++) {
+            int firstIndex = i + 1; // the start index of the tie, one-based for TiePlaceAssignment
+
+            // Find the last index of the tie
+            // a.k.a. search forward for a true in endTie
+            // We want to skip these indices in the main loop anyway, so we increment i here
+            // Also, we only loop until the last index of the array (endTie.length - 1)
+            // because we want the index to be within the array,
+            // even if the last element is not the end of a tie
+            // So, we break out of the loop when i == endTie.length - 1 (the last index of the array)
+            // so, loop while i < endTie.length - 1
+            for (; i < endTie.length - 1 && !endTie[i]; i++) {
+                // do nothing
+            }
+
+            // Now, i is the index of the next true in endTie (possibly at the current position)
+            int lastIndex = i + 1;
+
+            // Get the place assignment
+            int place = tieAssign.assignPlace(firstIndex, lastIndex);
+
+            // Fill a portion of ret with the place we have assigned
+            Arrays.fill(ret, firstIndex, lastIndex + 1, place);
+        }
+
+        return ret;
+        // TODO test
+    }
 }
