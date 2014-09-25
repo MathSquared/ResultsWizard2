@@ -259,6 +259,25 @@ public abstract class RankingEditorTableModel<T> extends AbstractTableModel impl
         // TODO test
     }
 
+    /**
+     * Updates column 1 of the array (ranks) based on column 0 (tie endings).
+     */
+    private void updateRankColumn () {
+        // Load the end tie column into an array
+        boolean[] endTie = new boolean[data.size()];
+        for (int i = 0; i < data.size(); i++) {
+            endTie[i] = (boolean) data.get(i)[0];
+        }
+
+        // Get the array of ranks
+        int[] ranks = ArrayUtils.assignPlacesFromEndTie(endTie, tieAssign);
+
+        // Load back into the table
+        for (int i = 0; i < data.size(); i++) {
+            data.get(i)[1] = ranks[i];
+        }
+    }
+
     public final void tableChanged (TableModelEvent evt) {
         // Don't process rows that we're currently not processing (this is the anti-infinite-recursion measure)
         computeRows(evt, false);
