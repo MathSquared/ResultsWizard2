@@ -167,6 +167,19 @@ public abstract class RankingEditorTableModel<T> extends AbstractTableModel impl
         }
     }
 
+    /**
+     * Initializes a new row to be added to the end of the table.
+     * 
+     * <p>
+     * Subclasses may make use of the data in the table when calling this method.
+     * </p>
+     * 
+     * <p>
+     * This implementation simply returns a new <code>Object</code> with the entry at index <code>0</code> set to <code>Boolean.valueOf(true)</code>.
+     * </p>
+     * 
+     * @return a new table row, in the form of an <code>Object[]</code>
+     */
     protected Object[] initializeRow () {
         Object[] ret = new Object[colNames.length];
         ret[0] = Boolean.valueOf(true); // new rows should end ties unless overriden by the user
