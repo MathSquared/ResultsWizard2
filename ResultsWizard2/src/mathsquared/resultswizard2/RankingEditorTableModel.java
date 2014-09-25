@@ -30,6 +30,9 @@ public abstract class RankingEditorTableModel<T> extends AbstractTableModel impl
     // The actual row count can exceed this number in cases of a tie for last place.
     private int retainPlaces;
 
+    // This is used to assign the places for people involved in ties.
+    private TiePlaceAssignment tieAssign;
+
     // These will contain the data. Unfortunately, we have to use List<Object[]> and cast at runtime because the table can expand
     // if there's a tie for last place.
     // data.get(i)[j] will be the entry in the ith row in the jth column
@@ -60,8 +63,9 @@ public abstract class RankingEditorTableModel<T> extends AbstractTableModel impl
      * @param retainPlaces the minimum number of rows that will always be present (rows can be added in case of a tie for last place)
      * @throws IllegalArgumentException if <code>names.length != classes.length</code>
      */
-    public RankingEditorTableModel (String[] names, Class[] classes, int retainPlaces) {
+    public RankingEditorTableModel (String[] names, Class[] classes, int retainPlaces, TiePlaceAssignment tieAssign) {
         this.retainPlaces = retainPlaces;
+        this.tieAssign = tieAssign;
 
         // The first elements of colNames and colClasses will be "End tie?" and Boolean.class, respectively.
         // We copy from names and classes into the rest of colNames and colClasses.
