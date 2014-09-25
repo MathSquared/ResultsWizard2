@@ -21,7 +21,7 @@ import javax.swing.table.AbstractTableModel;
  */
 public abstract class RankingEditorTableModel<T> extends AbstractTableModel implements EditorTableModel<T>, TableModelListener {
     // These are the columns.
-    // We initialize one for ties and leave the rest to the constructor.
+    // We initialize two for ties (one for end-ties, one for the rank) and leave the rest to the constructor.
     // Presumably, the constructor will be invoked by a subclass using super.
     private String[] colNames;
     private Class[] colClasses;
@@ -55,8 +55,8 @@ public abstract class RankingEditorTableModel<T> extends AbstractTableModel impl
     /**
      * Instantiates a model with the given column names and classes. The model will add a column at index 0 with name "End tie?" and class <code>Boolean.class</code>.
      * 
-     * @param names the names of the columns, not including column 0 ("End tie?")--so <code>names[0]</code> is the name of column 1
-     * @param classes the classes of the objects in each column, not including column 0 (<code>Boolean.class</code>)--so <code>classes[0]</code> is the class of column 1
+     * @param names the names of the columns, not including column 0 ("End tie?") and column 1 ("#")--so <code>names[0]</code> is the name of column 2
+     * @param classes the classes of the objects in each column, not including column 0 (<code>Boolean.class</code>) and column 1 (<code>Integer.class</code>)--so <code>classes[0]</code> is the class of column 2
      * @param retainPlaces the minimum number of rows that will always be present (rows can be added in case of a tie for last place)
      * @throws IllegalArgumentException if <code>names.length != classes.length</code>
      */
@@ -71,17 +71,19 @@ public abstract class RankingEditorTableModel<T> extends AbstractTableModel impl
         // So, if the arguments aren't sane (i.e. the same length), we'll still initialize the array lengths to 1
         // (this helps mitigate finalizer exploits)
         if (names.length != classes.length) {
-            colNames = new String[1];
-            colClasses = new Class[1];
+            colNames = new String[2];
+            colClasses = new Class[2];
             // Throw the exception later so we initialize the arrays first to counteract finalizer attacks
         } else {
-            colNames = new String[names.length + 1];
-            colClasses = new Class[classes.length + 1];
+            colNames = new String[names.length + 2];
+            colClasses = new Class[classes.length + 2];
         }
 
         // Initialize arrays
         colNames[0] = "End tie?";
         colClasses[0] = Boolean.class;
+        colNames[1] = "#";
+        colClasses[1] = Integer.class;
 
         // Now, die horribly if the arg lengths don't match
         if (names.length != classes.length) {
@@ -90,8 +92,8 @@ public abstract class RankingEditorTableModel<T> extends AbstractTableModel impl
 
         // Copy the remaining entries from names and classes into colNames and colClasses
         // String and Class are immutable
-        System.arraycopy(names, 0, colNames, 1, names.length);
-        System.arraycopy(classes, 0, colClasses, 1, classes.length);
+        System.arraycopy(names, 0, colNames, 2, names.length);
+        System.arraycopy(classes, 0, colClasses, 2, classes.length);
     }
 
     /**
